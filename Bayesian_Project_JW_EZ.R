@@ -76,24 +76,37 @@ jags_model <- jags.model(
   inits = inits_list,
   n.chains = 3,
   n.adapt = 20000
-)
+  )
 
 # Sample from posterior
 samples <- coda.samples(
   jags_model,
   variable.names = c("alpha", "beta", "theta"),
   n.iter = 50000
-)
+  )
+
+# Trim the samples (keep 20,000 to 50,000 iterations)
+samples_trimmed <- window(samples, start = 1, end = 50000)
+samples_trimmed <- window(samples, start = 1, end = 50000)
 
 # Posterior summary & diagnostics
-summary(samples)
-plot(samples)
+summary(samples_trimmed)
+plot(samples_trimmed)
+
+# Compute the average expected claim amount
+pareto_ev <- function(a, b) ifelse(a > 1, (a * b) / (a - 1), NA)
+
+posterior <- as.matrix(samples_trimmed)
+expected_values <- pareto_ev(posterior[, "alpha"], posterior[, "beta"])
+
+mean(expected_values, na.rm=TRUE)
+sd(expected_values, na.rm=TRUE)
+quantile(expected_values, c(0.025, 0.5, 0.975), na.rm=TRUE)
 
 # ===================================================
 # PLOT 1: EMPIRICAL VS POSTERIOR PARETO CDF
 # ===================================================
 y <- rytgaard1990_input$y
-posterior <- as.matrix(samples)
 
 alpha <- mean(posterior[, "alpha"])
 beta <- mean(posterior[, "beta"])
@@ -147,3 +160,6 @@ lines(x_vals, ppois(x_vals, lambda = theta),
 legend("bottomright",
        legend = c("Empirical CDF", "Posterior Poisson CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+# Diagnostics
+gelman.diag(samples_trimmed)
