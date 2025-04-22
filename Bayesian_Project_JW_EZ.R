@@ -1,28 +1,36 @@
+# ===================================================
+# LOAD LIBRARIES
+# ===================================================
+library(CASdatasets)
+library(dplyr)
+library(rjags)
+library(coda)
+
+# ===================================================
+# RYTGAARD1990 EXAMPLE DATA
+# ===================================================
 rytgaard1990_input <- list(
-  y = c(2.495, 2.120, 2.095, 1.700, 1.650, 1.985, 1.810, 1.625, 3.215, 2.105, 1.765, 1.715, 19.180, 1.915, 1.790, 1.755),
+  y = c(2.495, 2.120, 2.095, 1.700, 1.650, 1.985, 1.810, 1.625, 
+        3.215, 2.105, 1.765, 1.715, 19.180, 1.915, 1.790, 1.755),
   n = c(5, 3, 4, 0, 4)
 )
 
+# Add metadata for JAGS model
 rytgaard1990_input$N_y <- length(rytgaard1990_input$y)
 rytgaard1990_input$N_n <- length(rytgaard1990_input$n)
 rytgaard1990_input$min_y <- min(rytgaard1990_input$y)
 
-# Load a dataset from CASdatasets (CASdatasets requires zoo, xts, and Rtools)
-#install.packages("C:/Users/Julia/Downloads/CASdatasets_1.2-0.tar.gz", repos = NULL, type = "source")
-library(CASdatasets)
-library(dplyr)
-
+# ===================================================
+# LOAD AND PREPARE CASDATASETS DATA
+# ===================================================
 data(itamtplcost)
-# https://dutangc.github.io/CASdatasets/reference/itamtplcost.html#ref-usage
-# This dataset contains large losses (in excess of 500 Keuro) of an Italian Motor-TPL company since 1997.
 
+# Extract year and rename 'UltimateCost' for clarity
 itamtplcost$year <- format(as.Date(itamtplcost$Date, format = "%d/%m/%Y"), "%Y")
+
 itamtplcost <- itamtplcost %>%
   rename(claim_amount = UltimateCost) %>%
   select(year, claim_amount)
-
-library(rjags)
-library(coda)
 
 itamtplcost_input <- list(
   y = itamtplcost$claim_amount,
@@ -33,6 +41,9 @@ itamtplcost_input$N_y <- length(itamtplcost_input$y)
 itamtplcost_input$N_n <- length(itamtplcost_input$n)
 itamtplcost_input$min_y <- min(itamtplcost_input$y)
 
+# ===================================================
+# DEFINE BAYESIAN MODEL (POISSON-PARETO)
+# ===================================================
 model_code <- "
 model {
   for(i in 1:N_y) {
@@ -49,26 +60,90 @@ model {
 }
 "
 
+# Initial values for three MCMC chains
 inits_list <- list(
-  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001),   # Chain 1
-  list(alpha = 100000, beta = 1, theta = 100000), # Chain 2
-  list(alpha = 3.076, beta = 1.625, theta = 3.2)  # Chain 3
+  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001),
+  list(alpha = 100000, beta = 1, theta = 100000),
+  list(alpha = 3.076, beta = 1.625, theta = 3.2)
 )
 
+# ===================================================
+# RUN JAGS MODEL
+# ===================================================
 jags_model <- jags.model(
   textConnection(model_code),
   data = rytgaard1990_input,
   inits = inits_list,
   n.chains = 3,
   n.adapt = 20000
-  )
+)
 
-#update(jags_model, 20000)
-
+# Sample from posterior
 samples <- coda.samples(
   jags_model,
   variable.names = c("alpha", "beta", "theta"),
   n.iter = 50000
-  )
+)
+
+# Posterior summary & diagnostics
 summary(samples)
-#plot(samples)
+plot(samples)
+
+# ===================================================
+# PLOT 1: EMPIRICAL VS POSTERIOR PARETO CDF
+# ===================================================
+y <- rytgaard1990_input$y
+posterior <- as.matrix(samples)
+
+alpha <- mean(posterior[, "alpha"])
+beta <- mean(posterior[, "beta"])
+
+# Define Pareto CDF
+pareto_cdf <- function(x, alpha, beta) {
+  ifelse(x < beta, 0, 1 - (beta / x)^alpha)
+}
+
+# Plot empirical CDF
+plot(
+  ecdf(y),
+  col = "blue",
+  main = "Empirical vs. Posterior Pareto CDF",
+  xlab = "Claim Amount",
+  ylab = "CDF",
+  lwd = 2
+)
+
+# Overlay posterior predictive Pareto CDF
+x_vals <- seq(min(y), max(y), length.out = 500)
+lines(x_vals, pareto_cdf(x_vals, alpha, beta),
+      col = "red", lwd = 2, lty = 2)
+
+legend("bottomright",
+       legend = c("Empirical CDF", "Posterior Pareto CDF"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+# ===================================================
+# PLOT 2: EMPIRICAL VS POSTERIOR POISSON CDF
+# ===================================================
+n <- rytgaard1990_input$n
+theta <- mean(posterior[, "theta"])
+
+# Plot empirical CDF for Poisson counts
+plot(
+  ecdf(n),
+  col = "blue",
+  main = "Empirical vs. Posterior Poisson CDF",
+  xlab = "Claim Counts",
+  ylab = "CDF",
+  lwd = 2,
+  xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility
+)
+
+# Overlay theoretical Poisson CDF
+x_vals <- min(n):(max(n) + 3)
+lines(x_vals, ppois(x_vals, lambda = theta),
+      col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
+
+legend("bottomright",
+       legend = c("Empirical CDF", "Posterior Poisson CDF"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
