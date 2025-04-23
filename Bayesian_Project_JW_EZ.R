@@ -94,9 +94,14 @@ summary(samples_trimmed)
 plot(samples_trimmed)
 
 # Trace plots for each parameter
-plot(samples_trimmed[, "alpha"])
-plot(samples_trimmed[, "beta"])
-plot(samples_trimmed[, "theta"])
+traceplot(samples_trimmed[, "alpha"])
+traceplot(samples_trimmed[, "beta"])
+traceplot(samples_trimmed[, "theta"])
+
+# Density for each parameter
+plot(density(as.matrix(samples_trimmed[, "alpha"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_trimmed[, "beta"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_trimmed[, "theta"])), main="", xlab="", ylab="")
 
 # Compute the average expected claim amount
 pareto_ev <- function(a, b) ifelse(a > 1, (a * b) / (a - 1), NA)
@@ -107,6 +112,8 @@ expected_values <- pareto_ev(posterior[, "alpha"], posterior[, "beta"])
 mean(expected_values, na.rm=TRUE)
 sd(expected_values, na.rm=TRUE)
 quantile(expected_values, c(0.025, 0.5, 0.975), na.rm=TRUE)
+
+plot(density(expected_values, na.rm=TRUE), main="", xlab="", ylab="")
 
 # ===================================================
 # PLOT 1: EMPIRICAL VS POSTERIOR PARETO CDF
@@ -125,9 +132,9 @@ pareto_cdf <- function(x, alpha, beta) {
 plot(
   ecdf(y),
   col = "blue",
-  main = "Empirical vs. Posterior Pareto CDF",
-  xlab = "Claim Amount",
-  ylab = "CDF",
+  main = "",
+  xlab = "y",
+  ylab = "",
   lwd = 2
 )
 
@@ -137,7 +144,7 @@ lines(x_vals, pareto_cdf(x_vals, alpha, beta),
       col = "red", lwd = 2, lty = 2)
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Posterior Pareto CDF"),
+       legend = c("Empirical CDF", "Pareto(3.079,1.591) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ===================================================
@@ -150,9 +157,9 @@ theta <- mean(posterior[, "theta"])
 plot(
   ecdf(n),
   col = "blue",
-  main = "Empirical vs. Posterior Poisson CDF",
-  xlab = "Claim Counts",
-  ylab = "CDF",
+  main = "",
+  xlab = "n",
+  ylab = "",
   lwd = 2,
   xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility
 )
@@ -163,29 +170,10 @@ lines(x_vals, ppois(x_vals, lambda = theta),
       col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Posterior Poisson CDF"),
+       legend = c("Empirical CDF", "Poisson(3.4) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # NEW
 # Diagnostics
-gelman.diag(samples_trimmed)
+gelman.diag(samples_trimmed, autoburnin=FALSE)
 gelman.plot(samples_trimmed)
-
-geweke.diag(samples_trimmed)
-
-jags_model <- jags.model(
-  textConnection(model_code),
-  data = rytgaard1990_input,
-  inits = inits_list,
-  n.chains = 3,
-  n.adapt = 0
-)
-
-# Sample from posterior
-samples <- coda.samples(
-  jags_model,
-  variable.names = c("alpha", "beta", "theta"),
-  n.iter = 50000
-)
-
-raftery.diag(samples, q = 0.025, r = 0.005, s = 0.95)
