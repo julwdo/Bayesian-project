@@ -16,6 +16,7 @@
 \usepackage{multirow}
 %\usepackage{placeins}
 \usepackage{booktabs}
+\usepackage{tablefootnote}
 
 \geometry{
     a4paper,
@@ -83,7 +84,7 @@ The first objective of this project was to replicate the analysis conducted by D
 *{5}{S[table-format=2.3]}
 }
 \hline
-\textbf{Year} & \multicolumn{5}{c}{\textbf{Claim Amounts (in millions}} \\ \hline
+\textbf{Year} & \multicolumn{5}{c}{\textbf{Claim Amounts (in millions)}} \\ \hline
 \textbf{1} & 2.495 & 2.120 & 2.095 & 1.700 & 1.650 \\
 \textbf{2} & 1.985 & 1.810 & 1.625 & \textendash & \textendash \\
 \textbf{3} & 3.215 & 2.105 & 1.765 & 1.715 & \textendash \\
@@ -92,19 +93,12 @@ The first objective of this project was to replicate the analysis conducted by D
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
-\item Note:\ The threshold of 1.5 million corresponds to the retention level of an excess-of-loss insurance policy\footnote{To manage risk exposure, insurers frequently employ reinsurance strategies, which help limit their financial liability on large claims. Under such arrangements, if a claim amount \( y \) exceeds a predetermined threshold \( d \) (the retention), the insurer is responsible only for paying up to \( d \), while any excess \( y - d \) is covered by the reinsurer. This approach helps insurers mitigate the impact of high-variance claims. A related practice involves using deductibles to avoid processing numerous small claims. Since handling minor claims can be disproportionately expensive, insurers may impose a deductible---requiring policyholders to cover costs up to \( d \). In some cases, a franchise deductible is used instead: here, the insurer pays the entire claim \( y \) only if it exceeds the threshold \( d \).}.
+\item The threshold of 1.5 million corresponds to the retention level of an excess-of-loss insurance policy\tablefootnote{To manage risk exposure, insurers frequently employ reinsurance strategies, which help limit their financial liability on large claims. Under such arrangements, if a claim amount \( y \) exceeds a predetermined threshold \( d \) (the retention), the insurer is responsible only for paying up to \( d \), while any excess \( y - d \) is covered by the reinsurer. This approach helps insurers mitigate the impact of high-variance claims.}.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-To model this data, the following mathematical notation was introduced. Let \( N_t \) denote the number of claims in year \( t \), and let \( Y_{i,t} \) represent the amount of the \( i \)-th claim in year \( t \), where \( i = 1, 2, \ldots, N_t \). The aggregate claim amount in year \( t \) is then given by
-
-\[
-S_t = Y_{1,t} + Y_{2,t} + \cdots + Y_{N_t,t}.
-\]
-
-To proceed, certain assumptions about the distributions of \( N_t \) and \( Y_{i,t} \) were necessary. It was assumed that claims occur at a constant rate over time at random. Therefore, the number of claims \( N_t \) was modeled using a Poisson distribution. Since the individual claim amounts \( Y_{i,t} \) are positive and may include large outliers, a loss distribution with a heavy tail was needed. Consequently, the Pareto distribution was selected to model \( Y_{i,t} \). Hence,
-
+To model this dataset within a Bayesian framework, assumptions about the distributions of both the number of claims in year \( t \) (\( N_t \)) and the amount of the \( i \)-th claim in year \( t \) (\( Y_{i,t} \)) were necessary. Claims were assumed to occur randomly and independently at a constant rate over time, so \( N_t \) was modeled using a Poisson distribution. A Pareto distribution was chosen for \( Y_{i,t} \), as a heavy-tailed loss distribution was needed to account for the fact that individual claim amounts are positive and may include large outliers. That is,
 \[
 N_t \sim \text{Poisson}(\theta), \quad 0 < \theta < \infty,
 \]
@@ -112,9 +106,25 @@ N_t \sim \text{Poisson}(\theta), \quad 0 < \theta < \infty,
 Y_{i,t} \sim \text{Pareto}(\alpha, \beta), \quad \alpha > 0, \quad 0 < \beta < y.
 \]
 
-In the Pareto distribution, the parameter \( \beta \) determines the minimum possible value of \( y \), meaning the support of the distribution is \( [\beta, \infty) \). This is particularly appropriate in our context, as we are modeling insurance claims that exceed a specific threshold.
+\noindent The \text{Pareto}\((\alpha, \beta)\) distribution with support \( [\beta, \infty) \) was particularly suitable in this context, as we were modeling claim amounts exceeding a certain threshold.
 
-Additional assumptions were made: \( N_t \) was assumed to be independently and identically distributed (i.i.d.) across \( t \); \( Y_{i,t} \) were i.i.d. across both indices \( i \) and \( t \); and \( N_t \) and \( Y_{i,t} \) were assumed to be independent for all \( i \) and \( t \). Under these assumptions, \( S_t \) follows a compound Poisson distribution, since it represents the sum of independent Pareto-distributed random variables.
+In addition, the following assumptions were made:
+
+\begin{itemize}
+\item \( N_t \) are independently and identically distributed (i.i.d.) across \( t \),
+\item \( Y_{i,t} \) are i.i.d.\ across both \( i \) and \( t \),
+\item \( N_t \) and \( Y_{i,t} \) are independent for all \( i \) and \( t \).
+\end{itemize}
+
+\noindent Under these assumptions, the aggregate claim amount in year \( t \), denoted by
+\[
+S_t = Y_{1,t} + Y_{2,t} + \cdots + Y_{N_t,t},
+\]
+follows a compound Poisson distribution, since it represents the sum of independent Pareto-distributed random variables.
+
+
+
+
 
 
 
