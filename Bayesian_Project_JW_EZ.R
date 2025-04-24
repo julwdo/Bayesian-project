@@ -62,14 +62,16 @@ model {
 
 # Initial values for three MCMC chains
 inits_list <- list(
-  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001),
-  list(alpha = 100000, beta = 1, theta = 100000),
-  list(alpha = 3.076, beta = 1.625, theta = 3.2)
+  list(alpha = 0.5, beta = 1, theta = 5, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
+  list(alpha = 0.6, beta = 1.2, theta = 6, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
+  list(alpha = 0.4, beta = 0.9, theta = 4, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
 )
 
 # ===================================================
 # RUN JAGS MODEL
 # ===================================================
+set.seed(123)
+
 jags_model <- jags.model(
   textConnection(model_code),
   data = rytgaard1990_input,
@@ -82,31 +84,22 @@ jags_model <- jags.model(
 samples <- coda.samples(
   jags_model,
   variable.names = c("alpha", "beta", "theta"),
-  n.iter = 50000
+  n.iter = 30000
   )
 
-# Trim the samples (keep 20,000 to 50,000 iterations)
-samples_trimmed <- window(samples, start = 1, end = 50000)
-samples_trimmed <- window(samples, start = 1, end = 50000)
-
 # Posterior summary & diagnostics
-summary(samples_trimmed)
-plot(samples_trimmed)
-
-# Trace plots for each parameter
-traceplot(samples_trimmed[, "alpha"])
-traceplot(samples_trimmed[, "beta"])
-traceplot(samples_trimmed[, "theta"])
+summary(samples)
+plot(samples)
 
 # Density for each parameter
-plot(density(as.matrix(samples_trimmed[, "alpha"])), main="", xlab="", ylab="")
-plot(density(as.matrix(samples_trimmed[, "beta"])), main="", xlab="", ylab="")
-plot(density(as.matrix(samples_trimmed[, "theta"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples[, "alpha"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples[, "beta"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples[, "theta"])), main="", xlab="", ylab="")
 
 # Compute the average expected claim amount
 pareto_ev <- function(a, b) ifelse(a > 1, (a * b) / (a - 1), NA)
 
-posterior <- as.matrix(samples_trimmed)
+posterior <- as.matrix(samples)
 expected_values <- pareto_ev(posterior[, "alpha"], posterior[, "beta"])
 
 mean(expected_values, na.rm=TRUE)
@@ -144,7 +137,7 @@ lines(x_vals, pareto_cdf(x_vals, alpha, beta),
       col = "red", lwd = 2, lty = 2)
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Pareto(3.079,1.591) CDF"),
+       legend = c("Empirical CDF", "Pareto(3.079,1.592) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ===================================================
@@ -170,10 +163,72 @@ lines(x_vals, ppois(x_vals, lambda = theta),
       col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Poisson(3.4) CDF"),
+       legend = c("Empirical CDF", "Poisson(3.396) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # NEW
 # Diagnostics
-gelman.diag(samples_trimmed, autoburnin=FALSE)
-gelman.plot(samples_trimmed)
+
+# Trace plots for each parameter
+traceplot(samples[, "alpha"])
+traceplot(samples[, "beta"])
+traceplot(samples[, "theta"])
+
+gelman.diag(samples, autoburnin=FALSE)
+
+gelman.plot(samples[, "alpha"], xlab = "", ylab = "")
+title(xlab = "Iterations", ylab = "PSRF")
+gelman.plot(samples[, "beta"], xlab = "", ylab = "")
+title(xlab = "Iterations", ylab = "PSRF")
+gelman.plot(samples[, "theta"], xlab = "", ylab = "")
+title(xlab = "Iterations", ylab = "PSRF")
+
+# The average autocorrelation across chains
+autocorr.diag(samples[, "alpha"], lags = 1:10)
+autocorr.diag(samples[, "beta"], lags = 1:10)
+autocorr.diag(samples[, "theta"], lags = 1:10)
+
+autocorr.plot(samples[, "alpha"])
+autocorr.plot(samples[, "beta"])
+autocorr.plot(samples[, "theta"])
+
+# Rerunning chains
+jags_model_1 <- jags.model(
+  textConnection(model_code),
+  data = rytgaard1990_input,
+  inits = inits_list,
+  n.chains = 3,
+  n.adapt = 20000
+)
+
+# Sample from posterior
+samples_1 <- coda.samples(
+  jags_model_1,
+  variable.names = c("alpha", "beta", "theta"),
+  n.iter = 300000,
+  thin = 10
+)
+
+traceplot(samples_1[, "alpha"])
+traceplot(samples_1[, "beta"])
+traceplot(samples_1[, "theta"])
+
+gelman.diag(samples_1, autoburnin=FALSE)
+
+autocorr.diag(samples_1[, "alpha"], lags = 1:10)
+autocorr.diag(samples_1[, "beta"], lags = 1:10)
+autocorr.diag(samples_1[, "theta"], lags = 1:10)
+
+autocorr.plot(samples_1[, "alpha"])
+autocorr.plot(samples_1[, "beta"])
+autocorr.plot(samples_1[, "theta"])
+
+# Predictions
+m <- nrow(posterior)
+
+results <- numeric(15)
+for (n in 0:14) {
+  predictive_values <- (posterior[, "theta"]^n) * exp(-posterior[, "theta"]) / factorial(n)
+  results[n + 1] <- mean(predictive_values)
+}
+

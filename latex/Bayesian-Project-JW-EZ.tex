@@ -8,6 +8,7 @@
 \usepackage{siunitx} % Formatting numbers in a table
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{subcaption}
 \usepackage{threeparttable}
 \usepackage{hyperref}
@@ -196,10 +197,10 @@ The burn-in period was set to 20,000 iterations. The statistics computed over th
 }
 \hline
  & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
-\( \alpha \) & 3.079 & 0.771 & (1.756, 4.761) \\
-\( \beta \) & 1.591 & 0.037 & (1.495, 1.624) \\
-\( \theta \) & 3.400 & 0.826 & (1.978, 5.193) \\
-\( E[Y] \) & 2.503 & 0.724 & (2.022, 3.653) \\ \hline
+\( \alpha \) & 3.079 & 0.763 & (1.771, 4.741) \\
+\( \beta \) & 1.592 & 0.035 & (1.498, 1.624) \\
+\( \theta \) & 3.396 & 0.821 & (1.982, 5.192) \\
+\( E[Y] \) & 2.499 & 0.621 & (2.024, 3.621) \\ \hline
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
@@ -214,13 +215,13 @@ In addition, density plots were generated for each of the parameters and for \( 
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990_alpha_density.png}
+        \includegraphics[width=\linewidth]{rytgaard1990/density_alpha.png}
         \subcaption{\( \alpha \)}
     \end{minipage}%
     \hfill
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990_beta_density.png}
+        \includegraphics[width=\linewidth]{rytgaard1990/density_beta.png}
         \subcaption{\( \beta \)}
     \end{minipage} \\
     
@@ -228,13 +229,13 @@ In addition, density plots were generated for each of the parameters and for \( 
     
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990_theta_density.png}
+        \includegraphics[width=\linewidth]{rytgaard1990/density_theta.png}
         \subcaption{\( \theta \)}
     \end{minipage}%
     \hfill
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990_E_y_density.png}
+        \includegraphics[width=\linewidth]{rytgaard1990/density_E_y.png}
         \subcaption{\( E[y] \)}
     \end{minipage}
     
@@ -246,55 +247,55 @@ The posterior means of \( \alpha \) and \( \beta \) were used as parameters of t
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{empirical_vs_pareto.png}
+    \includegraphics[width=0.8\textwidth]{rytgaard1990/empirical_vs_pareto.png}
     \caption{Empirical vs.\ Fitted Pareto CDF}
     \label{fig:2}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{empirical_vs_poisson.png}
+    \includegraphics[width=0.8\textwidth]{rytgaard1990/empirical_vs_poisson.png}
     \caption{Empirical vs.\ Fitted Poisson CDF}
     \label{fig:3}
 \end{figure}
 
-The Pareto\((3.079,\,1.591)\) distribution provides a close fit to the empirical data. The Poisson\((3.4)\) distribution also fits the observed frequencies quite well.
+The Pareto\((3.079,\,1.592)\) distribution provides a close fit to the empirical data. The Poisson\((3.396)\) distribution also fits the observed frequencies quite well.
 
-Throughout all computations, a burn-in period of 20{,}000 iterations was applied, with only samples from iterations 20{,}001 to 50{,}000 retained for analysis. This approach follows the assumptions made by Dudley. However, it is essential to verify that the chains have indeed converged to a stationary distribution after discarding the initial samples. The first method of assessment involves visual inspection. Figure~\ref{fig:4} presents trace plots for all three parameters, showing the sampled values across iterations. These plots indicate good mixing, suggesting that the chains have converged.
+Throughout all computations, a burn-in period of 20{,}000 iterations was applied, with only samples from iterations 20{,}001 to 50{,}000 retained for analysis. This approach followed the assumptions made by Dudley. However, it is essential to verify that the chains have indeed converged to a stationary distribution after discarding the initial samples. The first method of assessment involves visual inspection. Figure~\ref{fig:4} presents trace plots for all three parameters, showing the sampled values across iterations. These plots indicate good mixing, suggesting that the chains have converged.
 
 \begin{figure}[!ht]
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{rytgaard1990_alpha_trace.png}
-        \caption{Trace plot for \( \alpha \)}
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_alpha.png}
+        \caption{\( \alpha \)}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{rytgaard1990_beta_trace.png}
-        \caption{Trace plot for \( \beta \)}
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_beta.png}
+        \caption{\( \beta \)}
     \end{subfigure}
 
     \vspace{1em}
 
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{rytgaard1990_theta_trace.png}
-        \caption{Trace plot for \( \theta \)}
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_theta.png}
+        \caption{\( \theta \)}
     \end{subfigure}
 
-    \caption{Trace Plots of Model Parameters}
+    \caption{Trace Plots}
     \label{fig:4}
 \end{figure}
 
-The convergence of the chains was also assessed using the Gelman--Rubin diagnostic. The diagnostic was applied to the post-burn-in iterations (20,001–50,000), and the results are summarized in Table~\ref{tab:psrf}.
+The convergence of the chains was also assessed using the Gelman--Rubin diagnostic. The diagnostic was applied to the post-burn-in iterations (20,001–50,000), and the results are summarized in Table~\ref{tab:4}.
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \caption{Potential Scale Reduction Factors (Gelman--Rubin Diagnostic)}
-\label{tab:psrf}
+\label{tab:4}
 \begin{tabular}{
   >{\raggedright\arraybackslash}p{\widthof{\textbf{Multivariate PSRF}}}
   *{2}{S[table-format=1.2]}
@@ -303,7 +304,7 @@ The convergence of the chains was also assessed using the Gelman--Rubin diagnost
 \textbf{Parameter} & \textbf{Point Estimate} & \textbf{Upper C.I.} \\
 \hline
 \( \alpha \) & 1.00 & 1.00 \\
-\( \beta \)  & 1.00 & 1.01 \\
+\( \beta \)  & 1.00 & 1.00 \\
 \( \theta \) & 1.00 & 1.00 \\
 \hline
 \textbf{Multivariate PSRF} & \multicolumn{2}{c}{1.00} \\
@@ -311,7 +312,223 @@ The convergence of the chains was also assessed using the Gelman--Rubin diagnost
 \end{tabular}
 \end{table}
 
-The results indicate that the chains have likely converged for all parameters, both individually and jointly.
+\noindent All univariate potential scale reduction factors (PSRFs) have point estimates and upper confidence bounds at 1.00. The multivariate PSRF is also equal to 1.00. These values suggest that the Markov chains have likely converged, both for individual parameters and jointly.
+
+Figure~\ref{fig:5} shows how the univariate PSRF point estimates evolve with increasing iterations. Throughout all iterations, all estimates remain below 1.1, which is commonly considered an acceptable threshold for convergence. This further confirms that the chains have likely reached a stable distribution.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/gelman_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/gelman_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/gelman_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+
+    \caption{PSRF Values (Gelman--Rubin Diagnostic)}
+    \label{fig:5}
+\end{figure}
+
+In addition, autocorrelation plots were generated for all three parameters (see Figure~\ref{fig:6}), and values at lags 1 through 10 are reported in Table~\ref{tab:5}. Several high autocorrelations were observed, particularly for \( \beta \), which motivated the use of a thinning interval of 10 iterations, as suggested by Dudley.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+
+    \caption{Autocorrelation Plots}
+    \label{fig:6}
+\end{figure}
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Autocorrelations at Lags 1--10}
+\label{tab:5}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\textbf{Lag}}}
+*{3}{S[table-format=-1.3]}
+}
+\hline
+\textbf{Lag} & \( \alpha \) & \( \beta \) & \( \theta \) \\
+\hline
+1  & 0.297 & 0.705 & 0.003 \\
+2  & 0.119 & 0.509 & 0.005 \\
+3  & 0.061 & 0.373 & -0.005 \\
+4  & 0.036 & 0.278 & -0.004 \\
+5  & 0.023 & 0.210 & 0.001 \\
+6  & 0.016 & 0.161 & -0.002 \\
+7  & 0.010 & 0.126 & -0.004 \\
+8  & 0.009 & 0.102 & -0.004 \\
+9  & 0.002 & 0.081 & -0.001 \\
+10 & 0.007 & 0.065 & 0.004 \\
+\hline
+\end{tabular}
+\end{table}
+
+Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} presents the corresponding trace plots, and Figure~\ref{fig:8} shows the updated autocorrelation plots. The trace plots indicate that the chains have mixed well, and all autocorrelation values at lags 2, 3, and beyond have become negligible.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_after_thinning_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_after_thinning_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/trace_after_thinning_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+
+    \caption{Trace Plots After Thinning}
+    \label{fig:7}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_after_thinning_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_after_thinning_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{rytgaard1990/acf_after_thinning_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+
+    \caption{Autocorrelation Plots After Thinning}
+    \label{fig:8}
+\end{figure}
+
+Since the ultimate goal of the analysis was to predict the values of \( S_t \), the posterior predictive distribution was employed. For a variable \( z \), this distribution is defined as:
+
+\[
+\pi(z \mid \mathbf{y}) = \int_{\Theta} f(z \mid \mathbf{\phi}) \, \pi(\mathbf{\phi} \mid \mathbf{y}) \, d\mathbf{\phi}
+\]
+
+\noindent where \( \mathbf{\phi} = (\alpha, \beta, \theta) \), \( \pi(\mathbf{\phi} \mid \mathbf{y}) \) is the posterior distribution of \( \mathbf{\phi} \), and \( f(z \mid \mathbf{\phi}) \) is the likelihood of \( z \) given \( \mathbf{\phi} \). This approach accounts for the uncertainty in \( \mathbf{\phi} \) by integrating over its possible values, weighted by their posterior probabilities.
+
+Let \( \mathbf{n} \) denote the observed data and \( N_f \) represent a future observation. Then the posterior predictive distribution for \( N_f \) is:
+
+\[
+\begin{aligned}
+p (N_f = n \mid \mathbf{n}) 
+&= \int_0^{\infty} p(N_f = n \mid \theta) \pi(\theta \mid \mathbf{n}) \, d\theta \\
+&= \mathbb{E}_{\theta \mid \mathbf{n}}\left[ p(N_f = n \mid \theta) \right] \\
+&= \mathbb{E}_{\theta \mid \mathbf{n}}\left[ \frac{\theta^n e^{-\theta}}{n!} \right]
+\end{aligned}
+\]
+
+Since the integral could not be solved analytically, it was approximated using samples from the posterior distribution obtained via MCMC. Specifically, the expectation was approximated as:
+
+\[
+p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i)})^n e^{-\theta^{(i)}}}{n!}
+\]
+
+where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
+
+Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation. The posterior predictive cumulative distribution function (CDF) of \( Y_f \) is given by:
+
+\[
+\begin{aligned}
+p (Y_f \leq y \mid \mathbf{y}) 
+&= \int_{\mathbf{u}} p(Y_f \leq y \mid \mathbf{u}) \, \pi(\mathbf{u} \mid \mathbf{y}) \, d\mathbf{u} \\
+&= \mathbb{E}_{\mathbf{u} \mid \mathbf{y}}\left[ p(Y_f \leq y \mid \alpha, \beta) \right]
+\end{aligned}
+\]
+
+Again,
+
+\[
+p (Y_f \leq y \mid \mathbf{y}) \approx \frac{1}{m} \sum_{i=1}^{m} \left( 1 - \left( \frac{\beta^{(i)}}{y} \right)^{\alpha^{(i)}} \right)
+\]
+
+\noindent where \( \alpha^{(i)} \) and \( \beta^{(i)} \) denote the \( i \)-th samples from the MCMC chain, and \( m \) is the number of post-burn-in, thinned iterations.
+
+Table~\ref{tab:6} contains the estimated probabilities of \( N_f = n \) for \( n = 0, \dots, 14 \).
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Estimates of \( p (N_f = n \mid \mathbf{n}) \)}
+\label{tab:6}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\textbf{n}}}
+S[table-format=1.4]
+}
+\hline
+\( n \) & Probability \\ 
+\hline
+0  & 0.0452 \\ 
+1  & 0.1279 \\ 
+2  & 0.1918 \\ 
+3  & 0.2023 \\ 
+4  & 0.1685 \\ 
+5  & 0.1178 \\ 
+6  & 0.0719 \\ 
+7  & 0.0393 \\ 
+8  & 0.0196 \\ 
+9  & 0.0091 \\ 
+10 & 0.0039 \\ 
+11 & 0.0016 \\ 
+12 & 0.0006 \\ 
+13 & 0.0002 \\ 
+14 & 0.0001 \\ 
+\hline
+\end{tabular}
+\end{table}
 
 
 
