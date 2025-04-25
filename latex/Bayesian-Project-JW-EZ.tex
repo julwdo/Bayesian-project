@@ -472,7 +472,7 @@ p (N_f = n \mid \mathbf{n})
 
 Since the integral could not be solved analytically, it was approximated using samples from the posterior distribution obtained via MCMC. Specifically, the expectation was approximated as:
 
-\begin{equation}
+\begin{equation}\label{eq:1}
 p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i)})^n e^{-\theta^{(i)}}}{n!}
 \end{equation}
 
@@ -490,9 +490,9 @@ p (Y_f \leq y \mid \mathbf{y})
 
 Again,
 
-\[
+\begin{equation}\label{eq:2}
 p (Y_f \leq y \mid \mathbf{y}) \approx \frac{1}{m} \sum_{i=1}^{m} \left( 1 - \left( \frac{\beta^{(i)}}{y} \right)^{\alpha^{(i)}} \right)
-\]
+\end{equation}
 
 \noindent where \( \alpha^{(i)} \) and \( \beta^{(i)} \) denote the \( i \)-th samples from the MCMC chain, and \( m \) is the number of post-burn-in, thinned iterations.
 
@@ -546,9 +546,5 @@ was applied. For each \( i \), the mean of the resulting values was computed. Th
 \caption{Estimated Predictive PDF of \( Y_f \)}
 \label{fig:9}
 \end{figure}
-
-Finally, the predictive density of \( S_f \) was estimated as follows:
-
-1. A future observation n was 
 
 \end{document}
