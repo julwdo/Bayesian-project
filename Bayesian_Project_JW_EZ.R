@@ -166,34 +166,31 @@ legend("bottomright",
        legend = c("Empirical CDF", "Poisson(3.396) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
-# NEW
-# Diagnostics
+# ===================================================
+# DIAGNOSTICS: Trace Plots, Gelman-Rubin, and Autocorrelation
+# ===================================================
 
 # Trace plots for each parameter
-traceplot(samples[, "alpha"])
-traceplot(samples[, "beta"])
-traceplot(samples[, "theta"])
+traceplot(samples[, c("alpha", "beta", "theta")])
 
-gelman.diag(samples, autoburnin=FALSE)
+# Gelman-Rubin diagnostic
+gelman.diag(samples, autoburnin = FALSE)
 
-gelman.plot(samples[, "alpha"], xlab = "", ylab = "")
-title(xlab = "Iterations", ylab = "PSRF")
-gelman.plot(samples[, "beta"], xlab = "", ylab = "")
-title(xlab = "Iterations", ylab = "PSRF")
-gelman.plot(samples[, "theta"], xlab = "", ylab = "")
-title(xlab = "Iterations", ylab = "PSRF")
+# Gelman-Rubin plots
+params <- c("alpha", "beta", "theta")
+for (param in params) {
+  gelman.plot(samples[, param], xlab = "", ylab = "")
+  title(xlab = "Iterations", ylab = "PSRF")
+}
 
-# The average autocorrelation across chains
-autocorr.diag(samples[, "alpha"], lags = 1:10)
-autocorr.diag(samples[, "beta"], lags = 1:10)
-autocorr.diag(samples[, "theta"], lags = 1:10)
+# Autocorrelation diagnostics
+for (param in params) {
+  autocorr.diag(samples[, param], lags = 1:10)
+  autocorr.plot(samples[, param])
+}
 
-autocorr.plot(samples[, "alpha"])
-autocorr.plot(samples[, "beta"])
-autocorr.plot(samples[, "theta"])
-
-# Rerunning chains
-jags_model_1 <- jags.model(
+# Rerunning chains with updated settings
+jags_model_rerun <- jags.model(
   textConnection(model_code),
   data = rytgaard1990_input,
   inits = inits_list,
@@ -202,33 +199,45 @@ jags_model_1 <- jags.model(
 )
 
 # Sample from posterior
-samples_1 <- coda.samples(
-  jags_model_1,
+samples_rerun <- coda.samples(
+  jags_model_rerun,
   variable.names = c("alpha", "beta", "theta"),
   n.iter = 300000,
   thin = 10
 )
 
-traceplot(samples_1[, "alpha"])
-traceplot(samples_1[, "beta"])
-traceplot(samples_1[, "theta"])
+# Trace plots for rerun samples
+traceplot(samples_rerun[, c("alpha", "beta", "theta")])
 
-gelman.diag(samples_1, autoburnin=FALSE)
+# Gelman-Rubin diagnostic for rerun samples
+gelman.diag(samples_rerun, autoburnin = FALSE)
 
-autocorr.diag(samples_1[, "alpha"], lags = 1:10)
-autocorr.diag(samples_1[, "beta"], lags = 1:10)
-autocorr.diag(samples_1[, "theta"], lags = 1:10)
-
-autocorr.plot(samples_1[, "alpha"])
-autocorr.plot(samples_1[, "beta"])
-autocorr.plot(samples_1[, "theta"])
-
-# Predictions
-m <- nrow(posterior)
-
-results <- numeric(15)
-for (n in 0:14) {
-  predictive_values <- (posterior[, "theta"]^n) * exp(-posterior[, "theta"]) / factorial(n)
-  results[n + 1] <- mean(predictive_values)
+# Autocorrelation diagnostics for rerun samples
+for (param in params) {
+  autocorr.diag(samples_rerun[, param], lags = 1:10)
+  autocorr.plot(samples_rerun[, param])
 }
 
+# ===================================================
+# PREDICTIONS: Poisson and Pareto Distribution
+# ===================================================
+
+# Poisson predictions (n values)
+poisson_results <- numeric(15)
+for (n_value in 0:14) {
+  poisson_predictive_values <- (posterior[, "theta"]^n_value) * exp(-posterior[, "theta"]) / factorial(n_value)
+  poisson_results[n_value + 1] <- mean(poisson_predictive_values)
+}
+
+# Pareto predictions (y values)
+pareto_results <- numeric(1000)
+uniform_vals <- runif(1000)
+
+for (i in seq_along(uniform_vals)) {
+  U <- uniform_vals[i]
+  pareto_samples <- posterior[, "beta"] / (1 - U)^(1 / posterior[, "alpha"])
+  pareto_results[i] <- mean(pareto_samples)
+}
+
+# Plot Pareto predictive distribution
+plot(density(pareto_results, na.rm=TRUE), main="", xlab="y", ylab="Density")

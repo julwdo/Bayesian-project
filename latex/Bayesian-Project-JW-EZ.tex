@@ -472,9 +472,9 @@ p (N_f = n \mid \mathbf{n})
 
 Since the integral could not be solved analytically, it was approximated using samples from the posterior distribution obtained via MCMC. Specifically, the expectation was approximated as:
 
-\[
+\begin{equation}
 p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i)})^n e^{-\theta^{(i)}}}{n!}
-\]
+\end{equation}
 
 where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
 
@@ -530,6 +530,25 @@ S[table-format=1.4]
 \end{tabular}
 \end{table}
 
+These results are consistent with those obtained by Dudley. As \( Y_f \) is a continuous variable, the probability density function (PDF) was estimated rather than discrete probabilities. The estimation employed the inverse cumulative distribution function (CDF) method.
 
+A total of 1000 values \( U \sim \mathrm{Uniform}(0, 1) \) were generated. For each value, the transformation
+
+\[
+y^{(i)} = \frac{\beta^{(i)}}{(1 - U)^{1/\alpha^{(i)}}}
+\]
+
+was applied. For each \( i \), the mean of the resulting values was computed. The resulting values were then used to approximate the PDF of \( Y_f \) via kernel density estimation (KDE). The estimated predictive density is illustrated in Figure~\ref{fig:9}.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_Y_f.png}
+\caption{Estimated Predictive PDF of \( Y_f \)}
+\label{fig:9}
+\end{figure}
+
+Finally, the predictive density of \( S_f \) was estimated as follows:
+
+1. A future observation n was 
 
 \end{document}

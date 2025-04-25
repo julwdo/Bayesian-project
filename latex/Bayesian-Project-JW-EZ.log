@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  24 APR 2025 21:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  25 APR 2025 10:22
 entering extended mode
 **./Bayesian-Project-JW-EZ.tex
 (Bayesian-Project-JW-EZ.tex
@@ -840,16 +840,22 @@ Overfull \hbox (3.05563pt too wide) in paragraph at lines 528--528
 []|\OT1/cmr/m/n/8 14|  
  []
 
-[8] (Bayesian-Project-JW-EZ.aux)
+<rytgaard1990/predictive_Y_f.png, id=151, 545.66652pt x 301.40512pt>
+File: rytgaard1990/predictive_Y_f.png Graphic file (type png)
+<use rytgaard1990/predictive_Y_f.png>
+Package pdftex.def Info: rytgaard1990/predictive_Y_f.png  used on input line 54
+5.
+(pdftex.def)             Requested size: 386.95894pt x 213.74158pt.
+[8 <./rytgaard1990/predictive_Y_f.png>] (Bayesian-Project-JW-EZ.aux)
 Package rerunfilecheck Info: File `Bayesian-Project-JW-EZ.out' has not changed.
 
 (rerunfilecheck)             Checksum: 7644DBF9B56DD4705FD256C0C93CF87E;138.
  ) 
 Here is how much of TeX's memory you used:
- 16863 strings out of 478869
- 307623 string characters out of 2860379
- 617485 words of memory out of 3000000
- 34482 multiletter control sequences out of 15000+600000
+ 16873 strings out of 478869
+ 307894 string characters out of 2860379
+ 617552 words of memory out of 3000000
+ 34489 multiletter control sequences out of 15000+600000
  414852 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  73i,13n,81p,652b,785s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -876,9 +882,9 @@ blic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts
 /cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pf
 b><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/P
 rogram Files/MiKTeX/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Bayesian-Project-JW-EZ.pdf (9 pages, 690128 bytes).
+Output written on Bayesian-Project-JW-EZ.pdf (9 pages, 696825 bytes).
 PDF statistics:
- 270 PDF objects out of 1000 (max. 8388607)
- 31 named destinations out of 1000 (max. 500000)
- 127 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 275 PDF objects out of 1000 (max. 8388607)
+ 33 named destinations out of 1000 (max. 500000)
+ 132 words of extra memory for PDF output out of 10000 (max. 10000000)
 
