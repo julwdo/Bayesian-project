@@ -69,9 +69,76 @@
 
 \section{Introduction}
 
-\section{}
+\section{Theoretical Considerations}
+The goal is to apply Bayesian statistics to our models. The Bayesian approach differs from the classical frequentist one, where, usually, the sample size is large and the parameter \( \theta \) is assumed to be fixed.
 
-The first objective of this project was to replicate the analysis conducted by Dudley. The dataset used comprises insurance claim amounts exceeding 1.5 million over a period of five years from an automobile insurance portfolio. The data, originally presented in Rytgaard (1990), is shown in Table 1.
+In contrast, according to the Bayesian methodology, \( \theta \) is treated as a random variable with prior distribution \( \pi(\theta) \). The information available about the possible values of \( \theta \), prior to observing the data \( \vec y \), is summarized by \( \pi(\theta) \).
+
+Both approaches to statistics have their own strengths and weaknesses, and, in practice, they often complement each other. A common critique of the Bayesian method is the subjectivity involved in choosing a prior distribution. There are various different methods for selecting the right priors. However, as the sample size increases, the influence of the prior diminishes, and the outcomes of the two methods tend to converge. 
+Although the classical approach is often computationally easier, it can sometimes produce inconsistent results, especially in the context of hypothesis testing. In contrast, the Bayesian method offers coherent and flexible framework by incorporating prior knowledge and providing full posterior distributions. Even though the choice of the prior may arise potential inconsistencies, Bayesian inference tends to be more advantageous in situations with limited or complex data.
+However, in addition to the subjectivity of the priors, Bayesian methods can be computationally intense and complex, moreover, when dealing with complex models or non-conjugate priors. 
+
+Through the use of Bayes' Theorem, the ultimate aim is to find the posterior distribution of our parameter \( \theta \):
+
+\[
+\pi(\theta | y) = \frac{f(\vec y | \theta) \pi(\theta)}{\int f(\vec y | \theta) \pi(\theta) \, d\theta},
+\]
+where \(f(\vec y|\vec \theta)\) is the likelihood function. Given that the denominator is constant with respect to \(\theta\) it is possible to simplify the expression to :
+\[
+\pi(\theta|\vec y) \propto \pi(\theta)f(\vec y | \theta).
+\]
+
+Usually, to simplify computations, it is common to use conjugate distributions. A family \( \mathcal{F} \) is said to be conjugate to the likelihood if, for every prior that belongs to \( \mathcal{F} \), the posterior distribution of \( \theta \) also belongs to the same family.
+
+When the posterior distributions are analytically intractable, the use of \textit{Markov Chain Monte Carlo} (MCMC) methods becomes essential. The main goal of MCMC is to draw samples from a probability distribution from which direct sampling is difficult.
+
+Among the different algorithms available for implementing MCMC, two are considered here: the \textit{Gibbs sampler} and the \textit{Metropolis-Hastings algorithm}.
+
+The first algorithm mentioned aims to find the full conditional posterior distributions starting from the joint or marginal posterior distributions. It is particularly efficient when these conditional distributions have a closed form. Hence, conjugate priors are often preferred. The algorithm proceeds through a clear and structured series of steps:
+
+\begin{itemize}
+  \item Fix the initial value of the parameter \( \vec\theta^{(0)} = (\theta^{(0)}_1,\ldots,\theta^{(0)}_p) \) and initialize the iteration counter as \( m = 1 \);
+  \item Obtain \( \theta^{(0)} \) such that \( \pi(\theta^{(m)}1|\theta^{(m-1)}_2,\ldots,\theta^{(m-1)}_p, \vec y) \propto f(\vec y|\vec\theta^{(m-1)})\pi(\vec\theta^{(m-1)} \), now draw \(\theta^{(m)}_2 \) from the full conditional posterior distribution \( \pi(\theta^{(m)}_2|\theta^{(m)}_1, \theta^{(m-1)}_3\ldots,\theta^{(m-1)}_p, \vec y) \), and so on until \(\pi(\theta^{(m)}_p|\theta^{(m)}_1,\ldots,\theta^{(m)}{p-1}, \vec y)\);
+  \item Increment the counter from \( m \) to \( m + 1 \) and return to the first step.
+\end{itemize}
+
+The Metropolis-Hastings algorithm, on the other hand, is used when the full conditional posterior distribution is not in closed form. Suppose a realization from the full conditional distribution is desired: a proposal distribution with density \( q(\theta^* | \theta) \) is used to generate candidate values \( \theta^* \) from the current state \( \theta \). This algorithm also follows a clear and structured procedure:
+
+\begin{itemize}
+  \item Initialize the chain \( \theta_0 \) and the iteration counter;
+  \item Generate a candidate value \( \theta^* \) from a proposal distribution \( q(\theta^* | \theta) \);
+  \item Evaluate the acceptance probability \( p(\theta^, \theta^{(j-1)}) \) of the proposed draw \( p(\theta^,\theta^{(j-1)})=min(1,\frac{\pi(\theta^|\vec y)}{\pi(\theta^{(j-1)}|\vec y)}\frac{q(\theta^{(j-1)}|\theta^)}{p(\theta^*|\theta^{(j-1)})}\);
+  \item Draw a uniform value \( U \sim U(0,1) \), set \( \theta^{(j)} = \theta^* \) if \( U < p(\theta^*, \theta^{(j-1)}) \), otherwise set \( \theta^{(j)} = \theta^{(j-1)} \);
+  \item Update the iteration counter and return to the first step.
+\end{itemize}
+
+After running the chain, the successive samples are likely to be correlated. Therefore, to obtain a random sample, a thinning process is applied, which consists of keeping one iteration and discarding the following \( m \).
+
+Finally, the chains must run long enough to reach equilibrium, a phase known as \textit{burn-in}.
+
+There are several methods to determine whether a chain is converging adequately. 
+Two general approaches exist: one involves running a single chain for a larger number of iterations, while the other involves running multiple chains for a shorter period of time.
+Various diagnostics to check if the chain actually reached convergence have been developed, including visual inspection, the Gelman-Rubin test and the Geweke diagnostic.
+
+Visually inspection consist in assessing how well the chain mixes or moves through the parameter space. If the chain moves slowly then the convergence will also be slow. It's important to inspect all the model parameters, since some may converge while others do not. The traceplot, which shows sampled parameter values over iterations, helps detect poor mixing. Thanks to this visualization it is possible to see if a chain get stuck in a certain area of the parameter space, which is the result of a bad mixing.  Another useful tool is the running mean plot, which plots the cumulative average of the samples across iterations and helps evaluate stability over time. 
+
+Looking at the autocorrelation function (A.C.F) can help assessing the convergence. It represents the correlation among the draws of the Markov Chain. High autocorrelation implies strong dependence and slow mixing. In such cases, thinning can help reducing the correlation.
+
+The Gelman-Rublin Test, which works with multiple chains, follows predetermined steps:
+\begin{itemize}
+    \item Run the m different chains of length 2N, where N is equal to the number of iterations of the MCMC algorithm.
+    \item Discard the number of the burn-in iterations (the first N draws?) 
+    \item Compute the within-chain variance and the between-chain variance, which are, respectively, \(W=\frac{1}{m}\sum^m_{j=1}(s^2_j)\) and \(B=\frac{N}{m-1}\sum^m_{j=1}(\overline{\theta_j}-\overline{\overline{\theta}})^2\), where \(s^2_j=\frac{1}{N-1}\sum^N_{i=1}(\theta_{ij}-\overline{\theta_j})^2, \overline{\theta_j}=\frac{1}{N}\sum^N_{i=1}(\theta_{ij}\)) and \(\overline{\overline{\theta}}=\frac{1}{N}\sum^m_{j=1}\overline{\theta_j}\)
+    \item Compute the estimated variance of the parameter as the weighted average between the sum of between-variance anche within-variance \(\hat{var}(\theta)=(1-\frac{1}{N})W+\frac{1}{N}B\)
+    \item Calculate the Potential Scale Reduction factor \(\hat{R}=\sqrt{\frac{\hat{var}(\theta)}{W}}\).
+\end{itemize}
+When \(\hat{R}\) is larger than 1.2 it is better to run the chain for a larger number of iterations in order to improve the convergence of the algorithm. 
+
+Differently from the Gelman-Rubin, the Geweke Diagnostic test works with a single chain. It takes two non-overlapping parts of the chain of each parameter. The two parts, by default, are the first 0.1 and the last 0.5 of the Markov chain. The Geweke test compares the means of both parts, using a difference of means test to see if the two part of the chain care from the same distributions. The test statistic is a \(N(0,1)\). If the absolute value of the statistic is less than 1.96 then there is no problem with the chain convergence.
+
+\section{Replication of Dudley 2006}
+
+The first objective of this project was to replicate the analysis conducted by \textit{dudley2006bayesian}. The dataset used comprises insurance claim amounts exceeding 1.5 million over a period of five years from an automobile insurance portfolio. The data, originally presented in Rytgaard (1990), is shown in Table 1.
 
 \begin{table}[!ht]
 \centering
@@ -547,4 +614,40 @@ was applied. For each \( i \), the mean of the resulting values was computed. Th
 \label{fig:9}
 \end{figure}
 
+The inverse CDF method was also used to estimate the predictive distribution of \( S_f \), representing a future observation of \( S_t \). The procedure was as follows: 1{,}000 values were drawn from the posterior predictive distribution of \( N_f \). For each uniformly drawn \( U \), a Poisson sample was generated using each posterior value of \( \theta^{(i)} \), and the average of these samples was computed and rounded to obtain \( N_f \). Then, for each simulated value of \( N_f \), that many samples were drawn from the predictive distribution of \( Y_f \) (as described earlier), and the resulting values were summed to obtain a draw of \( S_f \).
+
+Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with the estimated density and three fitted distributions using moment matching. As observed by Dudley, the Gamma distribution provides the best fit. The fitted Gamma distribution has parameters \( \alpha = 2.435 \) and \( \beta = 0.292 \).
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_S_f.png}
+\caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
+\label{fig:10}
+\end{figure}
+
+Table~\ref{tab:7} shows various percentiles of the simulated \( S_f \) values. The distribution exhibits a suitably long tail, which aligns with expectations for a heavy-tailed claim size distribution. This indicates that the simulation method used was effective in generating large \( Y \) values, thereby capturing the tail behavior of the predictive distribution of \( S \) more accurately. Proper representation of the tail is important, as most aggregate claims are moderate, but extreme values can occasionally occur.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Percentiles of Simulated \( S_f \) Values}
+\label{tab:7}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{99th Percentile}}
+S[table-format=2.3]
+}
+\hline
+\textbf{Percentile} & \textbf{Value} \\ 
+\hline
+Median & 7.630 \\ 
+90th Percentile & 15.170 \\
+95th Percentile & 18.103 \\
+99th Percentile & 26.410 \\
+Maximum & 35.851 \\
+\hline
+\end{tabular}
+\end{table}
+
+\printbibliography{references}
 \end{document}

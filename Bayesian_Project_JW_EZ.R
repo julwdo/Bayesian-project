@@ -223,21 +223,117 @@ for (param in params) {
 # ===================================================
 
 # Poisson predictions (n values)
-poisson_results <- numeric(15)
+poisson_predictions <- numeric(15)
 for (n_value in 0:14) {
-  poisson_predictive_values <- (posterior[, "theta"]^n_value) * exp(-posterior[, "theta"]) / factorial(n_value)
-  poisson_results[n_value + 1] <- mean(poisson_predictive_values)
+  poisson_probabilities <- (posterior[, "theta"]^n_value) * exp(-posterior[, "theta"]) / factorial(n_value)
+  poisson_predictions[n_value + 1] <- mean(poisson_probabilities)
 }
 
 # Pareto predictions (y values)
-pareto_results <- numeric(1000)
-uniform_vals <- runif(1000)
+pareto_predictions <- numeric(1000)
+uniform_samples <- runif(1000)
 
-for (i in seq_along(uniform_vals)) {
-  U <- uniform_vals[i]
+for (i in seq_along(uniform_samples)) {
+  U <- uniform_samples[i]
   pareto_samples <- posterior[, "beta"] / (1 - U)^(1 / posterior[, "alpha"])
-  pareto_results[i] <- mean(pareto_samples)
+  pareto_predictions[i] <- mean(pareto_samples)
 }
 
 # Plot Pareto predictive distribution
-plot(density(pareto_results, na.rm=TRUE), main="", xlab="y", ylab="Density")
+plot(density(pareto_predictions, na.rm=TRUE), main="", xlab="y", ylab="Density")
+
+# ===================================================
+# PREDICTIONS: Poisson-Pareto Distribution
+# ===================================================
+
+set.seed(123)
+
+# Function to simulate Poisson samples
+pois <- function(lambda, U) {
+  p <- exp(-lambda)
+  F <- p
+  n <- 0
+  
+  while (U > F) {
+    n <- n + 1
+    p <- p * lambda / n
+    F <- F + p
+  }
+  return(n)
+}
+
+# Simulation parameters
+n_sim <- 1000
+theta_values <- posterior[, "theta"]
+alpha_values <- posterior[, "alpha"]
+beta_values <- posterior[, "beta"]
+
+# Simulate Poisson samples
+uniform_poisson <- runif(n_sim)
+poisson_results <- numeric(n_sim)
+
+for (i in seq_along(uniform_poisson)) {
+  U <- uniform_poisson[i]
+  poisson_samples <- numeric(length(theta_values))
+  
+  for (j in seq_along(theta_values)) {
+    poisson_samples[j] <- pois(theta_values[j], U)
+  }
+  
+  poisson_results[i] <- round(mean(poisson_samples))
+}
+
+# Simulate aggregate claims
+final_results <- numeric(length(poisson_results))
+
+for (i in seq_along(poisson_results)) {
+  n <- poisson_results[i]
+  pareto_samples <- numeric(n)
+  
+  uniform_pareto <- runif(n)
+  
+  for (j in seq_along(uniform_pareto)) {
+    U <- uniform_pareto[j]
+    pareto_samples[j] <- mean(beta_values / (1 - U)^(1 / alpha_values))
+  }
+  
+  final_results[i] <- sum(pareto_samples)
+}
+
+# Fit candidate distributions via moment matching
+mean_S <- mean(final_results)
+var_S <- var(final_results)
+
+gamma_shape <- mean_S^2 / var_S
+gamma_rate  <- mean_S / var_S
+
+sigma2_ln <- log(1 + var_S / mean_S^2)
+mu_ln     <- log(mean_S) - sigma2_ln / 2
+
+normal_mean <- mean_S
+normal_sd   <- sqrt(var_S)
+
+# Define support for density plots
+x_vals <- seq(min(final_results), max(final_results), length.out = 1000)
+
+gamma_densities   <- dgamma(x_vals, shape = gamma_shape, rate = gamma_rate)
+lognorm_densities <- dlnorm(x_vals, meanlog = mu_ln, sdlog = sqrt(sigma2_ln))
+normal_densities  <- dnorm(x_vals, mean = normal_mean, sd = normal_sd)
+
+hist_density <- hist(final_results, plot = FALSE, probability = TRUE)$density
+max_y <- max(gamma_densities, lognorm_densities, normal_densities, hist_density)
+
+# Plotting
+hist(final_results, probability = TRUE, breaks = 80,
+     col = "gray90", border = "white", main = "",
+     xlab = "s", ylab = "Density", ylim = c(0, max_y * 1.05))
+curve(dgamma(x, shape = gamma_shape, rate = gamma_rate), col = "blue", lwd = 2, add = TRUE)
+curve(dlnorm(x, meanlog = mu_ln, sdlog = sqrt(sigma2_ln)), col = "green", lwd = 2, add = TRUE)
+curve(dnorm(x, mean = normal_mean, sd = normal_sd), col = "red", lwd = 2, add = TRUE)
+legend("topright", legend = c("Gamma", "Lognormal", "Normal"),
+       col = c("blue", "green", "red"), lwd = 2)
+
+# Summary statistics
+median(final_results)
+quantile(final_results, probs = c(0.90, 0.95, 0.99))
+max(final_results)
