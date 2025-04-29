@@ -69,76 +69,21 @@
 
 \section{Introduction}
 
-\section{Theoretical Considerations}
-The goal is to apply Bayesian statistics to our models. The Bayesian approach differs from the classical frequentist one, where, usually, the sample size is large and the parameter \( \theta \) is assumed to be fixed.
+\section{Theoretical Background}
 
-In contrast, according to the Bayesian methodology, \( \theta \) is treated as a random variable with prior distribution \( \pi(\theta) \). The information available about the possible values of \( \theta \), prior to observing the data \( \vec y \), is summarized by \( \pi(\theta) \).
+In insurance modeling, accurately estimating the aggregate value of claims is essential for premium calculation, risk assessment, and maintaining solvency of insurance providers. The aggregate claim value refers to the total amount paid out for claims over a specified period. This quantity is typically modeled using a compound distribution, which separately describes the frequency and severity of claims. The frequency component, representing the number of claims within the period, is often modeled using a Poisson distribution. The severity component, which captures the magnitude of individual claims, is commonly modeled using heavy-tailed distributions such as the Pareto or Gamma distributions.
 
-Both approaches to statistics have their own strengths and weaknesses, and, in practice, they often complement each other. A common critique of the Bayesian method is the subjectivity involved in choosing a prior distribution. There are various different methods for selecting the right priors. However, as the sample size increases, the influence of the prior diminishes, and the outcomes of the two methods tend to converge. 
-Although the classical approach is often computationally easier, it can sometimes produce inconsistent results, especially in the context of hypothesis testing. In contrast, the Bayesian method offers coherent and flexible framework by incorporating prior knowledge and providing full posterior distributions. Even though the choice of the prior may arise potential inconsistencies, Bayesian inference tends to be more advantageous in situations with limited or complex data.
-However, in addition to the subjectivity of the priors, Bayesian methods can be computationally intense and complex, moreover, when dealing with complex models or non-conjugate priors. 
+The traditional framework for modeling such processes is grounded in frequentist statistics. In this approach, the parameters of the underlying distributions—such as the Poisson rate parameter \( \lambda \), or the shape and scale pa- rameters \( \alpha \) and \( \beta \) of the Pareto distribution—are considered fixed but unknown quantities. These parameters~are typically estimated from observed data using techniques such as maximum likelihood estimation (MLE).
 
-Through the use of Bayes' Theorem, the ultimate aim is to find the posterior distribution of our parameter \( \theta \):
+In contrast, the Bayesian framework treats these parameters as random variables characterized by prior~distributions. This allows for the incorporation of prior knowledge or beliefs about the parameters before any~data is observed. The prior distribution is updated using Bayes' theorem upon observing data, resulting in a posterior distribution that reflects the updated beliefs. This posterior distribution forms the basis for inference and pre- diction.
 
-\[
-\pi(\theta | y) = \frac{f(\vec y | \theta) \pi(\theta)}{\int f(\vec y | \theta) \pi(\theta) \, d\theta},
-\]
-where \(f(\vec y|\vec \theta)\) is the likelihood function. Given that the denominator is constant with respect to \(\theta\) it is possible to simplify the expression to :
-\[
-\pi(\theta|\vec y) \propto \pi(\theta)f(\vec y | \theta).
-\]
+Bayesian methods offer significant advantages in insurance modeling. They are well-suited for incorporating expert knowledge or external information, handling limited or noisy datasets, and accommodating complex hier- archical structures commonly found in insurance data. Moreover, Bayesian inference provides a coherent frame- work for uncertainty quantification by yielding full posterior distributions over model parameters.
 
-Usually, to simplify computations, it is common to use conjugate distributions. A family \( \mathcal{F} \) is said to be conjugate to the likelihood if, for every prior that belongs to \( \mathcal{F} \), the posterior distribution of \( \theta \) also belongs to the same family.
+Nevertheless, Bayesian methods also come with certain limitations. The choice of prior distribution can~introduce subjectivity, and computational complexity can be significant, especially in models with high dimensionality or non-conjugate priors. Despite these challenges, the flexibility and robustness of the Bayesian framework make it a valuable approach for modeling aggregate insurance claims.
 
-When the posterior distributions are analytically intractable, the use of \textit{Markov Chain Monte Carlo} (MCMC) methods becomes essential. The main goal of MCMC is to draw samples from a probability distribution from which direct sampling is difficult.
+\section{Replication of \citet{dudley2006bayesian}}
 
-Among the different algorithms available for implementing MCMC, two are considered here: the \textit{Gibbs sampler} and the \textit{Metropolis-Hastings algorithm}.
-
-The first algorithm mentioned aims to find the full conditional posterior distributions starting from the joint or marginal posterior distributions. It is particularly efficient when these conditional distributions have a closed form. Hence, conjugate priors are often preferred. The algorithm proceeds through a clear and structured series of steps:
-
-\begin{itemize}
-  \item Fix the initial value of the parameter \( \vec\theta^{(0)} = (\theta^{(0)}_1,\ldots,\theta^{(0)}_p) \) and initialize the iteration counter as \( m = 1 \);
-  \item Obtain \( \theta^{(0)} \) such that \( \pi(\theta^{(m)}1|\theta^{(m-1)}_2,\ldots,\theta^{(m-1)}_p, \vec y) \propto f(\vec y|\vec\theta^{(m-1)})\pi(\vec\theta^{(m-1)} \), now draw \(\theta^{(m)}_2 \) from the full conditional posterior distribution \( \pi(\theta^{(m)}_2|\theta^{(m)}_1, \theta^{(m-1)}_3\ldots,\theta^{(m-1)}_p, \vec y) \), and so on until \(\pi(\theta^{(m)}_p|\theta^{(m)}_1,\ldots,\theta^{(m)}{p-1}, \vec y)\);
-  \item Increment the counter from \( m \) to \( m + 1 \) and return to the first step.
-\end{itemize}
-
-The Metropolis-Hastings algorithm, on the other hand, is used when the full conditional posterior distribution is not in closed form. Suppose a realization from the full conditional distribution is desired: a proposal distribution with density \( q(\theta^* | \theta) \) is used to generate candidate values \( \theta^* \) from the current state \( \theta \). This algorithm also follows a clear and structured procedure:
-
-\begin{itemize}
-  \item Initialize the chain \( \theta_0 \) and the iteration counter;
-  \item Generate a candidate value \( \theta^* \) from a proposal distribution \( q(\theta^* | \theta) \);
-  \item Evaluate the acceptance probability \( p(\theta^, \theta^{(j-1)}) \) of the proposed draw \( p(\theta^,\theta^{(j-1)})=min(1,\frac{\pi(\theta^|\vec y)}{\pi(\theta^{(j-1)}|\vec y)}\frac{q(\theta^{(j-1)}|\theta^)}{p(\theta^*|\theta^{(j-1)})}\);
-  \item Draw a uniform value \( U \sim U(0,1) \), set \( \theta^{(j)} = \theta^* \) if \( U < p(\theta^*, \theta^{(j-1)}) \), otherwise set \( \theta^{(j)} = \theta^{(j-1)} \);
-  \item Update the iteration counter and return to the first step.
-\end{itemize}
-
-After running the chain, the successive samples are likely to be correlated. Therefore, to obtain a random sample, a thinning process is applied, which consists of keeping one iteration and discarding the following \( m \).
-
-Finally, the chains must run long enough to reach equilibrium, a phase known as \textit{burn-in}.
-
-There are several methods to determine whether a chain is converging adequately. 
-Two general approaches exist: one involves running a single chain for a larger number of iterations, while the other involves running multiple chains for a shorter period of time.
-Various diagnostics to check if the chain actually reached convergence have been developed, including visual inspection, the Gelman-Rubin test and the Geweke diagnostic.
-
-Visually inspection consist in assessing how well the chain mixes or moves through the parameter space. If the chain moves slowly then the convergence will also be slow. It's important to inspect all the model parameters, since some may converge while others do not. The traceplot, which shows sampled parameter values over iterations, helps detect poor mixing. Thanks to this visualization it is possible to see if a chain get stuck in a certain area of the parameter space, which is the result of a bad mixing.  Another useful tool is the running mean plot, which plots the cumulative average of the samples across iterations and helps evaluate stability over time. 
-
-Looking at the autocorrelation function (A.C.F) can help assessing the convergence. It represents the correlation among the draws of the Markov Chain. High autocorrelation implies strong dependence and slow mixing. In such cases, thinning can help reducing the correlation.
-
-The Gelman-Rublin Test, which works with multiple chains, follows predetermined steps:
-\begin{itemize}
-    \item Run the m different chains of length 2N, where N is equal to the number of iterations of the MCMC algorithm.
-    \item Discard the number of the burn-in iterations (the first N draws?) 
-    \item Compute the within-chain variance and the between-chain variance, which are, respectively, \(W=\frac{1}{m}\sum^m_{j=1}(s^2_j)\) and \(B=\frac{N}{m-1}\sum^m_{j=1}(\overline{\theta_j}-\overline{\overline{\theta}})^2\), where \(s^2_j=\frac{1}{N-1}\sum^N_{i=1}(\theta_{ij}-\overline{\theta_j})^2, \overline{\theta_j}=\frac{1}{N}\sum^N_{i=1}(\theta_{ij}\)) and \(\overline{\overline{\theta}}=\frac{1}{N}\sum^m_{j=1}\overline{\theta_j}\)
-    \item Compute the estimated variance of the parameter as the weighted average between the sum of between-variance anche within-variance \(\hat{var}(\theta)=(1-\frac{1}{N})W+\frac{1}{N}B\)
-    \item Calculate the Potential Scale Reduction factor \(\hat{R}=\sqrt{\frac{\hat{var}(\theta)}{W}}\).
-\end{itemize}
-When \(\hat{R}\) is larger than 1.2 it is better to run the chain for a larger number of iterations in order to improve the convergence of the algorithm. 
-
-Differently from the Gelman-Rubin, the Geweke Diagnostic test works with a single chain. It takes two non-overlapping parts of the chain of each parameter. The two parts, by default, are the first 0.1 and the last 0.5 of the Markov chain. The Geweke test compares the means of both parts, using a difference of means test to see if the two part of the chain care from the same distributions. The test statistic is a \(N(0,1)\). If the absolute value of the statistic is less than 1.96 then there is no problem with the chain convergence.
-
-\section{Replication of Dudley 2006}
-
-The first objective of this project was to replicate the analysis conducted by \textit{dudley2006bayesian}. The dataset used comprises insurance claim amounts exceeding 1.5 million over a period of five years from an automobile insurance portfolio. The data, originally presented in Rytgaard (1990), is shown in Table 1.
+Building on the theoretical background, this project aims to replicate the Bayesian modeling approach proposed by \citet{dudley2006bayesian}. The analysis is based on a dataset of automobile insurance claims exceeding 1.5 million, col- lected over a five-year period. The data, originally reported by Rytgaard (1990), is presented in Table \ref{tab:1}.
 
 \begin{table}[!ht]
 \centering
@@ -166,13 +111,15 @@ The first objective of this project was to replicate the analysis conducted by \
 \end{threeparttable}
 \end{table}
 
-To model this dataset within a Bayesian framework, assumptions about the distributions of both the number of claims in year \( t \) (\( N_t \)) and the amount of the \( i \)-th claim in year \( t \) (\( Y_{i,t} \)) were necessary. Claims were assumed to occur randomly and independently at a constant rate over time, so \( N_t \) was modeled using a Poisson distribution. A Pareto distribution was chosen for \( Y_{i,t} \), as a heavy-tailed loss distribution was needed to account for the fact that individual claim amounts are positive and may include large outliers. That is,
+\subsection{Model Specification}
+
+To model this dataset within a Bayesian framework, assumptions about the distributions of both the number of claims in year \( t \) (\( N_t \)) and the amount of the \( i \)-th claim in year \( t \) (\( Y_{i,t} \)) were necessary. Claims were assumed to occur randomly and independently at a constant rate over time, so \( N_t \) was modeled using a Poisson distribution. A Pareto distribution was selected for \( Y_{i,t} \), as a heavy-tailed loss distribution was needed to account for the fact that individual claim amounts are positive and may include large outliers. That is,
 \begin{align*}
 N_t &\sim \text{Poisson}(\theta), \quad 0 < \theta < \infty, \\
 Y_{i,t} &\sim \text{Pareto}(\alpha, \beta), \quad \alpha > 0, \quad 0 < \beta < y.
 \end{align*}
 
-\noindent The \text{Pareto}\((\alpha, \beta)\) distribution with support \( [\beta, \infty) \) was particularly suitable in this context, as we were modeling claim amounts exceeding a certain threshold.
+\noindent The \text{Pareto}\((\alpha, \beta)\) distribution with support \( [\beta, \infty) \) was particularly suitable in this context, as it was employed to model claim amounts exceeding a specified threshold.
 
 In addition, the following assumptions were made:
 
@@ -182,17 +129,16 @@ In addition, the following assumptions were made:
 \item \( N_t \) and \( Y_{i,t} \) are independent for all \( i \) and \( t \).
 \end{itemize}
 
-\noindent Under these assumptions, the aggregate claim amount in year \( t \), denoted by
+\noindent Under these assumptions, the aggregate claim amount in year \( t \) was defined as
 \[
-S_t = Y_{1,t} + Y_{2,t} + \cdots + Y_{N_t,t},
+S_t = Y_{1,t} + Y_{2,t} + \cdots + Y_{N_t,t}.
 \]
-follows a compound Poisson distribution, since it represents the sum of independent Pareto-distributed random variables. [This is wrong?]
 
-Next, prior distributions for the parameters \( \alpha \), \( \beta \), and \( \theta \) were specified. Due to limited prior knowledge about their true values—beyond the assumption that they are strictly positive—vague Gamma priors were chosen:
+Next, prior distributions for the parameters \( \alpha \), \( \beta \), and \( \theta \) were specified. Due to limited prior knowledge about their true values—beyond the assumption that they are strictly positive—vague Gamma priors\footnote{Each of these Gamma priors has a variance of \(10^8\), implying minimal prior influence so that most of the information about~the parameters is derived from the dataset. Additionally, the Gamma distribution is conjugate to both the Poisson and Pareto likeli- hoods, facilitating analytical tractability in Bayesian inference.} were chosen:
 \[
 \alpha \sim \text{Gamma}(1, 0.0001), \quad \beta \sim \text{Gamma}(1, 0.0001), \quad \theta \sim \text{Gamma}(1, 0.0001),
 \]
-with the constraint \( 0 < \beta < \min\{y_{i,t}\} \) to ensure validity of the Pareto distribution. Each of these Gamma priors has a variance of \(10^8\), implying minimal prior influence so that most of the information about the parameters is derived from the dataset. Additionally, the Gamma distribution is conjugate to both the Poisson and Pareto likelihoods, facilitating analytical tractability in Bayesian inference.
+with the constraint \( 0 < \beta < \min\{y_{i,t}\} \) to ensure validity of the Pareto distribution.
 
 Finally, the posterior distributions were derived. First, the joint posterior distribution of \( (\alpha, \beta) \) was obtained via Bayes' theorem\footnote{Here, assuming that \( \alpha \) and \( \beta \) are independent, the joint prior \( \pi(\alpha, \beta) \) was computed as \( \pi(\alpha) \cdot \pi(\beta) \).}:
 \begin{align*}
@@ -205,14 +151,14 @@ Finally, the posterior distributions were derived. First, the joint posterior di
 
 \noindent As a result, the full conditional posterior distributions of \( \alpha \) and \( \beta \) were as follows:
 \begin{align*}
-\pi(\alpha \mid \beta, \mathbf{y}) &\propto \alpha^n \cdot \exp\left( - \left( 0.0001 - n \ln(\beta) + \sum_{i=1}^{n} \ln(y_i) \right) \alpha \right) \\
-\pi(\beta \mid \alpha, \mathbf{y}) &\propto \beta^{n \alpha} \cdot \exp(-0.0001 \beta)
+\pi(\alpha \mid \beta, \mathbf{y}) &\propto \alpha^n \cdot \exp\left( - \left( 0.0001 - n \ln(\beta) + \sum_{i=1}^{n} \ln(y_i) \right) \alpha \right), \\
+\pi(\beta \mid \alpha, \mathbf{y}) &\propto \beta^{n \alpha} \cdot \exp(-0.0001 \beta),
 \end{align*}
 
 \noindent which implied that:
 \begin{align*}
 \alpha \mid \beta, \mathbf{y} &\sim \text{Gamma}\left(n+1, \sum_{i=1}^{n} \ln(y_i) - n \ln(\beta) + 0.0001\right), \\
-\beta \mid \alpha, \mathbf{y} &\sim \text{Gamma}(n \alpha + 1, 0.0001)
+\beta \mid \alpha, \mathbf{y} &\sim \text{Gamma}(n \alpha + 1, 0.0001).
 \end{align*}
 
 Similarly, the posterior distribution of \( \theta \) was obtained via Bayes' theorem:
@@ -228,7 +174,9 @@ Similarly, the posterior distribution of \( \theta \) was obtained via Bayes' th
 \theta \mid \mathbf{n} \sim \text{Gamma}\left( \sum_{t=1}^{T} n_t + 1, 5.0001 \right)
 \]
 
-Since all three posterior distributions were standard distributions, the Gibbs sampling method was employed to draw realizations from them. This was implemented using the \texttt{JAGS} program, which was called from within~\texttt{R}. Three Markov chains were run in parallel. The initial values of \( \alpha \), \( \beta \), and \( \theta \) were chosen to be well-dispersed~and are presented in Table~\ref{tab:2}.
+\subsection{Gibbs Sampling Results}
+
+Since all three posterior distributions were standard distributions, the Gibbs sampling method was employed to draw realizations from them\footnote{Markov Chain Monte Carlo (MCMC) methods, like Gibbs sampling, are used to draw samples from intractable posterior distributions. Gibbs sampling is efficient when full conditional posteriors are in closed form, often with conjugate priors. When posteriors are not in closed form, the Metropolis-Hastings algorithm can be used to generate candidate values from a proposal~distribution.}. This was implemented using the \texttt{JAGS} program, which was called from within~\texttt{R}. Following \citet{dudley2006bayesian}, three Markov chains were run in parallel. The initial values of \( \alpha \), \( \beta \), and \( \theta \) were~chosen to be well-dispersed and are presented in Table~\ref{tab:2}.
 
 \begin{table}[!ht]
 \centering
@@ -236,6 +184,7 @@ Since all three posterior distributions were standard distributions, the Gibbs s
 \setlength{\tabcolsep}{5pt}
 \caption{Initial Parameter Values}
 \label{tab:2}
+\begin{threeparttable}
 \begin{tabular}{
 >{\raggedright\arraybackslash}p{\widthof{Chain}}
 *{3}{S[scientific-notation=true, table-format=1.5e1]}
@@ -246,9 +195,14 @@ Since all three posterior distributions were standard distributions, the Gibbs s
 2 & 1e5 & 1 & 1e5 \\
 3 & 3.076 & 1.625 & 3.200 \\ \hline
 \end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item These initial values are taken from \citet{dudley2006bayesian}.
+\end{tablenotes}
+\end{threeparttable}
 \end{table}
 
-The burn-in period was set to 20,000 iterations. The statistics computed over the results of the subsequent 30,000 iterations are presented in Table~\ref{tab:3}. A comparison with the statistics reported by Dudley shows a close match, indicating that the model was properly specified and the Gibbs sampler was executed correctly.
+A burn-in of 20,000 iterations was used. The statistics computed from the subsequent 30,000 iterations are presented in Table~\ref{tab:3}. A comparison with those reported by \citet{dudley2006bayesian} shows a close match, indicating that the model was properly specified and the Gibbs sampler executed correctly.
 
 \begin{table}[!ht]
 \centering
@@ -271,67 +225,69 @@ The burn-in period was set to 20,000 iterations. The statistics computed over th
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
-\item Note:\ \( E[Y] \) was calculated for each simulated set of parameters \( \alpha \) and \( \beta \), and from these values, the mean, standard deviation, and 95\% Bayesian credible interval were subsequently computed.
+\item \( E[Y] \) was calculated for each simulated set of parameters \( \alpha \) and \( \beta \), and from these values, the mean, standard deviation, and 95\% Bayesian credible interval were subsequently computed.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-In addition, density plots were generated for each of the parameters and for \( E[Y] \), as presented in Figure~\ref{fig:1}. The resulting densities for the parameters resemble Gamma distributions, with the density of \( \beta \) appropriately truncated at \( \min\{y_{i,t}\} = 1.625 \). The density plot for \( E[Y] \) displays a right-skewed distribution that permits very large values, albeit with very low probability---consistent with expectations.
+In addition, density plots were generated for each of the parameters and for \( E[Y] \), as presented in Figure~\ref{fig:1}. The resulting densities for the parameters resemble Gamma distributions, with the density of \( \beta \) appropriately truncated at \( \min\{y_{i,t}\} = 1.625 \). The plot for \( E[Y] \) displays a right-skewed distribution that permits very large values, albeit with very low probability---consistent with expectations.
 
 \begin{figure}[!ht]
     \centering
+    \caption{Posterior Densities}
+    \label{fig:1}
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990/density_alpha.png}
+        \includegraphics[width=\textwidth]{rytgaard1990/density_alpha.png}
         \subcaption{\( \alpha \)}
     \end{minipage}%
     \hfill
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990/density_beta.png}
+        \includegraphics[width=\textwidth]{rytgaard1990/density_beta.png}
         \subcaption{\( \beta \)}
     \end{minipage} \\
     
-%    \vspace{0.5cm}
+    \vspace{0.5cm}
     
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990/density_theta.png}
+        \includegraphics[width=\textwidth]{rytgaard1990/density_theta.png}
         \subcaption{\( \theta \)}
     \end{minipage}%
     \hfill
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{rytgaard1990/density_E_y.png}
+        \includegraphics[width=\textwidth]{rytgaard1990/density_E_y.png}
         \subcaption{\( E[y] \)}
     \end{minipage}
     
-    \caption{Posterior Densities}
-    \label{fig:1}
 \end{figure}
 
-The posterior means of \( \alpha \) and \( \beta \) were used as parameters of the Pareto distribution, and the corresponding cumulative distribution function (CDF) was plotted against the empirical cumulative data (\( y_{i,t} \)). Similarly, the posterior mean of \( \theta \) was used as the parameter of the Poisson distribution, and its CDF was plotted against the empirical cumulative data (\( n_t \)).
+The posterior means of \( \alpha \) and \( \beta \) were used as parameters of the Pareto distribution, and the corresponding cumulative distribution function (CDF) was plotted against the empirical cumulative data (\( y_{i,t} \)). Similarly, the posterior mean of \( \theta \) was used as the parameter of the Poisson distribution, and its CDF was plotted against the empirical cumulative data (\( n_t \)). The Pareto\((3.079,\,1.592)\) distribution provides a close fit to the empirical data. The Poisson\((3.396)\) distribution also fits the observed frequencies quite well (see Figures \ref{fig:2} and \ref{fig:3}).
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{rytgaard1990/empirical_vs_pareto.png}
     \caption{Empirical vs.\ Fitted Pareto CDF}
     \label{fig:2}
+    \includegraphics[width=.5\textwidth]{rytgaard1990/empirical_vs_pareto.png}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{rytgaard1990/empirical_vs_poisson.png}
     \caption{Empirical vs.\ Fitted Poisson CDF}
     \label{fig:3}
+    \includegraphics[width=.5\textwidth]{rytgaard1990/empirical_vs_poisson.png}
 \end{figure}
 
-The Pareto\((3.079,\,1.592)\) distribution provides a close fit to the empirical data. The Poisson\((3.396)\) distribution also fits the observed frequencies quite well.
+\subsection{Convergence Diagnostics}
 
-Throughout all computations, a burn-in period of 20{,}000 iterations was applied, with only samples from iterations 20{,}001 to 50{,}000 retained for analysis. This approach followed the assumptions made by Dudley. However, it is essential to verify that the chains have indeed converged to a stationary distribution after discarding the initial samples. The first method of assessment involves visual inspection. Figure~\ref{fig:4} presents trace plots for all three parameters, showing the sampled values across iterations. These plots indicate good mixing, suggesting that the chains have converged.
+Throughout all computations above, it was assumed that the Markov chains had converged to a stationary~distribution after discarding the initial 20,000 iterations, following the approach of \citet{dudley2006bayesian}. However, it was essential to verify that convergence had indeed occurred. The first method of assessment involved visual inspec- tion\footnote{Visual inspection involves assessing how well a chain explores the parameter space. Poor mixing—where the chain moves slowly or gets stuck—indicates potential convergence issues. Trace plots help identify such problems by showing how sampled values evolve over iterations for each parameter.}. Figure~\ref{fig:4} presents trace plots for all three parameters, showing the sampled values across iterations. These plots indicate good mixing, suggesting that the chains have likely converged.
 
 \begin{figure}[!ht]
     \centering
+    \caption{Trace Plots}
+    \label{fig:4}
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/trace_alpha.png}
@@ -352,8 +308,6 @@ Throughout all computations, a burn-in period of 20{,}000 iterations was applied
         \caption{\( \theta \)}
     \end{subfigure}
 
-    \caption{Trace Plots}
-    \label{fig:4}
 \end{figure}
 
 The convergence of the chains was also assessed using the Gelman--Rubin diagnostic. The diagnostic was applied to the post-burn-in iterations (20,001–50,000), and the results are summarized in Table~\ref{tab:4}.

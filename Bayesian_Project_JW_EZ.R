@@ -126,7 +126,7 @@ plot(
   ecdf(y),
   col = "blue",
   main = "",
-  xlab = "y",
+  xlab = "",
   ylab = "",
   lwd = 2
 )
@@ -151,7 +151,7 @@ plot(
   ecdf(n),
   col = "blue",
   main = "",
-  xlab = "n",
+  xlab = "",
   ylab = "",
   lwd = 2,
   xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility

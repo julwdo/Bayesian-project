@@ -1,3 +1,6 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Theoretical Considerations}{1}{section.2}%
-\contentsline {section}{\numberline {3}Replication of Dudley 2006}{2}{section.3}%
+\contentsline {section}{\numberline {2}Theoretical Background}{1}{section.2}%
+\contentsline {section}{\numberline {3}Replication of \citet {dudley2006bayesian}}{1}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Model Specification}{2}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Gibbs Sampling Results}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Convergence Diagnostics}{3}{subsection.3.3}%
