@@ -7,6 +7,11 @@ Dudley, C. (2006).
 \newblock Master's dissertation, Heriot-Watt University, School of Mathematical
   and Computer Sciences, Actuarial Mathematics \& Statistics.
 
+\bibitem[\protect\astroncite{Gelman and Rubin}{1992}]{Gelman1992}
+Gelman, A. and Rubin, D.~B. (1992).
+\newblock Inference from Iterative Simulation Using Multiple Sequences.
+\newblock {\em Statistical Science}, 7(4):457--472.
+
 \bibitem[\protect\astroncite{Rytgaard}{1990}]{rytgaard1990pareto}
 Rytgaard, M. (1990).
 \newblock Estimation in the Pareto Distribution.

@@ -174,7 +174,7 @@ Similarly, the posterior distribution of \( \theta \) was obtained via Bayes' th
 \theta \mid \mathbf{n} \sim \text{Gamma}\left( \sum_{t=1}^{T} n_t + 1, 5.0001 \right)
 \]
 
-\subsection{Gibbs Sampling Results}
+\subsection{Sampling Results}
 
 Since all three posterior distributions were standard distributions, the Gibbs sampling method was employed to draw realizations from them\footnote{Markov Chain Monte Carlo (MCMC) methods, like Gibbs sampling, are used to draw samples from intractable posterior distributions. Gibbs sampling is efficient when full conditional posteriors are in closed form, often with conjugate priors. When posteriors are not in closed form, the Metropolis-Hastings algorithm can be used to generate candidate values from a proposal~distribution.}. This was implemented using the \texttt{JAGS} program, which was called from within~\texttt{R}. Following \citet{dudley2006bayesian}, three Markov chains were run in parallel. The initial values of \( \alpha \), \( \beta \), and \( \theta \) were~chosen to be well-dispersed and are presented in Table~\ref{tab:2}.
 
@@ -310,13 +310,14 @@ Throughout all computations above, it was assumed that the Markov chains had con
 
 \end{figure}
 
-The convergence of the chains was also assessed using the Gelman--Rubin diagnostic. The diagnostic was applied to the post-burn-in iterations (20,001–50,000), and the results are summarized in Table~\ref{tab:4}.
+Convergence was further assessed using the Gelman--Rubin diagnostic \citep{Gelman1992}, applied to the post-burn-in iterations (20,001–50,000). The results, shown in Table~\ref{tab:4}, indicate that all univariate potential scale reduction factors (PSRFs) have point estimates and upper confidence bounds equal to 1. The multivariate PSRF is also 1. These values again suggest that the Markov chains have likely converged, both individually~and jointly.
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \caption{Potential Scale Reduction Factors (Gelman--Rubin Diagnostic)}
 \label{tab:4}
+\begin{threeparttable}
 \begin{tabular}{
   >{\raggedright\arraybackslash}p{\widthof{\textbf{Multivariate PSRF}}}
   *{2}{S[table-format=1.2]}
@@ -331,14 +332,19 @@ The convergence of the chains was also assessed using the Gelman--Rubin diagnost
 \textbf{Multivariate PSRF} & \multicolumn{2}{c}{1.00} \\
 \hline
 \end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item The diagnostic was applied to iterations 20,001–50,000.
+\end{tablenotes}
+\end{threeparttable}
 \end{table}
 
-\noindent All univariate potential scale reduction factors (PSRFs) have point estimates and upper confidence bounds at 1.00. The multivariate PSRF is also equal to 1.00. These values suggest that the Markov chains have likely converged, both for individual parameters and jointly.
-
-Figure~\ref{fig:5} shows how the univariate PSRF point estimates evolve with increasing iterations. Throughout all iterations, all estimates remain below 1.1, which is commonly considered an acceptable threshold for convergence. This further confirms that the chains have likely reached a stable distribution.
+Figure~\ref{fig:5} shows how the univariate PSRF point estimates evolve with increasing iterations. Throughout all~iterations, all estimates remain below 1.1, which is commonly considered an acceptable threshold for convergence. This further confirms that the chains have likely reached a stable distribution.
 
 \begin{figure}[!ht]
     \centering
+    \caption{PSRF Values (Gelman--Rubin Diagnostic)}
+    \label{fig:5}
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/gelman_alpha.png}
@@ -358,15 +364,14 @@ Figure~\ref{fig:5} shows how the univariate PSRF point estimates evolve with inc
         \includegraphics[width=\textwidth]{rytgaard1990/gelman_theta.png}
         \caption{\( \theta \)}
     \end{subfigure}
-
-    \caption{PSRF Values (Gelman--Rubin Diagnostic)}
-    \label{fig:5}
 \end{figure}
 
-In addition, autocorrelation plots were generated for all three parameters (see Figure~\ref{fig:6}), and values at lags 1 through 10 are reported in Table~\ref{tab:5}. Several high autocorrelations were observed, particularly for \( \beta \), which motivated the use of a thinning interval of 10 iterations, as suggested by Dudley.
+In addition, autocorrelation\footnote{The autocorrelation function (ACF) shows the correlation between samples at different lags. High autocorrelation indicates strong dependence between draws, leading to slow mixing. Thinning reduces this dependence by keeping only every \( k \)th sample.} plots were generated for all three parameters (see Figure~\ref{fig:6}), and values at~lags 1 through 10 are reported in Table~\ref{tab:5}. Several high autocorrelations were observed, particularly for \( \beta \), which~motivated the use of a thinning interval of 10 iterations, as suggested by \citet{dudley2006bayesian}.
 
 \begin{figure}[!ht]
     \centering
+    \caption{Autocorrelation Plots}
+    \label{fig:6}
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/acf_alpha.png}
@@ -386,9 +391,6 @@ In addition, autocorrelation plots were generated for all three parameters (see 
         \includegraphics[width=\textwidth]{rytgaard1990/acf_theta.png}
         \caption{\( \theta \)}
     \end{subfigure}
-
-    \caption{Autocorrelation Plots}
-    \label{fig:6}
 \end{figure}
 
 \begin{table}[!ht]
@@ -418,10 +420,12 @@ In addition, autocorrelation plots were generated for all three parameters (see 
 \end{tabular}
 \end{table}
 
-Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} presents the corresponding trace plots, and Figure~\ref{fig:8} shows the updated autocorrelation plots. The trace plots indicate that the chains have mixed well, and all autocorrelation values at lags 2, 3, and beyond have become negligible.
+Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} presents the corresponding trace plots, and Figure~\ref{fig:8} shows the updated autocorrelation plots. The trace plots indicate that the chains have mixed well,~and the autocorrelation plots demonstrate that all autocorrelation values at lags 1, 2, and beyond have~become~negligible.
 
 \begin{figure}[!ht]
     \centering
+    \caption{Trace Plots After Thinning}
+    \label{fig:7}
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/trace_after_thinning_alpha.png}
@@ -441,13 +445,12 @@ Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} prese
         \includegraphics[width=\textwidth]{rytgaard1990/trace_after_thinning_theta.png}
         \caption{\( \theta \)}
     \end{subfigure}
-
-    \caption{Trace Plots After Thinning}
-    \label{fig:7}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
+    \caption{Autocorrelation Plots After Thinning}
+    \label{fig:8}
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/acf_after_thinning_alpha.png}
@@ -468,20 +471,18 @@ Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} prese
         \caption{\( \theta \)}
     \end{subfigure}
 
-    \caption{Autocorrelation Plots After Thinning}
-    \label{fig:8}
 \end{figure}
 
-Since the ultimate goal of the analysis was to predict the values of \( S_t \), the posterior predictive distribution was employed. For a variable \( z \), this distribution is defined as:
+\subsection{Predictive Inference}
 
+The ultimate goal of the analysis was to predict future values of \( S_t \), which was achieved using the posterior~predictive distribution. For a variable \( z \), this distribution is defined as:
 \[
 \pi(z \mid \mathbf{y}) = \int_{\Theta} f(z \mid \mathbf{\phi}) \, \pi(\mathbf{\phi} \mid \mathbf{y}) \, d\mathbf{\phi}
 \]
 
-\noindent where \( \mathbf{\phi} = (\alpha, \beta, \theta) \), \( \pi(\mathbf{\phi} \mid \mathbf{y}) \) is the posterior distribution of \( \mathbf{\phi} \), and \( f(z \mid \mathbf{\phi}) \) is the likelihood of \( z \) given \( \mathbf{\phi} \). This approach accounts for the uncertainty in \( \mathbf{\phi} \) by integrating over its possible values, weighted by their posterior probabilities.
+\noindent where \( \pi(\mathbf{\phi} \mid \mathbf{y}) \) is the posterior distribution of \( \mathbf{\phi} \), and \( f(z \mid \mathbf{\phi}) \) is the likelihood of \( z \) given \( \mathbf{\phi} \). This approach~accounts for the uncertainty in \( \mathbf{\phi} \) by integrating over its possible values, weighted by their posterior probabilities.
 
-Let \( \mathbf{n} \) denote the observed data and \( N_f \) represent a future observation. Then the posterior predictive distribution for \( N_f \) is:
-
+Let \( \mathbf{n} \) denote the observed data, and let \( N_f \) represent a future observation. Then the posterior predictive~distribution of \( N_f \) is:
 \[
 \begin{aligned}
 p (N_f = n \mid \mathbf{n}) 
@@ -491,16 +492,14 @@ p (N_f = n \mid \mathbf{n})
 \end{aligned}
 \]
 
-Since the integral could not be solved analytically, it was approximated using samples from the posterior distribution obtained via MCMC. Specifically, the expectation was approximated as:
-
-\begin{equation}\label{eq:1}
+\noindent Since the integral cannot be evaluated analytically, it is typically approximated using samples from the posterior distribution obtained via MCMC. Specifically, the expectation is approximated as:
+\[
 p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i)})^n e^{-\theta^{(i)}}}{n!}
-\end{equation}
+\]
 
-where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
+\noindent where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
 
-Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation. The posterior predictive cumulative distribution function (CDF) of \( Y_f \) is given by:
-
+Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation. The posterior predictive~cumulative distribution function (CDF) of \( Y_f \) is given by:
 \[
 \begin{aligned}
 p (Y_f \leq y \mid \mathbf{y}) 
@@ -510,10 +509,9 @@ p (Y_f \leq y \mid \mathbf{y})
 \]
 
 Again,
-
-\begin{equation}\label{eq:2}
+\[
 p (Y_f \leq y \mid \mathbf{y}) \approx \frac{1}{m} \sum_{i=1}^{m} \left( 1 - \left( \frac{\beta^{(i)}}{y} \right)^{\alpha^{(i)}} \right)
-\end{equation}
+\]
 
 \noindent where \( \alpha^{(i)} \) and \( \beta^{(i)} \) denote the \( i \)-th samples from the MCMC chain, and \( m \) is the number of post-burn-in, thinned iterations.
 

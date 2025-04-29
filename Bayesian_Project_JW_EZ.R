@@ -171,7 +171,7 @@ legend("bottomright",
 # ===================================================
 
 # Trace plots for each parameter
-traceplot(samples[, c("alpha", "beta", "theta")])
+traceplot(samples[, c("alpha", "beta", "theta")], main="", xlab="")
 
 # Gelman-Rubin diagnostic
 gelman.diag(samples, autoburnin = FALSE)
@@ -180,14 +180,16 @@ gelman.diag(samples, autoburnin = FALSE)
 params <- c("alpha", "beta", "theta")
 for (param in params) {
   gelman.plot(samples[, param], xlab = "", ylab = "")
-  title(xlab = "Iterations", ylab = "PSRF")
 }
 
 # Autocorrelation diagnostics
-for (param in params) {
-  autocorr.diag(samples[, param], lags = 1:10)
-  autocorr.plot(samples[, param])
-}
+autocorr.plot(samples[, "alpha"], ask=FALSE)
+autocorr.plot(samples[, "beta"], ask=FALSE)
+autocorr.plot(samples[, "theta"], ask=FALSE)
+
+autocorr.diag(samples[, "alpha"], lags = 1:10)
+autocorr.diag(samples[, "beta"], lags = 1:10)
+autocorr.diag(samples[, "theta"], lags = 1:10)
 
 # Rerunning chains with updated settings
 jags_model_rerun <- jags.model(
@@ -207,16 +209,19 @@ samples_rerun <- coda.samples(
 )
 
 # Trace plots for rerun samples
-traceplot(samples_rerun[, c("alpha", "beta", "theta")])
+traceplot(samples_rerun[, c("alpha", "beta", "theta")], main="", xlab="")
 
 # Gelman-Rubin diagnostic for rerun samples
 gelman.diag(samples_rerun, autoburnin = FALSE)
 
 # Autocorrelation diagnostics for rerun samples
-for (param in params) {
-  autocorr.diag(samples_rerun[, param], lags = 1:10)
-  autocorr.plot(samples_rerun[, param])
-}
+autocorr.plot(samples_rerun[, "alpha"], ask=FALSE)
+autocorr.plot(samples_rerun[, "beta"], ask=FALSE)
+autocorr.plot(samples_rerun[, "theta"], ask=FALSE)
+
+autocorr.diag(samples_rerun[, "alpha"], lags = 1:10)
+autocorr.diag(samples_rerun[, "beta"], lags = 1:10)
+autocorr.diag(samples_rerun[, "theta"], lags = 1:10)
 
 # ===================================================
 # PREDICTIONS: Poisson and Pareto Distribution
