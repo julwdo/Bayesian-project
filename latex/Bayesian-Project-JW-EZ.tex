@@ -218,10 +218,10 @@ A burn-in of 20,000 iterations was used. The statistics computed from the subseq
 }
 \hline
  & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
-\( \alpha \) & 3.079 & 0.763 & (1.771, 4.741) \\
-\( \beta \) & 1.592 & 0.035 & (1.498, 1.624) \\
-\( \theta \) & 3.396 & 0.821 & (1.982, 5.192) \\
-\( E[Y] \) & 2.499 & 0.621 & (2.024, 3.621) \\ \hline
+\( \alpha \) & 3.076 & 0.762 & (1.762, 4.752) \\
+\( \beta \) & 1.591 & 0.035 & (1.498, 1.624) \\
+\( \theta \) & 3.399 & 0.820 & (1.986, 5.185) \\
+\( E[Y] \) & 2.507 & 1.071 & (2.024, 3.637) \\ \hline
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
@@ -406,16 +406,16 @@ In addition, autocorrelation\footnote{The autocorrelation function (ACF) shows t
 \hline
 \textbf{Lag} & \( \alpha \) & \( \beta \) & \( \theta \) \\
 \hline
-1  & 0.297 & 0.705 & 0.003 \\
-2  & 0.119 & 0.509 & 0.005 \\
-3  & 0.061 & 0.373 & -0.005 \\
-4  & 0.036 & 0.278 & -0.004 \\
-5  & 0.023 & 0.210 & 0.001 \\
-6  & 0.016 & 0.161 & -0.002 \\
-7  & 0.010 & 0.126 & -0.004 \\
-8  & 0.009 & 0.102 & -0.004 \\
-9  & 0.002 & 0.081 & -0.001 \\
-10 & 0.007 & 0.065 & 0.004 \\
+1  & 0.288 & 0.699 & -0.001 \\
+2  & 0.109 & 0.498 & -0.001 \\
+3  & 0.053 & 0.356 & 0.003 \\
+4  & 0.035 & 0.257 & -0.007 \\
+5  & 0.019 & 0.191 & 0.002 \\
+6  & 0.008 & 0.144 & -0.006 \\
+7  & 0.010 & 0.104 & 0.003 \\
+8  & 0.013 & 0.079 & -0.007 \\
+9  & 0.007 & 0.061 & 0.001 \\
+10 & 0.006 & 0.048 & 0.000 \\
 \hline
 \end{tabular}
 \end{table}
@@ -475,14 +475,14 @@ Consequently, the chains were rerun with this thinning. Figure~\ref{fig:7} prese
 
 \subsection{Predictive Inference}
 
-The ultimate goal of the analysis was to predict future values of \( S_t \), which was achieved using the posterior~predictive distribution. For a variable \( z \), this distribution is defined as:
+The ultimate objective of the analysis was to predict future values of \( S_t \), which was accomplished using the~posterior predictive distribution. For a variable \( z \), this distribution is defined as\footnote{This method accounts for the uncertainty in \( \boldsymbol{\phi} \) by integrating over its possible values, weighted by their posterior probabilities.}:
 \[
 \pi(z \mid \mathbf{y}) = \int_{\Theta} f(z \mid \mathbf{\phi}) \, \pi(\mathbf{\phi} \mid \mathbf{y}) \, d\mathbf{\phi}
 \]
 
-\noindent where \( \pi(\mathbf{\phi} \mid \mathbf{y}) \) is the posterior distribution of \( \mathbf{\phi} \), and \( f(z \mid \mathbf{\phi}) \) is the likelihood of \( z \) given \( \mathbf{\phi} \). This approach~accounts for the uncertainty in \( \mathbf{\phi} \) by integrating over its possible values, weighted by their posterior probabilities.
+\noindent where \( \pi(\mathbf{\phi} \mid \mathbf{y}) \) is the posterior distribution of \( \mathbf{\phi} \), and \( f(z \mid \mathbf{\phi}) \) is the likelihood of \( z \) given \( \mathbf{\phi} \).
 
-Let \( \mathbf{n} \) denote the observed data, and let \( N_f \) represent a future observation. Then the posterior predictive~distribution of \( N_f \) is:
+Let \( \mathbf{n} \) denote the observed data, and let \( N_f \) represent a future observation of \( N_t \). Then the posterior predic- tive distribution of \( N_f \) is given by:
 \[
 \begin{aligned}
 p (N_f = n \mid \mathbf{n}) 
@@ -499,7 +499,7 @@ p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i
 
 \noindent where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
 
-Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation. The posterior predictive~cumulative distribution function (CDF) of \( Y_f \) is given by:
+Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation of \( Y_t \). Then the posterior predictive cumulative distribution function (CDF) of \( Y_f \) is given by:
 \[
 \begin{aligned}
 p (Y_f \leq y \mid \mathbf{y}) 
@@ -508,14 +508,14 @@ p (Y_f \leq y \mid \mathbf{y})
 \end{aligned}
 \]
 
-Again,
+\noindent Again,
 \[
 p (Y_f \leq y \mid \mathbf{y}) \approx \frac{1}{m} \sum_{i=1}^{m} \left( 1 - \left( \frac{\beta^{(i)}}{y} \right)^{\alpha^{(i)}} \right)
 \]
 
-\noindent where \( \alpha^{(i)} \) and \( \beta^{(i)} \) denote the \( i \)-th samples from the MCMC chain, and \( m \) is the number of post-burn-in, thinned iterations.
+\noindent where \( \alpha^{(i)} \) and \( \beta^{(i)} \) denote the \( i \)-th samples from the MCMC chain.
 
-Table~\ref{tab:6} contains the estimated probabilities of \( N_f = n \) for \( n = 0, \dots, 14 \).
+Table~\ref{tab:6} shows the estimated probabilities of \( N_f = n \) for \( n = 0, \dots, 14 \), which are consistent with the findings of \citet{dudley2006bayesian}. Figure~\ref{fig:9} displays the estimated predictive probability density function (PDF) of \( Y_f \), obtained using the inverse CDF method\footnote{Specifically, 1,000 values \( U \sim \mathrm{Uniform}(0, 1) \) were generated. For each value, the transformation \(\beta^{(i)} (1 - U)^{-1/\alpha^{(i)}}\) was applied for each \( i \), and the results were averaged across \( i \). The resulting 1,000 values were then used to approximate the PDF of \( Y_f \) via~kernel density estimation (KDE).}.
 
 \begin{table}[!ht]
 \centering
@@ -528,17 +528,17 @@ Table~\ref{tab:6} contains the estimated probabilities of \( N_f = n \) for \( n
 S[table-format=1.4]
 }
 \hline
-\( n \) & Probability \\ 
+\( n \) & \textbf{Probability} \\ 
 \hline
-0  & 0.0452 \\ 
-1  & 0.1279 \\ 
-2  & 0.1918 \\ 
+0  & 0.0450 \\ 
+1  & 0.1277 \\ 
+2  & 0.1916 \\ 
 3  & 0.2023 \\ 
-4  & 0.1685 \\ 
-5  & 0.1178 \\ 
-6  & 0.0719 \\ 
-7  & 0.0393 \\ 
-8  & 0.0196 \\ 
+4  & 0.1686 \\ 
+5  & 0.1180 \\ 
+6  & 0.0721 \\ 
+7  & 0.0394 \\ 
+8  & 0.0197 \\ 
 9  & 0.0091 \\ 
 10 & 0.0039 \\ 
 11 & 0.0016 \\ 
@@ -549,35 +549,30 @@ S[table-format=1.4]
 \end{tabular}
 \end{table}
 
-These results are consistent with those obtained by Dudley. As \( Y_f \) is a continuous variable, the probability density function (PDF) was estimated rather than discrete probabilities. The estimation employed the inverse cumulative distribution function (CDF) method.
-
-A total of 1000 values \( U \sim \mathrm{Uniform}(0, 1) \) were generated. For each value, the transformation
-
-\[
-y^{(i)} = \frac{\beta^{(i)}}{(1 - U)^{1/\alpha^{(i)}}}
-\]
-
-was applied. For each \( i \), the mean of the resulting values was computed. The resulting values were then used to approximate the PDF of \( Y_f \) via kernel density estimation (KDE). The estimated predictive density is illustrated in Figure~\ref{fig:9}.
-
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_Y_f.png}
 \caption{Estimated Predictive PDF of \( Y_f \)}
 \label{fig:9}
+\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_Y_f.png}
 \end{figure}
 
-The inverse CDF method was also used to estimate the predictive distribution of \( S_f \), representing a future observation of \( S_t \). The procedure was as follows: 1{,}000 values were drawn from the posterior predictive distribution of \( N_f \). For each uniformly drawn \( U \), a Poisson sample was generated using each posterior value of \( \theta^{(i)} \), and the average of these samples was computed and rounded to obtain \( N_f \). Then, for each simulated value of \( N_f \), that many samples were drawn from the predictive distribution of \( Y_f \) (as described earlier), and the resulting values were summed to obtain a draw of \( S_f \).
+The draws of \( S_f \), representing a future observation of \( S_t \), were generated as follows:
 
-Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with the estimated density and three fitted distributions using moment matching. As observed by Dudley, the Gamma distribution provides the best fit. The fitted Gamma distribution has parameters \( \alpha = 2.435 \) and \( \beta = 0.292 \).
+\begin{enumerate}
+\item 1,000 values of \( N_f \) were drawn using the inverse CDF method\footnote{Once again, 1,000 values \( U \sim \mathrm{Uniform}(0, 1) \) were generated. For each value, Poisson samples were drawn for each \( \theta^{(i)} \) using~the inverse CDF method. The results were averaged across \( i \) and rounded to produce 1,000 integer values.}.
+\item For each simulated value of \( N_f \), the corresponding number of \( Y_f \) values was drawn using the same procedure as in the predictive PDF estimation, and these values were then summed to generate a draw of \( S_f \).
+\end{enumerate}
+
+\noindent Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with three fitted distributions using moment matching. As observed by \citet{dudley2006bayesian}, the Gamma distribution provides the best fit. The fitted Gamma~dis- tribution has parameters \( \alpha = 1.726 \) and \( \beta = 0.202 \).
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_S_f.png}
 \caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
 \label{fig:10}
+\includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_S_f.png}
 \end{figure}
 
-Table~\ref{tab:7} shows various percentiles of the simulated \( S_f \) values. The distribution exhibits a suitably long tail, which aligns with expectations for a heavy-tailed claim size distribution. This indicates that the simulation method used was effective in generating large \( Y \) values, thereby capturing the tail behavior of the predictive distribution of \( S \) more accurately. Proper representation of the tail is important, as most aggregate claims are moderate, but extreme values can occasionally occur.
+Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 116.396 indicates~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation effectively captured the tail behavior of the predictive distribution of \( S \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
 
 \begin{table}[!ht]
 \centering
@@ -587,16 +582,16 @@ Table~\ref{tab:7} shows various percentiles of the simulated \( S_f \) values. T
 \label{tab:7}
 \begin{tabular}{
 >{\raggedright\arraybackslash}p{\widthof{99th Percentile}}
-S[table-format=2.3]
+S[table-format=3.3]
 }
 \hline
 \textbf{Percentile} & \textbf{Value} \\ 
 \hline
-Median & 7.630 \\ 
-90th Percentile & 15.170 \\
-95th Percentile & 18.103 \\
-99th Percentile & 26.410 \\
-Maximum & 35.851 \\
+Median & 7.504 \\ 
+90th Percentile & 15.065 \\
+95th Percentile & 18.092 \\
+99th Percentile & 25.171 \\
+Maximum & 116.396 \\
 \hline
 \end{tabular}
 \end{table}

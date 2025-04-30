@@ -62,9 +62,9 @@ model {
 
 # Initial values for three MCMC chains
 inits_list <- list(
-  list(alpha = 0.5, beta = 1, theta = 5, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
-  list(alpha = 0.6, beta = 1.2, theta = 6, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
-  list(alpha = 0.4, beta = 0.9, theta = 4, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
+  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
+  list(alpha = 100000, beta = 1, theta = 100000, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
+  list(alpha = 3.076, beta = 1.625, theta = 3.2, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
 )
 
 # ===================================================
@@ -137,7 +137,7 @@ lines(x_vals, pareto_cdf(x_vals, alpha, beta),
       col = "red", lwd = 2, lty = 2)
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Pareto(3.079,1.592) CDF"),
+       legend = c("Empirical CDF", "Pareto(3.076,1.591) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ===================================================
@@ -163,7 +163,7 @@ lines(x_vals, ppois(x_vals, lambda = theta),
       col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
 
 legend("bottomright",
-       legend = c("Empirical CDF", "Poisson(3.396) CDF"),
+       legend = c("Empirical CDF", "Poisson(3.399) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ===================================================
@@ -233,6 +233,7 @@ for (n_value in 0:14) {
   poisson_probabilities <- (posterior[, "theta"]^n_value) * exp(-posterior[, "theta"]) / factorial(n_value)
   poisson_predictions[n_value + 1] <- mean(poisson_probabilities)
 }
+poisson_predictions
 
 # Pareto predictions (y values)
 pareto_predictions <- numeric(1000)
@@ -245,7 +246,7 @@ for (i in seq_along(uniform_samples)) {
 }
 
 # Plot Pareto predictive distribution
-plot(density(pareto_predictions, na.rm=TRUE), main="", xlab="y", ylab="Density")
+plot(density(pareto_predictions, na.rm=TRUE), main="", xlab="", ylab="")
 
 # ===================================================
 # PREDICTIONS: Poisson-Pareto Distribution
@@ -329,9 +330,9 @@ hist_density <- hist(final_results, plot = FALSE, probability = TRUE)$density
 max_y <- max(gamma_densities, lognorm_densities, normal_densities, hist_density)
 
 # Plotting
-hist(final_results, probability = TRUE, breaks = 80,
+hist(final_results, probability = TRUE, breaks = 100,
      col = "gray90", border = "white", main = "",
-     xlab = "s", ylab = "Density", ylim = c(0, max_y * 1.05))
+     xlab = "", ylab = "", ylim = c(0, max_y * 1.05))
 curve(dgamma(x, shape = gamma_shape, rate = gamma_rate), col = "blue", lwd = 2, add = TRUE)
 curve(dlnorm(x, meanlog = mu_ln, sdlog = sqrt(sigma2_ln)), col = "green", lwd = 2, add = TRUE)
 curve(dnorm(x, mean = normal_mean, sd = normal_sd), col = "red", lwd = 2, add = TRUE)
@@ -342,3 +343,7 @@ legend("topright", legend = c("Gamma", "Lognormal", "Normal"),
 median(final_results)
 quantile(final_results, probs = c(0.90, 0.95, 0.99))
 max(final_results)
+
+## New data
+
+
