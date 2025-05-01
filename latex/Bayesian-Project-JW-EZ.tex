@@ -83,13 +83,13 @@ Nevertheless, Bayesian methods also come with certain limitations. The choice of
 
 \section{Replication of \citet{dudley2006bayesian}}
 
-Building on the theoretical background, this project aims to replicate the Bayesian modeling approach proposed by \citet{dudley2006bayesian}. The analysis is based on a dataset of automobile insurance claims exceeding 1.5 million, col- lected over a five-year period. The data, originally reported by Rytgaard (1990), is presented in Table \ref{tab:1}.
+Building on the theoretical background, this project aims to replicate the Bayesian modeling approach proposed by \citet{dudley2006bayesian}. The analysis is based on a dataset of automobile insurance claims exceeding 1.5 million, col- lected over a five-year period. The data, originally reported by \citet{rytgaard1990pareto}, is presented in Table \ref{tab:1}.
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}
-\caption{Insurance Claim Amounts Exceeding 1.5 Million (Data from Rytgaard, 1990)}
+\caption{Insurance Claim Amounts Exceeding 1.5 Million (Data from \citealp{rytgaard1990pareto})}
 \label{tab:1}
 \begin{threeparttable}
 \begin{tabular}{
@@ -187,17 +187,17 @@ Since all three posterior distributions were standard distributions, the Gibbs s
 \begin{threeparttable}
 \begin{tabular}{
 >{\raggedright\arraybackslash}p{\widthof{Chain}}
-*{3}{S[scientific-notation=true, table-format=1.5e1]}
+*{3}{S[table-format=6.5]}
 }
 \hline
 \textbf{Chain} & \( \alpha \) & \( \beta \) & \( \theta \) \\ \hline
-1 & 1e-5 & 1e-5 & 1e-5 \\
-2 & 1e5 & 1 & 1e5 \\
+1 & 0.00001 & 0.00001 & 0.00001 \\
+2 & 100000 & 1 & 100000 \\
 3 & 3.076 & 1.625 & 3.200 \\ \hline
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
-\item These initial values are taken from \citet{dudley2006bayesian}.
+\item These values are taken from \citet{dudley2006bayesian}.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -499,7 +499,7 @@ p (N_f = n \mid \mathbf{n}) \approx \frac{1}{m} \sum_{i=1}^{m} \frac{(\theta^{(i
 
 \noindent where \( \theta^{(i)} \) is the \( i \)-th sample from the MCMC chain and \( m \) is the number of iterations after burn-in and thinning.
 
-Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation of \( Y_t \). Then the posterior predictive cumulative distribution function (CDF) of \( Y_f \) is given by:
+Similarly, let \( \mathbf{y} \) denote the observed data, and let \( Y_f \) represent a future observation of \( Y_{i,t} \). Then the posterior predictive cumulative distribution function (CDF) of \( Y_f \) is given by:
 \[
 \begin{aligned}
 p (Y_f \leq y \mid \mathbf{y}) 
@@ -530,15 +530,15 @@ S[table-format=1.4]
 \hline
 \( n \) & \textbf{Probability} \\ 
 \hline
-0  & 0.0450 \\ 
-1  & 0.1277 \\ 
-2  & 0.1916 \\ 
+0  & 0.0453 \\ 
+1  & 0.1282 \\ 
+2  & 0.1919 \\ 
 3  & 0.2023 \\ 
-4  & 0.1686 \\ 
-5  & 0.1180 \\ 
-6  & 0.0721 \\ 
-7  & 0.0394 \\ 
-8  & 0.0197 \\ 
+4  & 0.1683 \\ 
+5  & 0.1177 \\ 
+6  & 0.0718 \\ 
+7  & 0.0393 \\ 
+8  & 0.0196 \\ 
 9  & 0.0091 \\ 
 10 & 0.0039 \\ 
 11 & 0.0016 \\ 
@@ -572,7 +572,7 @@ The draws of \( S_f \), representing a future observation of \( S_t \), were gen
 \includegraphics[width=0.8\textwidth]{rytgaard1990/predictive_S_f.png}
 \end{figure}
 
-Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 116.396 indicates~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation effectively captured the tail behavior of the predictive distribution of \( S \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
+Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 116.396 reflects~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation ef- fectively captured the tail behavior of the predictive distribution of \( S \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
 
 \begin{table}[!ht]
 \centering
@@ -593,6 +593,211 @@ Median & 7.504 \\
 99th Percentile & 25.171 \\
 Maximum & 116.396 \\
 \hline
+\end{tabular}
+\end{table}
+
+\section{Implementation on Alternative Data}
+
+To evaluate the generalizability of \citet{dudley2006bayesian} Bayesian approach to insurance claim modeling, the same~meth- odology was applied to an alternative dataset. The \texttt{itamtplcost} dataset contains 457 individual motor insurance claims exceeding 500{,}000 euros, recorded in Italy between 1997 and 2012 \citep{Dutang2020}.
+
+Table~\ref{tab:8} reports a comparison of summary statistics between the \citet{rytgaard1990pareto} and \texttt{itamtplcost} datasets. It is evident that claims in the \texttt{itamtplcost} dataset are significantly larger, with a mean of 1{,}015.352 million~euros compared to 3.058 million euros in the \citet{rytgaard1990pareto} dataset. The variability is also higher, with a range~of 6{,}637.339 compared to 17.555. These differences render the dataset more complex and provide a~valuable test of whether the Gamma--Pareto--Poisson model continues to yield meaningful posterior inference and predictions~in a more realistic insurance context.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Comparison of Summary Statistics Between Datasets}
+\label{tab:8}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\citet{rytgaard1990pareto}}}
+*{6}{S[table-format=4.3]}
+}
+\hline
+\textbf{Dataset} & \textbf{Min} & \textbf{1st Qu.} & \textbf{Median} & \textbf{Mean} & \textbf{3rd Qu.} & \textbf{Max} \\
+\hline
+& \multicolumn{6}{c}{\textbf{Claim Amounts (in millions)}} \\
+\hline
+\citet{rytgaard1990pareto} & 1.625 & 1.745 & 1.863 & 3.058 & 2.109 & 19.180 \\
+\texttt{itamtplcost} & 2.161 & 627.719 & 844.011 & 1015.352 & 1224.316 & 6639.500 \\
+\hline
+& \multicolumn{6}{c}{\textbf{Claim Counts}} \\
+\hline
+\citet{rytgaard1990pareto} & 0.00 & 3.00 & 4.00 & 3.20 & 4.00 & 5.00 \\
+\texttt{itamtplcost} & 5.00 & 24.25 & 30.50 & 28.56 & 35.25 & 40.00 \\
+\hline
+\end{tabular}
+\end{table}
+
+Similarly to the previous case, Gibbs sampling was used to draw realizations from the posterior distributions of \(\alpha\), \(\beta\), and \(\theta\). Three Markov chains were run in parallel, with initial parameter values chosen to be well-dispersed (see Table~\ref{tab:9}). For the third chain, the initial values were set to the maximum likelihood estimates (MLEs) of~the parameters.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Initial Parameter Values (\texttt{itamtplcost})}
+\label{tab:9}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{Chain}}
+*{3}{S[table-format=6.5]}
+}
+\hline
+\textbf{Chain} & \( \alpha \) & \( \beta \) & \( \theta \) \\ \hline
+1 & 0.00001 & 0.00001 & 0.00001 \\
+2 & 100000 & 1.330 & 100000 \\
+3 & 0.169 & 2.161 & 28.563 \\ \hline
+\end{tabular}
+\end{table}
+
+Initially, a burn-in of 5{,}000 iterations was employed, and the Gelman--Rubin diagnostic \citep{Gelman1992} was used to assess if this was sufficient. Figure~\ref{fig:11} shows how the univariate PSRF point estimates evolve with the number of iterations. While all estimates remain below 1.1, they stabilize around 1 at approximately~the 10{,}000th iteration. Therefore, a burn-in of 10{,}000 was adopted. The chains were rerun, and autocorrelation plots were then generated (see Figure~\ref{fig:12}), with values at lags 1 through 10 reported in Table~\ref{tab:10}. High autocorrelations were observed, particularly for \( \beta \), and thus a thinning interval of 10 was applied.
+
+\begin{figure}[!ht]
+    \centering
+    \caption{PSRF Values (Gelman--Rubin Diagnostic) (\texttt{itamtplcost})}
+    \label{fig:11}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/gelman_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/gelman_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/gelman_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \caption{Autocorrelation Plots (\texttt{itamtplcost})}
+    \label{fig:12}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+\end{figure}
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Autocorrelations at Lags 1--10 (\texttt{itamtplcost})}
+\label{tab:10}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\textbf{Lag}}}
+*{3}{S[table-format=-1.3]}
+}
+\hline
+\textbf{Lag} & \( \alpha \) & \( \beta \) & \( \theta \) \\
+\hline
+1  & 0.146 & 0.679 & -0.003 \\
+2  & 0.032 & 0.472 & -0.006 \\
+3  & 0.011 & 0.327 & -0.002 \\
+4  & 0.009 & 0.228 &  0.002 \\
+5  & 0.001 & 0.166 & -0.003 \\
+6  & -0.005 & 0.121 & -0.004 \\
+7  & -0.003 & 0.085 &  0.004 \\
+8  & 0.000 & 0.061 &  0.004 \\
+9  & 0.000 & 0.046 & -0.004 \\
+10 & -0.001 & 0.032 & -0.001 \\
+\hline
+\end{tabular}
+\end{table}
+
+The chains were rerun with this thinning. Figure~\ref{fig:13} presents the trace plots, while Figure~\ref{fig:14} shows the~updated autocorrelation plots. The trace plots indicate good mixing across chains, and the autocorrelation plots demonstrate that autocorrelation values at all lags have become negligible.
+
+\begin{figure}[!ht]
+    \centering
+    \caption{Trace Plots After Thinning (\texttt{itamtplcost})}
+    \label{fig:13}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \caption{Autocorrelation Plots After Thinning (\texttt{itamtplcost})}
+    \label{fig:14}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_alpha.png}
+        \caption{\( \alpha \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_beta.png}
+        \caption{\( \beta \)}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_theta.png}
+        \caption{\( \theta \)}
+    \end{subfigure}
+
+\end{figure}
+
+Table~\ref{tab:11} reports statistics computed from 30{,}000 post-burn-in iterations, while Figure~\ref{fig:15} presents the posterior density plots for \( \alpha \), \( \beta \), and \( \theta \). The resulting densities resemble Gamma distributions, with the density of \( \beta \) appropriately truncated at 0.002, reflecting the minimum value of \( y \). The statistics and density plot for \( E[y] \) could not be obtained for the \texttt{itamtplcost} dataset, as all posterior draws of \( \alpha \) were below 1---implying that the expected value of the Pareto distribution is undefined in this case.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Posterior Statistics (\texttt{itamtplcost})}
+\label{tab:11}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\( \beta \)}}
+*{2}{S[table-format=1.3]}
+>{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
+}
+\hline
+ & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
+\( \alpha \) & 3.076 & 0.762 & (1.762, 4.752) \\
+\( \beta \) & 1.591 & 0.035 & (1.498, 1.624) \\
+\( \theta \) & 3.399 & 0.820 & (1.986, 5.185) \\ \hline
 \end{tabular}
 \end{table}
 

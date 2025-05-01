@@ -32,9 +32,12 @@ itamtplcost <- itamtplcost %>%
   rename(claim_amount = UltimateCost) %>%
   select(year, claim_amount)
 
+# Express claim_amount in millions
+itamtplcost$claim_amount <- round(itamtplcost$claim_amount / 1000, 3)
+
 itamtplcost_input <- list(
   y = itamtplcost$claim_amount,
-  n = itamtplcost %>% group_by(year) %>% summarise(count=n()) %>% pull(count)
+  n = as.numeric(itamtplcost %>% group_by(year) %>% summarise(count=n()) %>% pull(count))
 )
 
 itamtplcost_input$N_y <- length(itamtplcost_input$y)
@@ -227,10 +230,12 @@ autocorr.diag(samples_rerun[, "theta"], lags = 1:10)
 # PREDICTIONS: Poisson and Pareto Distribution
 # ===================================================
 
+posterior_rerun <- as.matrix(samples_rerun)
+
 # Poisson predictions (n values)
 poisson_predictions <- numeric(15)
 for (n_value in 0:14) {
-  poisson_probabilities <- (posterior[, "theta"]^n_value) * exp(-posterior[, "theta"]) / factorial(n_value)
+  poisson_probabilities <- (posterior_rerun[, "theta"]^n_value) * exp(-posterior_rerun[, "theta"]) / factorial(n_value)
   poisson_predictions[n_value + 1] <- mean(poisson_probabilities)
 }
 poisson_predictions
@@ -241,7 +246,7 @@ uniform_samples <- runif(1000)
 
 for (i in seq_along(uniform_samples)) {
   U <- uniform_samples[i]
-  pareto_samples <- posterior[, "beta"] / (1 - U)^(1 / posterior[, "alpha"])
+  pareto_samples <- posterior_rerun[, "beta"] / (1 - U)^(1 / posterior_rerun[, "alpha"])
   pareto_predictions[i] <- mean(pareto_samples)
 }
 
@@ -270,9 +275,9 @@ pois <- function(lambda, U) {
 
 # Simulation parameters
 n_sim <- 1000
-theta_values <- posterior[, "theta"]
-alpha_values <- posterior[, "alpha"]
-beta_values <- posterior[, "beta"]
+theta_values <- posterior_rerun[, "theta"]
+alpha_values <- posterior_rerun[, "alpha"]
+beta_values <- posterior_rerun[, "beta"]
 
 # Simulate Poisson samples
 uniform_poisson <- runif(n_sim)
@@ -346,4 +351,172 @@ max(final_results)
 
 ## New data
 
+plot(rytgaard1990_input$n)
+plot(itamtplcost_input$n)
 
+summary(rytgaard1990_input$y)
+summary(itamtplcost_input$y)
+
+summary(rytgaard1990_input$n)
+summary(itamtplcost_input$n)
+
+max(rytgaard1990_input$y)-min(rytgaard1990_input$y)
+max(itamtplcost_input$y)-min(itamtplcost_input$y)
+
+# Compute MLE of parameters
+observed_n <- itamtplcost %>% group_by(year) %>% summarise(count=n()) %>% pull(count)
+theta_mle <- mean(observed_n) # MLE of theta
+theta_mle
+
+observed_y <- itamtplcost$claim_amount
+beta_mle <- min(observed_y) # MLE of beta
+beta_mle
+
+alpha_mle <- 1 / mean(log(observed_y / beta_mle))
+alpha_mle
+
+# Initial values for three MCMC chains
+inits_list_ITA <- list(
+  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
+  list(alpha = 100000, beta = 1.33, theta = 100000, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
+  list(alpha = 0.169, beta = 2.161, theta = 28.563, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
+)
+
+set.seed(123)
+
+jags_model_ITA <- jags.model(
+  textConnection(model_code),
+  data = itamtplcost_input,
+  inits = inits_list_ITA,
+  n.chains = 3,
+  n.adapt = 5000
+)
+
+samples_ITA <- coda.samples(
+  jags_model_ITA,
+  variable.names = c("alpha", "beta", "theta"),
+  n.iter = 30000
+)
+
+gelman.diag(samples_ITA, autoburnin = FALSE)
+
+params <- c("alpha", "beta", "theta")
+for (param in params) {
+  gelman.plot(samples_ITA[, param], xlab = "", ylab = "")
+}
+
+jags_model_ITA_rerun <- jags.model(
+  textConnection(model_code),
+  data = itamtplcost_input,
+  inits = inits_list_ITA,
+  n.chains = 3,
+  n.adapt = 10000
+)
+
+samples_ITA_rerun <- coda.samples(
+  jags_model_ITA_rerun,
+  variable.names = c("alpha", "beta", "theta"),
+  n.iter = 30000
+)
+
+gelman.diag(samples_ITA_rerun, autoburnin = FALSE)
+
+autocorr.plot(samples_ITA_rerun[, "alpha"], ask=FALSE)
+autocorr.plot(samples_ITA_rerun[, "beta"], ask=FALSE)
+autocorr.plot(samples_ITA_rerun[, "theta"], ask=FALSE)
+
+autocorr.diag(samples_ITA_rerun[, "alpha"], lags = 1:10)
+autocorr.diag(samples_ITA_rerun[, "beta"], lags = 1:10)
+autocorr.diag(samples_ITA_rerun[, "theta"], lags = 1:10)
+
+jags_model_ITA_rerun_again <- jags.model(
+  textConnection(model_code),
+  data = itamtplcost_input,
+  inits = inits_list_ITA,
+  n.chains = 3,
+  n.adapt = 10000
+)
+
+samples_ITA_rerun_again <- coda.samples(
+  jags_model_ITA_rerun_again,
+  variable.names = c("alpha", "beta", "theta"),
+  n.iter = 300000,
+  thin = 10
+)
+
+gelman.diag(samples_ITA_rerun_again, autoburnin = FALSE)
+
+autocorr.plot(samples_ITA_rerun_again[, "alpha"], ask=FALSE)
+autocorr.plot(samples_ITA_rerun_again[, "beta"], ask=FALSE)
+autocorr.plot(samples_ITA_rerun_again[, "theta"], ask=FALSE)
+
+autocorr.diag(samples_ITA_rerun_again[, "alpha"], lags = 1:10)
+autocorr.diag(samples_ITA_rerun_again[, "beta"], lags = 1:10)
+autocorr.diag(samples_ITA_rerun_again[, "theta"], lags = 1:10)
+
+traceplot(samples_ITA_rerun_again[, c("alpha", "beta", "theta")], main="", xlab="")
+
+summary(samples_ITA_rerun_again)
+
+plot(density(as.matrix(samples_ITA_rerun_again[, "alpha"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_ITA_rerun_again[, "beta"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_ITA_rerun_again[, "theta"])), main="", xlab="", ylab="")
+
+posterior_ITA <- as.matrix(samples_ITA_rerun_again)
+
+# Simulation parameters
+n_sim <- 1000
+theta_values <- posterior_ITA[, "theta"]
+alpha_values <- posterior_ITA[, "alpha"]
+beta_values <- posterior_ITA[, "beta"]
+
+message("Starting Poisson simulation...")
+
+# Simulate Poisson samples
+uniform_poisson <- runif(n_sim)
+poisson_results <- numeric(n_sim)
+
+for (i in seq_along(uniform_poisson)) {
+  if (i %% 100 == 0) message("Simulating Poisson sample ", i, "/", n_sim)
+  
+  U <- uniform_poisson[i]
+  poisson_samples <- numeric(length(theta_values))
+  
+  for (j in seq_along(theta_values)) {
+    poisson_samples[j] <- pois(theta_values[j], U)
+  }
+  
+  poisson_results[i] <- round(mean(poisson_samples))
+}
+
+message("Poisson simulation completed.")
+message("Starting aggregate claim simulation...")
+
+# Simulate aggregate claims
+final_results <- numeric(length(poisson_results))
+
+for (i in seq_along(poisson_results)) {
+  if (i %% 100 == 0) message("Simulating aggregate claim ", i, "/", length(poisson_results))
+  
+  n <- poisson_results[i]
+  pareto_samples <- numeric(n)
+  uniform_pareto <- runif(n)
+  
+  for (j in seq_along(uniform_pareto)) {
+    U <- uniform_pareto[j]
+    pareto_samples[j] <- mean(beta_values / (1 - U)^(1 / alpha_values))
+  }
+  
+  final_results[i] <- sum(pareto_samples)
+}
+
+message("Aggregate simulation completed.")
+
+# Summary statistics
+median(final_results)
+quantile(final_results, probs = c(0.90, 0.95, 0.99))
+max(final_results)
+
+# Sample statistics
+S_observed <- itamtplcost %>% group_by(year) %>% summarise(sum(claim_amount)) %>% pull('sum(claim_amount)')
+plot(S_observed)

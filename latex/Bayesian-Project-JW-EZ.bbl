@@ -7,6 +7,11 @@ Dudley, C. (2006).
 \newblock Master's dissertation, Heriot-Watt University, School of Mathematical
   and Computer Sciences, Actuarial Mathematics \& Statistics.
 
+\bibitem[\protect\astroncite{Dutang}{2020}]{Dutang2020}
+Dutang, C. (2020).
+\newblock {CASdatasets}: Insurance Datasets.
+\newblock R package version 1.0.
+
 \bibitem[\protect\astroncite{Gelman and Rubin}{1992}]{Gelman1992}
 Gelman, A. and Rubin, D.~B. (1992).
 \newblock Inference from Iterative Simulation Using Multiple Sequences.

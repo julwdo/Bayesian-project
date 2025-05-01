@@ -5,3 +5,4 @@
 \contentsline {subsection}{\numberline {3.2}Sampling Results}{3}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Convergence Diagnostics}{3}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Predictive Inference}{6}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Implementation on Alternative Data}{9}{section.4}%

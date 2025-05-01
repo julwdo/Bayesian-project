@@ -29,12 +29,5 @@
   doi       = {10.1214/ss/1177011136},
   publisher = {Institute of Mathematical Statistics},
 }
-@misc{Dutang2020,
-  author = {Christophe Dutang},
-  title = {{CASdatasets}: Insurance Datasets},
-  year = {2020},
-  note = {R package version 1.0},
-  url = {https://dutangc.github.io/CASdatasets/reference/itamtplcost.html}
-}
 
 @Comment{jabref-meta: databaseType:bibtex;}
