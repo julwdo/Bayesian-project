@@ -349,10 +349,9 @@ median(final_results)
 quantile(final_results, probs = c(0.90, 0.95, 0.99))
 max(final_results)
 
-## New data
-
-plot(rytgaard1990_input$n)
-plot(itamtplcost_input$n)
+# ===================================================
+# NEW DATA: COMPARISON OF STATISTICS
+# ===================================================
 
 summary(rytgaard1990_input$y)
 summary(itamtplcost_input$y)
@@ -363,122 +362,173 @@ summary(itamtplcost_input$n)
 max(rytgaard1990_input$y)-min(rytgaard1990_input$y)
 max(itamtplcost_input$y)-min(itamtplcost_input$y)
 
-# Compute MLE of parameters
-observed_n <- itamtplcost %>% group_by(year) %>% summarise(count=n()) %>% pull(count)
-theta_mle <- mean(observed_n) # MLE of theta
-theta_mle
+# ===================================================
+# NEW DATA: POISSON-LOGNORMAL MODEL
+# ===================================================
 
-observed_y <- itamtplcost$claim_amount
-beta_mle <- min(observed_y) # MLE of beta
-beta_mle
-
-alpha_mle <- 1 / mean(log(observed_y / beta_mle))
-alpha_mle
-
-# Initial values for three MCMC chains
-inits_list_ITA <- list(
-  list(alpha = 0.00001, beta = 0.00001, theta = 0.00001, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
-  list(alpha = 100000, beta = 1.33, theta = 100000, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
-  list(alpha = 0.169, beta = 2.161, theta = 28.563, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
-)
-
-set.seed(123)
-
-jags_model_ITA <- jags.model(
-  textConnection(model_code),
-  data = itamtplcost_input,
-  inits = inits_list_ITA,
-  n.chains = 3,
-  n.adapt = 5000
-)
-
-samples_ITA <- coda.samples(
-  jags_model_ITA,
-  variable.names = c("alpha", "beta", "theta"),
-  n.iter = 30000
-)
-
-gelman.diag(samples_ITA, autoburnin = FALSE)
-
-params <- c("alpha", "beta", "theta")
-for (param in params) {
-  gelman.plot(samples_ITA[, param], xlab = "", ylab = "")
+model_code_LOGNORM <- "
+model {
+  for(i in 1:N_y) {
+    y[i] ~ dlnorm(mu, tau)
+  }
+  
+  for(i in 1:N_n) {
+    n[i] ~ dpois(theta)
+  }
+  
+  mu ~ dnorm(0, 1.0E-8)
+  sigma ~ dgamma(1, 0.0001)
+  tau <- 1 / pow(sigma, 2)
+  theta ~ dgamma(1, 0.0001)
 }
+"
 
-jags_model_ITA_rerun <- jags.model(
-  textConnection(model_code),
+# Compute MLE of parameters
+log_x <- log(itamtplcost_input$y)
+
+mu_hat <- mean(log_x) # MLE of mu
+tau_hat <- 1 / var(log_x) # MLE of tau
+
+theta_hat <- mean(itamtplcost_input$n) # MLE of theta
+
+inits_list_LOGNORM <- list(
+  list(mu = 0.00001, sigma = 0.00001, theta = 0.00001, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
+  list(mu = 100000, sigma = 1, theta = 100000, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
+  list(mu = mu_hat, sigma = tau_hat, theta = theta_hat, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
+)
+
+jags_model_LOGNORM <- jags.model(
+  textConnection(model_code_LOGNORM),
   data = itamtplcost_input,
-  inits = inits_list_ITA,
+  inits = inits_list_LOGNORM,
   n.chains = 3,
-  n.adapt = 10000
+  n.adapt = 1000
 )
 
-samples_ITA_rerun <- coda.samples(
-  jags_model_ITA_rerun,
-  variable.names = c("alpha", "beta", "theta"),
-  n.iter = 30000
-)
-
-gelman.diag(samples_ITA_rerun, autoburnin = FALSE)
-
-autocorr.plot(samples_ITA_rerun[, "alpha"], ask=FALSE)
-autocorr.plot(samples_ITA_rerun[, "beta"], ask=FALSE)
-autocorr.plot(samples_ITA_rerun[, "theta"], ask=FALSE)
-
-autocorr.diag(samples_ITA_rerun[, "alpha"], lags = 1:10)
-autocorr.diag(samples_ITA_rerun[, "beta"], lags = 1:10)
-autocorr.diag(samples_ITA_rerun[, "theta"], lags = 1:10)
-
-jags_model_ITA_rerun_again <- jags.model(
-  textConnection(model_code),
-  data = itamtplcost_input,
-  inits = inits_list_ITA,
-  n.chains = 3,
-  n.adapt = 10000
-)
-
-samples_ITA_rerun_again <- coda.samples(
-  jags_model_ITA_rerun_again,
-  variable.names = c("alpha", "beta", "theta"),
+samples_LOGNORM <- coda.samples(
+  jags_model_LOGNORM,
+  variable.names = c("mu", "tau", "theta"),
   n.iter = 300000,
   thin = 10
 )
 
-gelman.diag(samples_ITA_rerun_again, autoburnin = FALSE)
+params <- c("mu", "tau", "theta")
+for (param in params) {
+  gelman.plot(samples_LOGNORM[, param], xlab = "", ylab = "")
+}
 
-autocorr.plot(samples_ITA_rerun_again[, "alpha"], ask=FALSE)
-autocorr.plot(samples_ITA_rerun_again[, "beta"], ask=FALSE)
-autocorr.plot(samples_ITA_rerun_again[, "theta"], ask=FALSE)
+autocorr.diag(samples_LOGNORM[, "mu"], lags = 1:10)
+autocorr.diag(samples_LOGNORM[, "tau"], lags = 1:10)
+autocorr.diag(samples_LOGNORM[, "theta"], lags = 1:10)
 
-autocorr.diag(samples_ITA_rerun_again[, "alpha"], lags = 1:10)
-autocorr.diag(samples_ITA_rerun_again[, "beta"], lags = 1:10)
-autocorr.diag(samples_ITA_rerun_again[, "theta"], lags = 1:10)
+traceplot(samples_LOGNORM[, c("mu", "tau", "theta")], main="", xlab="")
 
-traceplot(samples_ITA_rerun_again[, c("alpha", "beta", "theta")], main="", xlab="")
+summary(samples_LOGNORM)
 
-summary(samples_ITA_rerun_again)
+posterior_LOGNORM <- as.matrix(samples_LOGNORM)
 
-plot(density(as.matrix(samples_ITA_rerun_again[, "alpha"])), main="", xlab="", ylab="")
-plot(density(as.matrix(samples_ITA_rerun_again[, "beta"])), main="", xlab="", ylab="")
-plot(density(as.matrix(samples_ITA_rerun_again[, "theta"])), main="", xlab="", ylab="")
+sigma_values <- sqrt(1/posterior_LOGNORM[, "tau"])
+mean(sigma_values)
+sd(sigma_values)
+quantile(sigma_values, c(0.025, 0.975), na.rm=TRUE)
 
-posterior_ITA <- as.matrix(samples_ITA_rerun_again)
+plot(density(as.matrix(samples_LOGNORM[, "mu"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_LOGNORM[, "tau"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_LOGNORM[, "theta"])), main="", xlab="", ylab="")
+
+lognormal_ev <- function(mu, tau) {
+  sigma2 <- 1 / tau
+  exp(mu + sigma2 / 2)
+}
+
+expected_values_LOGNORM <- lognormal_ev(posterior_LOGNORM[, "mu"], posterior_LOGNORM[, "tau"])
+
+mean(expected_values_LOGNORM, na.rm=TRUE)
+sd(expected_values_LOGNORM, na.rm=TRUE)
+quantile(expected_values_LOGNORM, c(0.025, 0.5, 0.975), na.rm=TRUE)
+
+plot(density(expected_values_LOGNORM, na.rm=TRUE), main="", xlab="", ylab="")
+
+# ===================================================
+# PLOT 1: EMPIRICAL VS POSTERIOR LOGNORMAL CDF
+# ===================================================
+y <- itamtplcost_input$y
+mu <- mean(posterior_LOGNORM[, "mu"])
+sigma <- mean(1 / sqrt(posterior_LOGNORM[, "tau"]))
+
+# Define Lognormal CDF
+lognormal_cdf <- function(x, mu, sigma) {
+  pnorm(log(x), mean = mu, sd = sigma)
+}
+
+# Plot empirical CDF
+plot(
+  ecdf(y),
+  col = "blue",
+  main = "Empirical vs Posterior Lognormal CDF",
+  xlab = "y values",
+  ylab = "CDF",
+  lwd = 2
+)
+
+# Overlay posterior predictive Lognormal CDF
+x_vals <- seq(min(y), max(y), length.out = 500)
+lines(x_vals, lognormal_cdf(x_vals, mu, sigma),
+      col = "red", lwd = 2, lty = 2)
+
+# Add legend
+legend("bottomright",
+       legend = c("Empirical CDF", "Lognormal(6.700,0.804) CDF"),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+# Lognormal predictions (y values)
+lognormal_predictions <- numeric(1000)
+uniform_samples <- runif(1000)
+
+mu_posterior <- posterior_LOGNORM[, "mu"]
+sigma_posterior <- 1 / sqrt(posterior_LOGNORM[, "tau"])
+
+for (i in seq_along(uniform_samples)) {
+  U <- uniform_samples[i]
+  
+  normal_samples <- qnorm(U, mean = mu_posterior, sd = sigma_posterior)
+  lognormal_samples <- exp(normal_samples)
+  
+  lognormal_predictions[i] <- mean(lognormal_samples)
+}
+
+plot(density(lognormal_predictions, na.rm = TRUE), main = "", xlab = "", ylab = "")
+
+# ===================================================
+# PREDICTIONS: Poisson-Lognormal Distribution
+# ===================================================
+
+set.seed(123)
+
+pois <- function(lambda, U) {
+  p <- exp(-lambda)
+  F <- p
+  n <- 0
+  
+  while (U > F) {
+    n <- n + 1
+    p <- p * lambda / n
+    F <- F + p
+  }
+  return(n)
+}
 
 # Simulation parameters
 n_sim <- 1000
-theta_values <- posterior_ITA[, "theta"]
-alpha_values <- posterior_ITA[, "alpha"]
-beta_values <- posterior_ITA[, "beta"]
-
-message("Starting Poisson simulation...")
+mu_values <- posterior_LOGNORM[, "mu"]
+tau_values <- posterior_LOGNORM[, "tau"]
+theta_values <- posterior_LOGNORM[, "theta"]
 
 # Simulate Poisson samples
 uniform_poisson <- runif(n_sim)
 poisson_results <- numeric(n_sim)
 
 for (i in seq_along(uniform_poisson)) {
-  if (i %% 100 == 0) message("Simulating Poisson sample ", i, "/", n_sim)
-  
   U <- uniform_poisson[i]
   poisson_samples <- numeric(length(theta_values))
   
@@ -489,34 +539,65 @@ for (i in seq_along(uniform_poisson)) {
   poisson_results[i] <- round(mean(poisson_samples))
 }
 
-message("Poisson simulation completed.")
-message("Starting aggregate claim simulation...")
-
 # Simulate aggregate claims
-final_results <- numeric(length(poisson_results))
+final_results_LOGNORM <- numeric(length(poisson_results))
 
 for (i in seq_along(poisson_results)) {
-  if (i %% 100 == 0) message("Simulating aggregate claim ", i, "/", length(poisson_results))
-  
   n <- poisson_results[i]
-  pareto_samples <- numeric(n)
-  uniform_pareto <- runif(n)
+  lognorm_samples <- numeric(n)
   
-  for (j in seq_along(uniform_pareto)) {
-    U <- uniform_pareto[j]
-    pareto_samples[j] <- mean(beta_values / (1 - U)^(1 / alpha_values))
+  uniform_lognorm <- runif(n)
+  
+  for (j in seq_along(uniform_lognorm)) {
+    U <- uniform_lognorm[j]
+    
+    normal_samples <- qnorm(U, mean = mu_posterior, sd = sigma_posterior)
+    lognormal_samples[j] <- mean(exp(normal_samples))
   }
   
-  final_results[i] <- sum(pareto_samples)
+  final_results_LOGNORM[i] <- sum(lognormal_samples)
 }
 
-message("Aggregate simulation completed.")
+summary(poisson_results)
+var(poisson_results)
+
+summary(itamtplcost_input$n)
+var(itamtplcost_input$n)
+
+# Fit candidate distributions via moment matching
+mean_S <- mean(final_results_LOGNORM)
+var_S <- var(final_results_LOGNORM)
+
+gamma_shape <- mean_S^2 / var_S
+gamma_rate  <- mean_S / var_S
+
+sigma2_ln <- log(1 + var_S / mean_S^2)
+mu_ln     <- log(mean_S) - sigma2_ln / 2
+
+normal_mean <- mean_S
+normal_sd   <- sqrt(var_S)
+
+# Define support for density plots
+x_vals <- seq(min(final_results_LOGNORM), max(final_results_LOGNORM), length.out = 1000)
+
+gamma_densities   <- dgamma(x_vals, shape = gamma_shape, rate = gamma_rate)
+lognorm_densities <- dlnorm(x_vals, meanlog = mu_ln, sdlog = sqrt(sigma2_ln))
+normal_densities  <- dnorm(x_vals, mean = normal_mean, sd = normal_sd)
+
+hist_density <- hist(final_results_LOGNORM, plot = FALSE, probability = TRUE)$density
+max_y <- max(gamma_densities, lognorm_densities, normal_densities, hist_density)
+
+# Plotting
+hist(final_results_LOGNORM, probability = TRUE, breaks = 100,
+     col = "gray90", border = "white", main = "",
+     xlab = "", ylab = "", ylim = c(0, max_y * 1.05))
+curve(dgamma(x, shape = gamma_shape, rate = gamma_rate), col = "blue", lwd = 2, add = TRUE)
+curve(dlnorm(x, meanlog = mu_ln, sdlog = sqrt(sigma2_ln)), col = "green", lwd = 2, add = TRUE)
+curve(dnorm(x, mean = normal_mean, sd = normal_sd), col = "red", lwd = 2, add = TRUE)
+legend("topright", legend = c("Gamma", "Lognormal", "Normal"),
+       col = c("blue", "green", "red"), lwd = 2)
 
 # Summary statistics
-median(final_results)
-quantile(final_results, probs = c(0.90, 0.95, 0.99))
-max(final_results)
-
-# Sample statistics
-S_observed <- itamtplcost %>% group_by(year) %>% summarise(sum(claim_amount)) %>% pull('sum(claim_amount)')
-plot(S_observed)
+median(final_results_LOGNORM)
+quantile(final_results_LOGNORM, probs = c(0.90, 0.95, 0.99))
+max(final_results_LOGNORM)
