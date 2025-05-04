@@ -816,6 +816,8 @@ aggregate_claims_nb_lognorm <- numeric(length(nb_results))
 for (i in seq_along(nb_results)) {
   n <- nb_results[i]
   
+  cat("Simulation", i, "\n")
+  
   lognorm_samples <- numeric(n)
   uniform_lognorm <- runif(n)
   
