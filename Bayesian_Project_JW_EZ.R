@@ -229,7 +229,6 @@ autocorr.diag(samples_rerun[, "theta"], lags = 1:10)
 # ---------------------------------------------------
 # PREDICTIONS: Poisson and Pareto Distribution
 # ---------------------------------------------------
-
 posterior_rerun <- as.matrix(samples_rerun)
 
 # Poisson predictions (n values)
@@ -315,20 +314,20 @@ mean_S <- mean(final_results)
 var_S <- var(final_results)
 
 gamma_shape <- mean_S^2 / var_S
-gamma_rate  <- mean_S / var_S
+gamma_rate <- mean_S / var_S
 
 sigma2_ln <- log(1 + var_S / mean_S^2)
-mu_ln     <- log(mean_S) - sigma2_ln / 2
+mu_ln <- log(mean_S) - sigma2_ln / 2
 
 normal_mean <- mean_S
-normal_sd   <- sqrt(var_S)
+normal_sd <- sqrt(var_S)
 
 # Define support for density plots
 x_vals <- seq(min(final_results), max(final_results), length.out = 1000)
 
-gamma_densities   <- dgamma(x_vals, shape = gamma_shape, rate = gamma_rate)
+gamma_densities <- dgamma(x_vals, shape = gamma_shape, rate = gamma_rate)
 lognorm_densities <- dlnorm(x_vals, meanlog = mu_ln, sdlog = sqrt(sigma2_ln))
-normal_densities  <- dnorm(x_vals, mean = normal_mean, sd = normal_sd)
+normal_densities <- dnorm(x_vals, mean = normal_mean, sd = normal_sd)
 
 hist_density <- hist(final_results, plot = FALSE, probability = TRUE)$density
 max_y <- max(gamma_densities, lognorm_densities, normal_densities, hist_density)
@@ -387,6 +386,8 @@ log_y <- log(itamtplcost_input$y)
 mu_hat_pois_lognorm <- mean(log_y)
 sigma_hat_pois_lognorm <- sd(log_y)
 
+tau_hat_pois_lognorm <- 1/sigma_hat_pois_lognorm^2
+
 theta_hat_pois_lognorm <- mean(itamtplcost_input$n)
 
 # Initial values for the model
@@ -397,7 +398,7 @@ inits_pois_lognorm <- list(
        .RNG.name = "base::Wichmann-Hill",
        .RNG.seed = 123),
   list(mu_pois_lognorm = 100000,
-       sigma_pois_lognorm = 1,
+       sigma_pois_lognorm = 100000,
        theta_pois_lognorm = 100000,
        .RNG.name = "base::Wichmann-Hill",
        .RNG.seed = 456),
@@ -416,7 +417,7 @@ jags_model_pois_lognorm <- jags.model(
   data = itamtplcost_input,
   inits = inits_pois_lognorm,
   n.chains = 3,
-  n.adapt = 1000
+  n.adapt = 10000
 )
 
 samples_pois_lognorm <- coda.samples(
@@ -438,6 +439,10 @@ for (param in params) {
 gelman.diag(samples_pois_lognorm, autoburnin = FALSE)
 
 # Autocorrelation diagnostics
+autocorr.plot(samples_pois_lognorm[, "mu_pois_lognorm"], ask=FALSE)
+autocorr.plot(samples_pois_lognorm[, "tau_pois_lognorm"], ask=FALSE)
+autocorr.plot(samples_pois_lognorm[, "theta_pois_lognorm"], ask=FALSE)
+
 autocorr.diag(samples_pois_lognorm[, "mu_pois_lognorm"], lags = 1:10)
 autocorr.diag(samples_pois_lognorm[, "tau_pois_lognorm"], lags = 1:10)
 autocorr.diag(samples_pois_lognorm[, "theta_pois_lognorm"], lags = 1:10)
@@ -470,7 +475,7 @@ quantile(expected_y_pois_lognorm, c(0.025, 0.5, 0.975), na.rm = TRUE)
 plot(density(expected_y_pois_lognorm, na.rm=TRUE), main="", xlab="", ylab="")
 
 # ---------------------------------------------------
-# PLOT: Empirical vs Posterior Lognormal CDF
+# PLOT 1: Empirical vs Posterior Lognormal CDF
 # ---------------------------------------------------
 y_obs <- itamtplcost_input$y
 mu_pois_lognorm_post_mean <- mean(posterior_pois_lognorm[, "mu_pois_lognorm"])
@@ -483,9 +488,9 @@ lognormal_cdf <- function(x, mu, sigma) {
 plot(
   ecdf(y_obs),
   col = "blue",
-  main = "Empirical vs Posterior Lognormal CDF",
-  xlab = "y values",
-  ylab = "CDF",
+  main = "",
+  xlab = "",
+  ylab = "",
   lwd = 2
 )
 
@@ -499,6 +504,32 @@ legend("bottomright",
                   sprintf("Lognormal(%.3f, %.3f) CDF",
                           mu_pois_lognorm_post_mean,
                           sigma_pois_lognorm_post_mean)),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+# ---------------------------------------------------
+# PLOT 2: EMPIRICAL VS POSTERIOR POISSON CDF
+# ---------------------------------------------------
+n <- itamtplcost_input$n
+theta_pois_lognorm_post_mean <- mean(posterior_pois_lognorm[, "theta_pois_lognorm"])
+
+# Plot empirical CDF for Poisson counts
+plot(
+  ecdf(n),
+  col = "blue",
+  main = "",
+  xlab = "",
+  ylab = "",
+  lwd = 2,
+  xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility
+)
+
+# Overlay theoretical Poisson CDF
+x_vals <- min(n):(max(n) + 3)
+lines(x_vals, ppois(x_vals, lambda = theta_pois_lognorm_post_mean),
+      col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
+
+legend("bottomright",
+       legend = c("Empirical CDF", "Poisson(28.628) CDF"),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ---------------------------------------------------
@@ -740,6 +771,33 @@ lines(x_vals, lognormal_cdf(x_vals, mu_post_mean, sigma_post_mean), col = "red",
 
 legend("bottomright",
        legend = c("Empirical CDF", sprintf("Lognormal(%.3f, %.3f) CDF", mu_post_mean, sigma_post_mean)),
+       col = c("blue", "red"), lty = c(1, 2), lwd = 2)
+
+# ---------------------------------------------------
+# PLOT 2: EMPIRICAL VS POSTERIOR NEGATIVE BINOMIAL CDF
+# ---------------------------------------------------
+n <- itamtplcost_input$n
+r_post_mean <- mean(posterior_nb_lognorm[, "r_nb"])
+p_post_mean <- mean(posterior_nb_lognorm[, "p_nb"])
+
+# Plot empirical CDF for Poisson counts
+plot(
+  ecdf(n),
+  col = "blue",
+  main = "",
+  xlab = "",
+  ylab = "",
+  lwd = 2,
+  xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility
+)
+
+# Overlay theoretical Negative Binomial CDF
+x_vals <- min(n):(max(n) + 3)
+lines(x_vals, pnbinom(x_vals, r_post_mean, p_post_mean),
+      col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
+
+legend("bottomright",
+       legend = c("Empirical CDF", sprintf("NB(%.3f, %.3f) CDF", r_post_mean, p_post_mean)),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ---------------------------------------------------
