@@ -69,8 +69,6 @@
 
 \section{Introduction}
 
-\section{Theoretical Background}
-
 In insurance modeling, accurately estimating the aggregate value of claims is essential for premium calculation, risk assessment, and maintaining solvency of insurance providers. The aggregate claim value refers to the total amount paid out for claims over a specified period. This quantity is typically modeled using a compound distribution, which separately describes the frequency and severity of claims. The frequency component, representing the number of claims within the period, is often modeled using a Poisson distribution. The severity component, which captures the magnitude of individual claims, is commonly modeled using heavy-tailed distributions such as the Pareto or Gamma distributions.
 
 The traditional framework for modeling such processes is grounded in frequentist statistics. In this approach, the parameters of the underlying distributions—such as the Poisson rate parameter \( \lambda \), or the shape and scale pa- rameters \( \alpha \) and \( \beta \) of the Pareto distribution—are considered fixed but unknown quantities. These parameters~are typically estimated from observed data using techniques such as maximum likelihood estimation (MLE).
@@ -212,7 +210,7 @@ A burn-in of 20,000 iterations was used. The statistics computed from the subseq
 \label{tab:3}
 \begin{threeparttable}
 \begin{tabular}{
->{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
+>{\raggedright\arraybackslash}p{\widthof{\( \mathbb{E}[y] \)}}
 *{2}{S[table-format=1.3]}
 >{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
 }
@@ -221,16 +219,16 @@ A burn-in of 20,000 iterations was used. The statistics computed from the subseq
 \( \alpha \) & 3.076 & 0.762 & (1.762, 4.752) \\
 \( \beta \) & 1.591 & 0.035 & (1.498, 1.624) \\
 \( \theta \) & 3.399 & 0.820 & (1.986, 5.185) \\
-\( E[Y] \) & 2.507 & 1.071 & (2.024, 3.637) \\ \hline
+\( \mathbb{E}[y] \) & 2.507 & 1.071 & (2.024, 3.637) \\ \hline
 \end{tabular}
 \begin{tablenotes}
 \footnotesize
-\item \( E[Y] \) was calculated for each simulated set of parameters \( \alpha \) and \( \beta \), and from these values, the mean, standard deviation, and 95\% Bayesian credible interval were subsequently computed.
+\item \( \mathbb{E}[y] \) was calculated for each simulated set of parameters \( \alpha \) and \( \beta \), and from these values, the mean, standard deviation, and 95\% Bayesian credible interval were subsequently computed.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
 
-In addition, density plots were generated for each of the parameters and for \( E[Y] \), as presented in Figure~\ref{fig:1}. The resulting densities for the parameters resemble Gamma distributions, with the density of \( \beta \) appropriately truncated at \( \min\{y_{i,t}\} = 1.625 \). The plot for \( E[Y] \) displays a right-skewed distribution that permits very large values, albeit with very low probability---consistent with expectations.
+In addition, density plots were generated for each of the parameters and for \( \mathbb{E}[y] \), as presented in Figure~\ref{fig:1}. The resulting densities for the parameters resemble Gamma distributions, with the density of \( \beta \) appropriately truncated at \( \min\{y_{i,t}\} = 1.625 \). The plot for \( \mathbb{E}[y] \) displays a right-skewed distribution that permits very large values, albeit with very low probability---consistent with expectations.
 
 \begin{figure}[!ht]
     \centering
@@ -259,7 +257,7 @@ In addition, density plots were generated for each of the parameters and for \( 
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{rytgaard1990/density_E_y.png}
-        \subcaption{\( E[y] \)}
+        \subcaption{\( \mathbb{E}[y] \)}
     \end{minipage}
     
 \end{figure}
@@ -270,14 +268,14 @@ The posterior means of \( \alpha \) and \( \beta \) were used as parameters of t
     \centering
     \caption{Empirical vs.\ Fitted Pareto CDF}
     \label{fig:2}
-    \includegraphics[width=.5\textwidth]{rytgaard1990/empirical_vs_pareto.png}
+    \includegraphics[width=.75\textwidth]{rytgaard1990/empirical_vs_pareto.png}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \caption{Empirical vs.\ Fitted Poisson CDF}
     \label{fig:3}
-    \includegraphics[width=.5\textwidth]{rytgaard1990/empirical_vs_poisson.png}
+    \includegraphics[width=.75\textwidth]{rytgaard1990/empirical_vs_poisson.png}
 \end{figure}
 
 \subsection{Convergence Diagnostics}
@@ -553,7 +551,7 @@ S[table-format=1.4]
 \centering
 \caption{Estimated Predictive PDF of \( Y_f \)}
 \label{fig:9}
-\includegraphics[width=0.5\textwidth]{rytgaard1990/predictive_Y_f.png}
+\includegraphics[width=0.75\textwidth]{rytgaard1990/predictive_Y_f.png}
 \end{figure}
 
 The draws of \( S_f \), representing a future observation of \( S_t \), were generated as follows:
@@ -569,7 +567,7 @@ The draws of \( S_f \), representing a future observation of \( S_t \), were gen
 \centering
 \caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
 \label{fig:10}
-\includegraphics[width=0.5\textwidth]{rytgaard1990/predictive_S_f.png}
+\includegraphics[width=0.75\textwidth]{rytgaard1990/predictive_S_f.png}
 \end{figure}
 
 Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 116.396 reflects~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation ef- fectively captured the tail behavior of the predictive distribution of \( S \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
@@ -638,7 +636,7 @@ In addition, alternatives to the Poisson distribution for modeling claim counts 
 
 \subsection{Poisson--Lognormal Model}
 
-The Lognormal distribution was parameterized in terms of \( \mu \) and \( \tau \), where \( \tau = 1 / \sigma^2 \). A vague Normal prior was assigned to \( \mu \), and vague gamma priors were used for both \( \sigma \) and \( \theta \). As in previous models, three Markov chains were run in parallel with well-dispersed initial parameter values. For the third chain, initial values were~set~equal to the maximum likelihood estimates (see Table~\ref{tab:9}).
+The Lognormal distribution was parameterized in terms of \( \mu \) and \( \tau \), where \( \tau = 1 / \sigma^2 \). A vague Normal prior was assigned to \( \mu \), and vague Gamma priors were used for both \( \sigma \) and \( \theta \). As in previous models, three Markov chains were run in parallel with well-dispersed initial parameter values. For the third chain, initial values were~set~equal to the maximum likelihood estimates (see Table~\ref{tab:9}).
 
 \begin{table}[!ht]
 \centering
@@ -694,7 +692,7 @@ Table~\ref{tab:11} reports posterior summary statistics based on 30{,}000 post-b
 \caption{Posterior Statistics}
 \label{tab:11}
 \begin{tabular}{
->{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
+>{\raggedright\arraybackslash}p{\widthof{\( \mathbb{E}[y] \)}}
 *{2}{S[table-format=4.3]}
 >{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
 }
@@ -703,11 +701,11 @@ Table~\ref{tab:11} reports posterior summary statistics based on 30{,}000 post-b
 \( \mu \) & 6.700 & 0.038 & (6.626, 6.774) \\
 \( \tau \) & 1.552 & 0.103 & (1.358, 1.759) \\
 \( \theta \) & 28.628 & 1.337 & (26.058, 31.313) \\
-\( E[Y] \) & 1124.280 & 48.873 & (1034.404, 1225.412) \\ \hline
+\( \mathbb{E}[y] \) & 1124.280 & 48.873 & (1034.404, 1225.412) \\ \hline
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The posterior for \( \mu \) appears approximately~Normal, while the distributions of \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, though notably less so than in the \citet{rytgaard1990pareto} dataset.
+Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The posterior for \( \mu \) appears approximately~Normal, while the distributions of \( \tau \) and \( \theta \) resemble Gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, though notably less so than in the \citet{rytgaard1990pareto} dataset.
 
 \begin{figure}[!ht]
     \centering
@@ -736,7 +734,7 @@ Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \),
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{itamtplcost/density_E_y.png}
-        \subcaption{\( E[y] \)}
+        \subcaption{\( \mathbb{E}[y] \)}
     \end{minipage}
     
 \end{figure}
@@ -747,14 +745,14 @@ Figure~\ref{fig:16} compares the empirical cumulative distribution of observed c
     \centering
     \caption{Empirical vs.\ Fitted Lognormal CDF}
     \label{fig:16}
-    \includegraphics[width=.5\textwidth]{itamtplcost/empirical_vs_lognormal.png}
+    \includegraphics[width=.75\textwidth]{itamtplcost/empirical_vs_lognormal.png}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \caption{Empirical vs.\ Fitted Poisson CDF}
     \label{fig:17}
-    \includegraphics[width=.5\textwidth]{itamtplcost/empirical_vs_poisson.png}
+    \includegraphics[width=.75\textwidth]{itamtplcost/empirical_vs_poisson.png}
 \end{figure}
 
 Figure~\ref{fig:18} displays the estimated predictive probability density function (PDF) of a future individual claim amount \( Y_f \), derived via the inverse CDF method, as in the previous section. The resulting distribution is~marked- ly right-skewed, capturing the heavy-tailed nature of claim sizes. While extremely large values are possible,~they occur with very low probability.
@@ -763,7 +761,7 @@ Figure~\ref{fig:18} displays the estimated predictive probability density functi
 \centering
 \caption{Estimated Predictive PDF of \( Y_f \) }
 \label{fig:18}
-\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_Y_f.png}
+\includegraphics[width=0.75\textwidth]{itamtplcost/predictive_Y_f.png}
 \end{figure}
 
 Finally, Figure~\ref{fig:19} presents the histogram of simulated aggregate claims \( S_f \), obtained using the same predictive simulation approach as in the previous section. Three theoretical distributions were fitted to the simulated values using moment matching. Among these, the Gamma distribution appears to provide the best fit, with~esti- mated parameters \( \alpha = 15.6920 \) and \( \beta = 0.0005 \).
@@ -772,7 +770,7 @@ Finally, Figure~\ref{fig:19} presents the histogram of simulated aggregate claim
 \centering
 \caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
 \label{fig:19}
-\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_S_f.png}
+\includegraphics[width=0.75\textwidth]{itamtplcost/predictive_S_f.png}
 \end{figure}
 
 \subsection{Negative Binomial--Lognormal Model}
@@ -792,7 +790,7 @@ The Negative Binomial distribution was parameterized in terms of \( r \) and \( 
 *{4}{S[table-format=2.3]}
 }
 \hline
-\textbf{Chain} & \( \mu \) & \( \tau \) & \( r \) & \( p \) \\ \hline
+\textbf{Chain} & \( \mu \) & \( \sigma \) & \( r \) & \( p \) \\ \hline
 1 & 0.01 & 0.50 & 5.00 & 0.20 \\
 2 & 2.0 & 1.5 & 10.0 & 0.5 \\
 3 & 6.700 & 0.802 & 13.165 & 0.316 \\ \hline
@@ -801,38 +799,38 @@ The Negative Binomial distribution was parameterized in terms of \( r \) and \( 
 
 As previously, the burn-in period was initially set to 1,000 iterations, and the PSRF point estimates were~examined to determine if this duration was sufficient. The plots indicated that a burn-in of 20,000 iterations was necessary, so the chains were rerun with this setting. Autocorrelation values for lags 1 through 10 were computed, revealing significant autocorrelations, particularly for \( r \) and \( p \), with values reaching as high as 0.9. Consequently, a thinning interval of 10 was insufficient, and a thinning interval of 100 was applied. This adjustment effectively reduced autocorrelation, and the resulting trace plots (Figure~\ref{fig:20}) indicated good mixing and convergence.
 
-%\begin{figure}[!ht]
-%    \centering
-%    \caption{Trace Plots After Thinning}
-%    \label{fig:20}
-%    \begin{subfigure}{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_mu.png}
-%        \caption{\( \mu \)}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_tau.png}
-%        \caption{\( \tau \)}
-%    \end{subfigure}
-%
-%    \vspace{1em}
-%
-%    \begin{subfigure}{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_r.png}
-%        \caption{\( r \)}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_p.png}
-%        \caption{\( p \)}
-%    \end{subfigure}
-%\end{figure}
+\begin{figure}[!ht]
+    \centering
+    \caption{Trace Plots After Thinning}
+    \label{fig:20}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/trace_after_thinning_mu.png}
+        \caption{\( \mu \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/trace_after_thinning_tau.png}
+        \caption{\( \tau \)}
+    \end{subfigure}
 
-Table~\ref{tab:13} shows posterior statistics based on 30,000 post-burn-in iterations. The estimates for \( \mu \) and \( \tau \)~match those obtained in the Poisson-Lognormal model, providing further confirmation of convergence for these parameters.
+    \vspace{1em}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/trace_after_thinning_r.png}
+        \caption{\( r \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/trace_after_thinning_p.png}
+        \caption{\( p \)}
+    \end{subfigure}
+\end{figure}
+
+Table~\ref{tab:13} shows posterior summary statistics based on 30{,}000 post-burn-in iterations. The estimates for \( \mu \) and \( \tau \) closely match those obtained in the Poisson--Lognormal model, providing further confirmation of convergence for these parameters. Figure~\ref{fig:21} displays posterior density plots for \( r \) and \( p \). As expected, the posterior distri- bution of \( r \) resembles a Gamma distribution, while that of \( p \) aligns with a Beta distribution--appropriately con- strained to the \([0, 1]\) interval.
 
 \begin{table}[!ht]
 \centering
@@ -841,19 +839,45 @@ Table~\ref{tab:13} shows posterior statistics based on 30,000 post-burn-in itera
 \caption{Posterior Statistics}
 \label{tab:13}
 \begin{tabular}{
->{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
+>{\raggedright\arraybackslash}p{\widthof{\( \mathbb{E}[y] \)}}
 *{2}{S[table-format=4.3]}
 >{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
 }
 \hline
  & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
-\( \mu \) & 6.700 & 0.038 & (6.626, 6.774) \\
+\( \mu \) & 6.700 & 0.038 & (6.627, 6.774) \\
 \( \tau \) & 1.551 & 0.103 & (1.355, 1.759) \\
-\( r \) & 11.229 & 6.619 & (3.69, 27.96) \\
-\( p \) & 0.267 & 0.0992 & (0.112, 0.497) \\
-\( E[Y] \) & 1124.596 & 49.01 & (1034.37, 1226.564) \\ \hline
+\( r \) & 11.229 & 6.619 & (3.690, 27.960) \\
+\( p \) & 0.267 & 0.099 & (0.112, 0.497) \\
+\( \mathbb{E}[y] \) & 1124.596 & 49.010 & (1034.370, 1226.564) \\ \hline
 \end{tabular}
 \end{table}
+
+\begin{figure}[!ht]
+    \centering
+    \caption{Posterior Densities}
+    \label{fig:21}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/density_r.png}
+        \subcaption{\( r \)}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{itamtplcost_nb/density_p.png}
+        \subcaption{\( p \)}
+    \end{minipage} \\
+    
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \caption{Empirical vs.\ Fitted Negative Binomial CDF}
+    \label{fig:22}
+    \includegraphics[width=.75\textwidth]{itamtplcost_nb/empirical_vs_nb.png}
+\end{figure}
+
 
 \printbibliography{references}
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  5 MAY 2025 16:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  5 MAY 2025 23:21
 entering extended mode
 **./Bayesian-Project-JW-EZ.tex
 (Bayesian-Project-JW-EZ.tex
@@ -574,7 +574,7 @@ LaTeX Info: Redefining \nameref on input line 32.
 \openout3 = `Bayesian-Project-JW-EZ.out'.
 
 \c@lstlisting=\count320
-<logo.png, id=47, 803.0pt x 803.0pt>
+<logo.png, id=43, 803.0pt x 803.0pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
 Package pdftex.def Info: logo.png  used on input line 55.
@@ -583,11 +583,11 @@ Package pdftex.def Info: logo.png  used on input line 55.
 
 {C:/Users/Julia/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./logo.png>]
 (Bayesian-Project-JW-EZ.toc
-LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
  (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
  (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
@@ -597,34 +597,34 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 84.
+(hyperref)                removing `\begingroup' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\let' on input line 84.
+(hyperref)                removing `\let' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<let>-command' on input line 84.
+(hyperref)                removing `\<let>-command' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\NAT@ctype' on input line 84.
+(hyperref)                removing `\NAT@ctype' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\z@' on input line 84.
+(hyperref)                removing `\z@' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\let' on input line 84.
+(hyperref)                removing `\let' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\new@ifnextchar' on input line 84.
+(hyperref)                removing `\new@ifnextchar' on input line 82.
 
 
-Overfull \hbox (2.86517pt too wide) in paragraph at lines 100--100
+Overfull \hbox (2.86517pt too wide) in paragraph at lines 98--98
 []|\OT1/cmr/bx/n/8 Year|  
  []
 
@@ -632,282 +632,318 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.117 \begin{align*}
+l.115 \begin{align*}
                      [1] [2]
-Overfull \hbox (3.25822pt too wide) in paragraph at lines 193--193
+Overfull \hbox (3.25822pt too wide) in paragraph at lines 191--191
 []|\OT1/cmr/bx/n/8 Chain|  
  []
 
-<rytgaard1990/density_alpha.png, id=127, 416.30531pt x 174.6525pt>
+<rytgaard1990/density_alpha.png, id=122, 416.30531pt x 174.6525pt>
 File: rytgaard1990/density_alpha.png Graphic file (type png)
 <use rytgaard1990/density_alpha.png>
-Package pdftex.def Info: rytgaard1990/density_alpha.png  used on input line 241
+Package pdftex.def Info: rytgaard1990/density_alpha.png  used on input line 239
 .
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/density_beta.png, id=128, 416.30531pt x 174.6525pt>
+<rytgaard1990/density_beta.png, id=123, 416.30531pt x 174.6525pt>
 File: rytgaard1990/density_beta.png Graphic file (type png)
 <use rytgaard1990/density_beta.png>
-Package pdftex.def Info: rytgaard1990/density_beta.png  used on input line 247.
+Package pdftex.def Info: rytgaard1990/density_beta.png  used on input line 245.
 
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/density_theta.png, id=129, 416.30531pt x 176.91093pt>
+<rytgaard1990/density_theta.png, id=124, 416.30531pt x 176.91093pt>
 File: rytgaard1990/density_theta.png Graphic file (type png)
 <use rytgaard1990/density_theta.png>
-Package pdftex.def Info: rytgaard1990/density_theta.png  used on input line 255
+Package pdftex.def Info: rytgaard1990/density_theta.png  used on input line 253
 .
 (pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
-<rytgaard1990/density_E_y.png, id=130, 416.30531pt x 174.6525pt>
+<rytgaard1990/density_E_y.png, id=125, 416.30531pt x 174.6525pt>
 File: rytgaard1990/density_E_y.png Graphic file (type png)
 <use rytgaard1990/density_E_y.png>
-Package pdftex.def Info: rytgaard1990/density_E_y.png  used on input line 261.
+Package pdftex.def Info: rytgaard1990/density_E_y.png  used on input line 259.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/empirical_vs_pareto.png, id=133, 416.30531pt x 176.91093pt>
+<rytgaard1990/empirical_vs_pareto.png, id=128, 416.30531pt x 176.91093pt>
 File: rytgaard1990/empirical_vs_pareto.png Graphic file (type png)
 <use rytgaard1990/empirical_vs_pareto.png>
 Package pdftex.def Info: rytgaard1990/empirical_vs_pareto.png  used on input li
-ne 273.
-(pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
-<rytgaard1990/empirical_vs_poisson.png, id=134, 416.30531pt x 176.91093pt>
+ne 271.
+(pdftex.def)             Requested size: 362.77263pt x 154.17041pt.
+<rytgaard1990/empirical_vs_poisson.png, id=129, 416.30531pt x 176.91093pt>
 File: rytgaard1990/empirical_vs_poisson.png Graphic file (type png)
 <use rytgaard1990/empirical_vs_poisson.png>
 Package pdftex.def Info: rytgaard1990/empirical_vs_poisson.png  used on input l
-ine 280.
-(pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
-[3]
-<rytgaard1990/trace_alpha.png, id=154, 417.81094pt x 174.6525pt>
+ine 278.
+(pdftex.def)             Requested size: 362.77263pt x 154.17041pt.
+<rytgaard1990/trace_alpha.png, id=134, 417.81094pt x 174.6525pt>
 File: rytgaard1990/trace_alpha.png Graphic file (type png)
 <use rytgaard1990/trace_alpha.png>
-Package pdftex.def Info: rytgaard1990/trace_alpha.png  used on input line 293.
+Package pdftex.def Info: rytgaard1990/trace_alpha.png  used on input line 291.
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
-<rytgaard1990/trace_beta.png, id=155, 417.81094pt x 174.6525pt>
+<rytgaard1990/trace_beta.png, id=135, 417.81094pt x 174.6525pt>
 File: rytgaard1990/trace_beta.png Graphic file (type png)
 <use rytgaard1990/trace_beta.png>
-Package pdftex.def Info: rytgaard1990/trace_beta.png  used on input line 299.
+Package pdftex.def Info: rytgaard1990/trace_beta.png  used on input line 297.
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
-<rytgaard1990/trace_theta.png, id=156, 417.81094pt x 174.6525pt>
+<rytgaard1990/trace_theta.png, id=136, 417.81094pt x 174.6525pt>
 File: rytgaard1990/trace_theta.png Graphic file (type png)
 <use rytgaard1990/trace_theta.png>
-Package pdftex.def Info: rytgaard1990/trace_theta.png  used on input line 307.
+Package pdftex.def Info: rytgaard1990/trace_theta.png  used on input line 305.
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
- [4 <./rytgaard1990/density_alpha.png> <./rytgaard1990/density_beta.png> <./ryt
-gaard1990/density_theta.png> <./rytgaard1990/density_E_y.png> <./rytgaard1990/e
-mpirical_vs_pareto.png> <./rytgaard1990/empirical_vs_poisson.png>]
-<rytgaard1990/gelman_alpha.png, id=176, 417.81094pt x 174.6525pt>
+[3] [4 <./rytgaard1990/density_alpha.png> <./rytgaard1990/density_beta.png> <./
+rytgaard1990/density_theta.png> <./rytgaard1990/density_E_y.png> <./rytgaard199
+0/empirical_vs_pareto.png> <./rytgaard1990/empirical_vs_poisson.png>]
+<rytgaard1990/gelman_alpha.png, id=171, 417.81094pt x 174.6525pt>
 File: rytgaard1990/gelman_alpha.png Graphic file (type png)
 <use rytgaard1990/gelman_alpha.png>
-Package pdftex.def Info: rytgaard1990/gelman_alpha.png  used on input line 350.
+Package pdftex.def Info: rytgaard1990/gelman_alpha.png  used on input line 348.
 
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
-<rytgaard1990/gelman_beta.png, id=177, 417.81094pt x 174.6525pt>
+<rytgaard1990/gelman_beta.png, id=172, 417.81094pt x 174.6525pt>
 File: rytgaard1990/gelman_beta.png Graphic file (type png)
 <use rytgaard1990/gelman_beta.png>
-Package pdftex.def Info: rytgaard1990/gelman_beta.png  used on input line 356.
+Package pdftex.def Info: rytgaard1990/gelman_beta.png  used on input line 354.
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
-<rytgaard1990/gelman_theta.png, id=178, 417.81094pt x 174.6525pt>
+<rytgaard1990/gelman_theta.png, id=173, 417.81094pt x 174.6525pt>
 File: rytgaard1990/gelman_theta.png Graphic file (type png)
 <use rytgaard1990/gelman_theta.png>
-Package pdftex.def Info: rytgaard1990/gelman_theta.png  used on input line 364.
+Package pdftex.def Info: rytgaard1990/gelman_theta.png  used on input line 362.
 
 (pdftex.def)             Requested size: 217.6621pt x 90.9877pt.
-<rytgaard1990/acf_alpha.png, id=184, 416.30531pt x 176.91093pt>
-File: rytgaard1990/acf_alpha.png Graphic file (type png)
-<use rytgaard1990/acf_alpha.png>
-Package pdftex.def Info: rytgaard1990/acf_alpha.png  used on input line 377.
-(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
-<rytgaard1990/acf_beta.png, id=185, 416.30531pt x 176.91093pt>
-File: rytgaard1990/acf_beta.png Graphic file (type png)
-<use rytgaard1990/acf_beta.png>
-Package pdftex.def Info: rytgaard1990/acf_beta.png  used on input line 383.
-(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
-<rytgaard1990/acf_theta.png, id=186, 416.30531pt x 176.91093pt>
-File: rytgaard1990/acf_theta.png Graphic file (type png)
-<use rytgaard1990/acf_theta.png>
-Package pdftex.def Info: rytgaard1990/acf_theta.png  used on input line 391.
-(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
  [5 <./rytgaard1990/trace_alpha.png> <./rytgaard1990/trace_beta.png> <./rytgaar
 d1990/trace_theta.png> <./rytgaard1990/gelman_alpha.png> <./rytgaard1990/gelman
 _beta.png> <./rytgaard1990/gelman_theta.png>]
-<rytgaard1990/trace_after_thinning_alpha.png, id=204, 416.30531pt x 174.6525pt>
+<rytgaard1990/acf_alpha.png, id=192, 416.30531pt x 176.91093pt>
+File: rytgaard1990/acf_alpha.png Graphic file (type png)
+<use rytgaard1990/acf_alpha.png>
+Package pdftex.def Info: rytgaard1990/acf_alpha.png  used on input line 375.
+(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
+<rytgaard1990/acf_beta.png, id=193, 416.30531pt x 176.91093pt>
+File: rytgaard1990/acf_beta.png Graphic file (type png)
+<use rytgaard1990/acf_beta.png>
+Package pdftex.def Info: rytgaard1990/acf_beta.png  used on input line 381.
+(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
+<rytgaard1990/acf_theta.png, id=194, 416.30531pt x 176.91093pt>
+File: rytgaard1990/acf_theta.png Graphic file (type png)
+<use rytgaard1990/acf_theta.png>
+Package pdftex.def Info: rytgaard1990/acf_theta.png  used on input line 389.
+(pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
+<rytgaard1990/trace_after_thinning_alpha.png, id=197, 416.30531pt x 174.6525pt>
 
 File: rytgaard1990/trace_after_thinning_alpha.png Graphic file (type png)
 <use rytgaard1990/trace_after_thinning_alpha.png>
 Package pdftex.def Info: rytgaard1990/trace_after_thinning_alpha.png  used on i
-nput line 431.
+nput line 429.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/trace_after_thinning_beta.png, id=205, 416.30531pt x 174.6525pt>
+<rytgaard1990/trace_after_thinning_beta.png, id=198, 416.30531pt x 174.6525pt>
 File: rytgaard1990/trace_after_thinning_beta.png Graphic file (type png)
 <use rytgaard1990/trace_after_thinning_beta.png>
 Package pdftex.def Info: rytgaard1990/trace_after_thinning_beta.png  used on in
-put line 437.
+put line 435.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/trace_after_thinning_theta.png, id=206, 416.30531pt x 174.6525pt>
+<rytgaard1990/trace_after_thinning_theta.png, id=199, 416.30531pt x 174.6525pt>
 
 File: rytgaard1990/trace_after_thinning_theta.png Graphic file (type png)
 <use rytgaard1990/trace_after_thinning_theta.png>
 Package pdftex.def Info: rytgaard1990/trace_after_thinning_theta.png  used on i
-nput line 445.
+nput line 443.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<rytgaard1990/acf_after_thinning_alpha.png, id=207, 416.30531pt x 176.91093pt>
+<rytgaard1990/acf_after_thinning_alpha.png, id=200, 416.30531pt x 176.91093pt>
 File: rytgaard1990/acf_after_thinning_alpha.png Graphic file (type png)
 <use rytgaard1990/acf_after_thinning_alpha.png>
 Package pdftex.def Info: rytgaard1990/acf_after_thinning_alpha.png  used on inp
-ut line 456.
+ut line 454.
 (pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
-<rytgaard1990/acf_after_thinning_beta.png, id=208, 416.30531pt x 176.91093pt>
+<rytgaard1990/acf_after_thinning_beta.png, id=201, 416.30531pt x 176.91093pt>
 File: rytgaard1990/acf_after_thinning_beta.png Graphic file (type png)
 <use rytgaard1990/acf_after_thinning_beta.png>
 Package pdftex.def Info: rytgaard1990/acf_after_thinning_beta.png  used on inpu
-t line 462.
+t line 460.
 (pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
-<rytgaard1990/acf_after_thinning_theta.png, id=209, 416.30531pt x 176.91093pt>
+<rytgaard1990/acf_after_thinning_theta.png, id=202, 416.30531pt x 176.91093pt>
 File: rytgaard1990/acf_after_thinning_theta.png Graphic file (type png)
 <use rytgaard1990/acf_after_thinning_theta.png>
 Package pdftex.def Info: rytgaard1990/acf_after_thinning_theta.png  used on inp
-ut line 470.
+ut line 468.
 (pdftex.def)             Requested size: 217.6621pt x 92.4963pt.
  [6 <./rytgaard1990/acf_alpha.png (PNG copy)> <./rytgaard1990/acf_beta.png (PNG
- copy)> <./rytgaard1990/acf_theta.png (PNG copy)> <./rytgaard1990/trace_after_t
-hinning_alpha.png> <./rytgaard1990/trace_after_thinning_beta.png> <./rytgaard19
-90/trace_after_thinning_theta.png>]
-Overfull \hbox (3.05563pt too wide) in paragraph at lines 543--543
+ copy)> <./rytgaard1990/acf_theta.png (PNG copy)>] [7 <./rytgaard1990/trace_aft
+er_thinning_alpha.png> <./rytgaard1990/trace_after_thinning_beta.png> <./rytgaa
+rd1990/trace_after_thinning_theta.png> <./rytgaard1990/acf_after_thinning_alpha
+.png (PNG copy)> <./rytgaard1990/acf_after_thinning_beta.png (PNG copy)> <./ryt
+gaard1990/acf_after_thinning_theta.png (PNG copy)>]
+Overfull \hbox (3.05563pt too wide) in paragraph at lines 541--541
 []|\OT1/cmr/m/n/8 10|  
  []
 
 
-Overfull \hbox (3.05563pt too wide) in paragraph at lines 544--544
+Overfull \hbox (3.05563pt too wide) in paragraph at lines 542--542
 []|\OT1/cmr/m/n/8 11|  
  []
 
 
-Overfull \hbox (3.05563pt too wide) in paragraph at lines 545--545
+Overfull \hbox (3.05563pt too wide) in paragraph at lines 543--543
 []|\OT1/cmr/m/n/8 12|  
  []
 
 
-Overfull \hbox (3.05563pt too wide) in paragraph at lines 546--546
+Overfull \hbox (3.05563pt too wide) in paragraph at lines 544--544
 []|\OT1/cmr/m/n/8 13|  
  []
 
 
-Overfull \hbox (3.05563pt too wide) in paragraph at lines 547--547
+Overfull \hbox (3.05563pt too wide) in paragraph at lines 545--545
 []|\OT1/cmr/m/n/8 14|  
  []
 
-[7 <./rytgaard1990/acf_after_thinning_alpha.png (PNG copy)> <./rytgaard1990/acf
-_after_thinning_beta.png (PNG copy)> <./rytgaard1990/acf_after_thinning_theta.p
-ng (PNG copy)>]
-<rytgaard1990/predictive_Y_f.png, id=234, 420.06938pt x 174.6525pt>
+<rytgaard1990/predictive_Y_f.png, id=229, 420.06938pt x 174.6525pt>
 File: rytgaard1990/predictive_Y_f.png Graphic file (type png)
 <use rytgaard1990/predictive_Y_f.png>
 Package pdftex.def Info: rytgaard1990/predictive_Y_f.png  used on input line 55
-6.
-(pdftex.def)             Requested size: 241.84842pt x 100.55232pt.
-<rytgaard1990/predictive_S_f.png, id=239, 416.30531pt x 185.19188pt>
+4.
+(pdftex.def)             Requested size: 362.77263pt x 150.82982pt.
+<rytgaard1990/predictive_S_f.png, id=234, 416.30531pt x 185.19188pt>
 File: rytgaard1990/predictive_S_f.png Graphic file (type png)
 <use rytgaard1990/predictive_S_f.png>
 Package pdftex.def Info: rytgaard1990/predictive_S_f.png  used on input line 57
-2.
-(pdftex.def)             Requested size: 241.84842pt x 107.58655pt.
- [8 <./rytgaard1990/predictive_Y_f.png> <./rytgaard1990/predictive_S_f.png>]
-Overfull \hbox (3.25822pt too wide) in paragraph at lines 654--654
+0.
+(pdftex.def)             Requested size: 362.77263pt x 161.38689pt.
+[8 <./rytgaard1990/predictive_Y_f.png>] [9 <./rytgaard1990/predictive_S_f.png>]
+
+Overfull \hbox (3.25822pt too wide) in paragraph at lines 652--652
 []|\OT1/cmr/bx/n/8 Chain|  
  []
 
-[9]
-<itamtplcost/trace_after_thinning_mu.png, id=300, 416.30531pt x 174.6525pt>
+<itamtplcost/trace_after_thinning_mu.png, id=294, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_mu.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_mu.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_mu.png  used on input
- line 669.
+ line 667.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/trace_after_thinning_tau.png, id=301, 416.30531pt x 174.6525pt>
+<itamtplcost/trace_after_thinning_tau.png, id=295, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_tau.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_tau.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_tau.png  used on inpu
-t line 675.
+t line 673.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/trace_after_thinning_theta.png, id=302, 416.30531pt x 174.6525pt>
+<itamtplcost/trace_after_thinning_theta.png, id=296, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_theta.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_theta.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_theta.png  used on in
-put line 683.
+put line 681.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/density_mu.png, id=310, 416.30531pt x 174.6525pt>
+[10 <./itamtplcost/trace_after_thinning_mu.png> <./itamtplcost/trace_after_thin
+ning_tau.png> <./itamtplcost/trace_after_thinning_theta.png>]
+<itamtplcost/density_mu.png, id=315, 416.30531pt x 174.6525pt>
 File: itamtplcost/density_mu.png Graphic file (type png)
 <use itamtplcost/density_mu.png>
-Package pdftex.def Info: itamtplcost/density_mu.png  used on input line 718.
+Package pdftex.def Info: itamtplcost/density_mu.png  used on input line 716.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/density_tau.png, id=311, 416.30531pt x 176.15813pt>
+<itamtplcost/density_tau.png, id=316, 416.30531pt x 176.15813pt>
 File: itamtplcost/density_tau.png Graphic file (type png)
 <use itamtplcost/density_tau.png>
-Package pdftex.def Info: itamtplcost/density_tau.png  used on input line 724.
+Package pdftex.def Info: itamtplcost/density_tau.png  used on input line 722.
 (pdftex.def)             Requested size: 217.6621pt x 92.1027pt.
-<itamtplcost/density_theta.png, id=312, 416.30531pt x 180.675pt>
+<itamtplcost/density_theta.png, id=317, 416.30531pt x 180.675pt>
 File: itamtplcost/density_theta.png Graphic file (type png)
 <use itamtplcost/density_theta.png>
-Package pdftex.def Info: itamtplcost/density_theta.png  used on input line 732.
+Package pdftex.def Info: itamtplcost/density_theta.png  used on input line 730.
 
 (pdftex.def)             Requested size: 217.6621pt x 94.46431pt.
-<itamtplcost/density_E_y.png, id=313, 416.30531pt x 180.675pt>
+<itamtplcost/density_E_y.png, id=318, 416.30531pt x 180.675pt>
 File: itamtplcost/density_E_y.png Graphic file (type png)
 <use itamtplcost/density_E_y.png>
-Package pdftex.def Info: itamtplcost/density_E_y.png  used on input line 738.
+Package pdftex.def Info: itamtplcost/density_E_y.png  used on input line 736.
 (pdftex.def)             Requested size: 217.6621pt x 94.46431pt.
-<itamtplcost/empirical_vs_lognormal.png, id=316, 416.30531pt x 176.91093pt>
+<itamtplcost/empirical_vs_lognormal.png, id=321, 416.30531pt x 176.91093pt>
 File: itamtplcost/empirical_vs_lognormal.png Graphic file (type png)
 <use itamtplcost/empirical_vs_lognormal.png>
 Package pdftex.def Info: itamtplcost/empirical_vs_lognormal.png  used on input 
-line 750.
-(pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
-<itamtplcost/empirical_vs_poisson.png, id=317, 416.30531pt x 176.91093pt>
+line 748.
+(pdftex.def)             Requested size: 362.77263pt x 154.17041pt.
+<itamtplcost/empirical_vs_poisson.png, id=322, 416.30531pt x 176.91093pt>
 File: itamtplcost/empirical_vs_poisson.png Graphic file (type png)
 <use itamtplcost/empirical_vs_poisson.png>
 Package pdftex.def Info: itamtplcost/empirical_vs_poisson.png  used on input li
-ne 757.
-(pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
- [10 <./itamtplcost/trace_after_thinning_mu.png> <./itamtplcost/trace_after_thi
-nning_tau.png> <./itamtplcost/trace_after_thinning_theta.png>]
-<itamtplcost/predictive_Y_f.png, id=333, 416.30531pt x 185.19188pt>
-File: itamtplcost/predictive_Y_f.png Graphic file (type png)
-<use itamtplcost/predictive_Y_f.png>
-Package pdftex.def Info: itamtplcost/predictive_Y_f.png  used on input line 766
-.
-(pdftex.def)             Requested size: 241.84842pt x 107.58655pt.
+ne 755.
+(pdftex.def)             Requested size: 362.77263pt x 154.17041pt.
  [11 <./itamtplcost/density_mu.png> <./itamtplcost/density_tau.png> <./itamtplc
 ost/density_theta.png> <./itamtplcost/density_E_y.png> <./itamtplcost/empirical
-_vs_lognormal.png> <./itamtplcost/empirical_vs_poisson.png> <./itamtplcost/pred
-ictive_Y_f.png>]
-<itamtplcost/predictive_S_f.png, id=346, 416.30531pt x 174.6525pt>
+_vs_lognormal.png>]
+<itamtplcost/predictive_Y_f.png, id=336, 416.30531pt x 185.19188pt>
+File: itamtplcost/predictive_Y_f.png Graphic file (type png)
+<use itamtplcost/predictive_Y_f.png>
+Package pdftex.def Info: itamtplcost/predictive_Y_f.png  used on input line 764
+.
+(pdftex.def)             Requested size: 362.77263pt x 161.38689pt.
+<itamtplcost/predictive_S_f.png, id=338, 416.30531pt x 174.6525pt>
 File: itamtplcost/predictive_S_f.png Graphic file (type png)
 <use itamtplcost/predictive_S_f.png>
-Package pdftex.def Info: itamtplcost/predictive_S_f.png  used on input line 775
+Package pdftex.def Info: itamtplcost/predictive_S_f.png  used on input line 773
 .
-(pdftex.def)             Requested size: 241.84842pt x 101.46375pt.
-
-Overfull \hbox (3.25822pt too wide) in paragraph at lines 795--795
+(pdftex.def)             Requested size: 362.77263pt x 152.20227pt.
+ [12 <./itamtplcost/empirical_vs_poisson.png> <./itamtplcost/predictive_Y_f.png
+> <./itamtplcost/predictive_S_f.png>]
+Overfull \hbox (3.25822pt too wide) in paragraph at lines 793--793
 []|\OT1/cmr/bx/n/8 Chain|  
  []
 
+<itamtplcost_nb/trace_after_thinning_mu.png, id=351, 402.75468pt x 174.6525pt>
+File: itamtplcost_nb/trace_after_thinning_mu.png Graphic file (type png)
+<use itamtplcost_nb/trace_after_thinning_mu.png>
+Package pdftex.def Info: itamtplcost_nb/trace_after_thinning_mu.png  used on in
+put line 808.
+(pdftex.def)             Requested size: 217.6621pt x 94.38821pt.
+<itamtplcost_nb/trace_after_thinning_tau.png, id=352, 402.75468pt x 174.6525pt>
 
-LaTeX Warning: Reference `fig:20' on page 12 undefined on input line 802.
-
-(Bayesian-Project-JW-EZ.bbl [12 <./itamtplcost/predictive_S_f.png>]) [13]
-(Bayesian-Project-JW-EZ.aux)
-
-LaTeX Warning: There were undefined references.
-
+File: itamtplcost_nb/trace_after_thinning_tau.png Graphic file (type png)
+<use itamtplcost_nb/trace_after_thinning_tau.png>
+Package pdftex.def Info: itamtplcost_nb/trace_after_thinning_tau.png  used on i
+nput line 814.
+(pdftex.def)             Requested size: 217.6621pt x 94.38821pt.
+<itamtplcost_nb/trace_after_thinning_r.png, id=353, 402.75468pt x 174.6525pt>
+File: itamtplcost_nb/trace_after_thinning_r.png Graphic file (type png)
+<use itamtplcost_nb/trace_after_thinning_r.png>
+Package pdftex.def Info: itamtplcost_nb/trace_after_thinning_r.png  used on inp
+ut line 822.
+(pdftex.def)             Requested size: 217.6621pt x 94.38821pt.
+<itamtplcost_nb/trace_after_thinning_p.png, id=354, 402.75468pt x 176.15813pt>
+File: itamtplcost_nb/trace_after_thinning_p.png Graphic file (type png)
+<use itamtplcost_nb/trace_after_thinning_p.png>
+Package pdftex.def Info: itamtplcost_nb/trace_after_thinning_p.png  used on inp
+ut line 828.
+(pdftex.def)             Requested size: 217.6621pt x 95.2019pt.
+<itamtplcost_nb/density_r.png, id=357, 395.97937pt x 174.6525pt>
+File: itamtplcost_nb/density_r.png Graphic file (type png)
+<use itamtplcost_nb/density_r.png>
+Package pdftex.def Info: itamtplcost_nb/density_r.png  used on input line 862.
+(pdftex.def)             Requested size: 217.6621pt x 96.0032pt.
+<itamtplcost_nb/density_p.png, id=358, 395.97937pt x 174.6525pt>
+File: itamtplcost_nb/density_p.png Graphic file (type png)
+<use itamtplcost_nb/density_p.png>
+Package pdftex.def Info: itamtplcost_nb/density_p.png  used on input line 868.
+(pdftex.def)             Requested size: 217.6621pt x 96.0032pt.
+<itamtplcost_nb/empirical_vs_nb.png, id=359, 458.46281pt x 280.79906pt>
+File: itamtplcost_nb/empirical_vs_nb.png Graphic file (type png)
+<use itamtplcost_nb/empirical_vs_nb.png>
+Package pdftex.def Info: itamtplcost_nb/empirical_vs_nb.png  used on input line
+ 878.
+(pdftex.def)             Requested size: 362.77263pt x 222.20158pt.
+(Bayesian-Project-JW-EZ.bbl [13 <./itamtplcost_nb/trace_after_thinning_mu.png> 
+<./itamtplcost_nb/trace_after_thinning_tau.png> <./itamtplcost_nb/trace_after_t
+hinning_r.png> <./itamtplcost_nb/trace_after_thinning_p.png>]) [14 <./itamtplco
+st_nb/density_r.png> <./itamtplcost_nb/density_p.png> <./itamtplcost_nb/empiric
+al_vs_nb.png>] (Bayesian-Project-JW-EZ.aux)
 Package rerunfilecheck Info: File `Bayesian-Project-JW-EZ.out' has not changed.
 
-(rerunfilecheck)             Checksum: D071AE79F0CBEC99F3354502FB724079;1899.
+(rerunfilecheck)             Checksum: 27A0B9E19463D3FD5782AC51376ECE0D;1742.
  ) 
 Here is how much of TeX's memory you used:
- 17054 strings out of 478869
- 312302 string characters out of 2860379
- 618541 words of memory out of 3000000
- 34609 multiletter control sequences out of 15000+600000
+ 17106 strings out of 478869
+ 314235 string characters out of 2860379
+ 618730 words of memory out of 3000000
+ 34652 multiletter control sequences out of 15000+600000
  417201 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,13n,81p,906b,869s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,14n,81p,906b,867s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Program Files/MiKTeX/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<C:/Progra
 m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/typ
@@ -935,9 +971,9 @@ MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmtt8.pfb><C:/Program Files/MiKTeX/fonts/type1/public
 /amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/cm-sup
 er/sfrm1000.pfb>
-Output written on Bayesian-Project-JW-EZ.pdf (14 pages, 740899 bytes).
+Output written on Bayesian-Project-JW-EZ.pdf (15 pages, 783089 bytes).
 PDF statistics:
- 506 PDF objects out of 1000 (max. 8388607)
- 76 named destinations out of 1000 (max. 500000)
- 264 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 525 PDF objects out of 1000 (max. 8388607)
+ 79 named destinations out of 1000 (max. 500000)
+ 291 words of extra memory for PDF output out of 10000 (max. 10000000)
 
