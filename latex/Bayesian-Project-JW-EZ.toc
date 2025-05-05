@@ -6,3 +6,5 @@
 \contentsline {subsection}{\numberline {3.3}Convergence Diagnostics}{3}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Predictive Inference}{7}{subsection.3.4}%
 \contentsline {section}{\numberline {4}Implementation on Alternative Data}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Poisson--Pareto Model}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Poisson--Lognormal Model}{9}{subsection.4.2}%

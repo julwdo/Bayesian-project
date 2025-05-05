@@ -598,9 +598,9 @@ Maximum & 116.396 \\
 
 \section{Implementation on Alternative Data}
 
-To assess the generalizability of the Bayesian approach proposed by \citet{dudley2006bayesian} for insurance claim modeling, the same methodology was applied to a different dataset. The \texttt{itamtplcost} dataset comprises 457 motor insur- ance claims exceeding 500{,}000 euros, recorded in Italy between 1997 and 2012 \citep{Dutang2020}.
+To assess the generalizability of the Bayesian approach proposed by \citet{dudley2006bayesian} for insurance claim modeling, the same methodology was applied to a different dataset. The \texttt{itamtplcost} dataset comprises 457 motor insurance claims exceeding 500{,}000 euros, recorded in Italy between 1997 and 2012 \citep{Dutang2020}.
 
-Table~\ref{tab:8} presents a comparison of summary statistics between the \citet{rytgaard1990pareto} and \texttt{itamtplcost} datasets. Claims in the \texttt{itamtplcost} dataset are significantly larger, with a mean of 1.015~billion euros compared to~3.058 million euros in the \citet{rytgaard1990pareto} dataset. The variability is also greater, with a range of 6{,}637.34 versus~17.56. With regard to the number of claims per year, the \texttt{itamtplcost} dataset exhibits a minimum of 5 and a maximum of 40, while the \citet{rytgaard1990pareto} dataset ranges from 0 to 5. These differences highlight the greater complexity~of the \texttt{itamtplcost} dataset, providing a valuable opportunity to assess whether the Poisson--Pareto model~contin- ues to yield meaningful posterior inference in a more realistic insurance context.
+Table~\ref{tab:8} presents a comparison of summary statistics between the \citet{rytgaard1990pareto} and \texttt{itamtplcost} datasets. Claims in the \texttt{itamtplcost} dataset are significantly larger, with a mean of 1.015~billion euros compared to 3.058~million euros in the \citet{rytgaard1990pareto} dataset. The variability is also greater, with a range of 6{,}637.34 versus 17.56. Regarding the number of claims per year, the \texttt{itamtplcost} dataset exhibits a minimum of 5 and a maximum of 40, while the \citet{rytgaard1990pareto} dataset ranges from 0 to 5. These differences highlight the greater complexity of the \texttt{itamtplcost} dataset, providing a valuable opportunity to assess whether the Poisson--Pareto model continues to yield meaningful posterior inference in a more realistic insurance context.
 
 \begin{table}[!ht]
 \centering
@@ -628,9 +628,13 @@ Table~\ref{tab:8} presents a comparison of summary statistics between the \citet
 \end{tabular}
 \end{table}
 
-Similarly to the previous case, Gibbs sampling was used to draw realizations from the posterior distributions of \(\alpha\), \(\beta\), and \(\theta\), with three Markov chains run in parallel and initial parameter values chosen to be well-dispersed. A burn-in of 5{,}000 iterations was initially applied, but the Gelman--Rubin diagnostic \citep{Gelman1992} suggested extending it to 10{,}000. Consequently, a burn-in of 10{,}000 was adopted, and autocorrelation plots~were generated. High autocorrelations were observed, prompting the use of a thinning interval of 10. The chains~were rerun with this thinning, and the trace plots, along with the updated autocorrelation plots, indicated good~mix- ing and negligible autocorrelation across all lags.
+\subsection{Poisson--Pareto Model}
 
-Despite this, all simulated values of \(\alpha\) were below 1, indicating that the mean of the Pareto distribution was infinite. This posed a risk of instability in the results and led to the conclusion that the Pareto--Poisson model was not suitable for the \texttt{itamtplcost} dataset. Consequently, alternative loss distributions were considered,~including the Weibull and lognormal. Among these, the lognormal distribution provided the best results.
+Similarly to the previous case, Gibbs sampling was used to draw realizations from the posterior distributions of \(\alpha\), \(\beta\), and \(\theta\), with three Markov chains run in parallel and initial parameter values chosen to be well-dispersed. A burn-in of 5{,}000 iterations was initially applied, but the Gelman--Rubin diagnostic \citep{Gelman1992} suggested extending it to 10{,}000. Consequently, a burn-in of 10{,}000 was adopted, and autocorrelation plots were generated. High autocorrelations were observed, prompting the use of a thinning interval of 10. The chains were rerun with this thinning, and the trace plots, along with the updated autocorrelation plots, indicated good mixing and negligible autocorrelation across all lags.
+
+Despite this, all simulated values of \(\alpha\) were below 1, indicating that the mean of the Pareto distribution was infinite. This posed a risk of instability in the results and led to the conclusion that the Poisson--Pareto model was not suitable for the \texttt{itamtplcost} dataset. Consequently, alternative loss distributions were considered, including the Weibull and lognormal. Of these two, the lognormal distribution was preferred, as it provided a heavier tail for the predictive distribution of \( S_f \). Alternatives to the Poisson distribution were also explored, since the empirical mean and variance of \( N_t \) differed substantially---28.563 versus 90.529---violating the Poisson assumption of equality between mean and variance. This contrasts with the \citet{rytgaard1990pareto} dataset, where the mean and variance were more closely aligned (3.2 vs.\ 3.7). Both the Poisson and Negative Binomial distributions provided a good fit. Therefore, two models are reported below:\ the Poisson--Lognormal and the Negative Binomial--Lognormal.
+
+\subsection{Poisson--Lognormal Model}
 
 The lognormal distribution was parametrized in terms of \(\mu\) and \(\tau\), where \(\tau = 1 / \sigma^2\). A vague normal prior~was assigned to \(\mu\), while vague gamma priors were used for \(\sigma\) and \(\theta\). Again, three Markov chains were run in parallel with well-dispersed initial values. For the third chain, the starting values were set to the maximum likelihood~es- timates (see Table~\ref{tab:9}).
 
@@ -652,84 +656,7 @@ The lognormal distribution was parametrized in terms of \(\mu\) and \(\tau\), wh
 \end{tabular}
 \end{table}
 
-Initially, a burn-in of 1{,}000 iterations was employed, and the Gelman--Rubin diagnostic \citep{Gelman1992} was used to assess its adequacy. Figure~\ref{fig:11} illustrates the evolution of the univariate PSRF point estimates over the course of the iterations. Although all estimates remain below 1.1, they stabilize around 1 by approximately the 10{,}000\textsuperscript{th} iteration. As a result, a burn-in of 10{,}000 was adopted. The chains were then rerun, and autocorrelation plots were generated (see Figure~\ref{fig:12}), with values for lags 1 through 10 reported in Table~\ref{tab:10}. Moderate autocorrelations were observed, prompting the use of a thinning interval of 10.
-
-\begin{figure}[!ht]
-    \centering
-    \caption{PSRF Values (Gelman--Rubin Diagnostic) (Poisson--Lognormal)}
-    \label{fig:11}
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/gelman_mu.png}
-        \caption{\( \mu \)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/gelman_tau.png}
-        \caption{\( \tau \)}
-    \end{subfigure}
-
-    \vspace{1em}
-
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/gelman_theta.png}
-        \caption{\( \theta \)}
-    \end{subfigure}
-\end{figure}
-
-\begin{figure}[!ht]
-    \centering
-    \caption{Autocorrelation Plots (Poisson--Lognormal)}
-    \label{fig:12}
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_mu.png}
-        \caption{\( \mu \)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_tau.png}
-        \caption{\( \tau \)}
-    \end{subfigure}
-
-    \vspace{1em}
-
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_theta.png}
-        \caption{\( \theta \)}
-    \end{subfigure}
-\end{figure}
-
-\begin{table}[!ht]
-\centering
-\footnotesize
-\setlength{\tabcolsep}{5pt}
-\caption{Autocorrelations at Lags 1--10 (Poisson--Lognormal)}
-\label{tab:10}
-\begin{tabular}{
->{\raggedright\arraybackslash}p{\widthof{\textbf{Lag}}}
-*{3}{S[table-format=-1.3]}
-}
-\hline
-\textbf{Lag} & \( \mu \) & \( \tau \) & \( \theta \) \\
-\hline
-1  & 0.157 & 0.158 &  0.003 \\
-2  & 0.035 & 0.040 &  0.003 \\
-3  & 0.009 & 0.015 & -0.002 \\
-4  & 0.003 & 0.006 & -0.003 \\
-5  & 0.002 & 0.001 & -0.003 \\
-6  & -0.002 & -0.001 & -0.002 \\
-7  & -0.001 & -0.005 & -0.002 \\
-8  & 0.002 & -0.006 & -0.001 \\
-9  & 0.000 & 0.003 &  0.008 \\
-10 & 0.004 & 0.006 & -0.003 \\
-\hline
-\end{tabular}
-\end{table}
+A burn-in of 1{,}000 iterations was initially applied, but the Gelman--Rubin diagnostic indicated the need for a longer burn-in period. The diagnostic estimates stabilized around 1 after approximately 10{,}000 iterations, which was subsequently adopted as the burn-in. Moderate autocorrelations observed in the chains led to the use of a thinning interval of 10. The chains were rerun with this thinning, and the updated autocorrelation plots showed negligible autocorrelation across all lags. Trace plots for the three parameters are displayed in Figure~\ref{fig:13}, suggesting good mixing and convergence.
 
 \begin{figure}[!ht]
     \centering
@@ -756,33 +683,7 @@ Initially, a burn-in of 1{,}000 iterations was employed, and the Gelman--Rubin d
     \end{subfigure}
 \end{figure}
 
-\begin{figure}[!ht]
-    \centering
-    \caption{Autocorrelation Plots After Thinning (Poisson--Lognormal)}
-    \label{fig:14}
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_mu.png}
-        \caption{\( \mu \)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_tau.png}
-        \caption{\( \tau \)}
-    \end{subfigure}
-
-    \vspace{1em}
-
-    \begin{subfigure}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{itamtplcost/acf_after_thinning_theta.png}
-        \caption{\( \theta \)}
-    \end{subfigure}
-
-\end{figure}
-
-Table~\ref{tab:11} reports statistics computed from 30{,}000 post-burn-in iterations, while Figure~\ref{fig:15} presents the posterior density plots for \( \mu \), \( \tau \), and \( \theta \).
+Table~\ref{tab:11} presents posterior summary statistics based on 30{,}000 post-burn-in samples. The posterior means closely align with the maximum likelihood estimates (MLE)\footnote{The MLE for \( \tau \) is 1.554.}, which is expected given the use of vague priors, as most of the inferential weight is derived from the data. The sample mean of \( Y \), 1{,}015.352, falls within the Bayesian credible interval for \( \mathbb{E}[Y] \). The posterior mean of \( \mathbb{E}[Y] \) is slightly higher than the sample mean, reflecting the influence of several exceptionally large observations (exceeding 3~billion euros). The 95\% Bayesian credible intervals are narrower than those for the \citet{rytgaard1990pareto} dataset, suggesting greater precision—likely due to the larger sample size.
 
 \begin{table}[!ht]
 \centering
@@ -791,17 +692,20 @@ Table~\ref{tab:11} reports statistics computed from 30{,}000 post-burn-in iterat
 \caption{Posterior Statistics (Poisson--Lognormal)}
 \label{tab:11}
 \begin{tabular}{
->{\raggedright\arraybackslash}p{\widthof{\( \theta \)}}
-*{2}{S[table-format=2.3]}
+>{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
+*{2}{S[table-format=4.3]}
 >{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
 }
 \hline
  & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
 \( \mu \) & 6.700 & 0.038 & (6.626, 6.774) \\
 \( \tau \) & 1.552 & 0.103 & (1.358, 1.759) \\
-\( \theta \) & 28.628 & 1.337 & (26.058, 31.313) \\ \hline
+\( \theta \) & 28.628 & 1.337 & (26.058, 31.313) \\
+\( E[Y] \) & 1124.280 & 48.873 & (1034.404, 1225.412) \\ \hline
 \end{tabular}
 \end{table}
+
+Figure~\ref{fig:15} displays the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The distribution of \( \mu \) resembles a normal distribution, whereas the posterior distributions for \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, but the skewness is considerably less pronounced than in the \citet{rytgaard1990pareto} dataset.
 
 \begin{figure}[!ht]
     \centering
@@ -835,7 +739,7 @@ Table~\ref{tab:11} reports statistics computed from 30{,}000 post-burn-in iterat
     
 \end{figure}
 
-The posterior means of \( \mu \) and \( \tau \) were used as the parameters of the lognormal distribution, and the corresponding cumulative distribution function (CDF) was plotted against the empirical cumulative data \( (y_{i,t}) \). Similarly, the posterior mean of \( \theta \) was used as the parameter of the Poisson distribution, and its CDF was plotted against the empirical cumulative data \( (n_t) \). The lognormal\((6.700,\,0.804)\) distribution provides a close fit to the empirical data, while the Poisson\((28.628)\) distribution also closely matches the observed frequencies (see Figures~\ref{fig:16} and~\ref{fig:17}).
+Figure~\ref{fig:16} presents a comparison between the empirical cumulative data \( y_{i,t} \) and the cumulative distribution function (CDF) of a lognormal distribution with parameters \( \mu \) and \( \tau \) set to their posterior means. The Lognormal\((6.700,\,1.552)\) distribution provides a very close fit to the empirical data. Figure~\ref{fig:17} compares the empirical cumulative data \( n_{t} \) with the CDF of a Poisson distribution using the posterior mean of \( \theta \). The Poisson\((28.628)\) distribution offers a reasonable fit to the data, though there is room for improvement.
 
 \begin{figure}[!ht]
     \centering
@@ -849,24 +753,6 @@ The posterior means of \( \mu \) and \( \tau \) were used as the parameters of t
     \caption{Empirical vs.\ Fitted Poisson CDF (Poisson--Lognormal)}
     \label{fig:17}
     \includegraphics[width=.5\textwidth]{itamtplcost/empirical_vs_poisson.png}
-\end{figure}
-
-Samples of \( Y_f \) were generated using the inverse CDF method as in the case of the \citet{rytgaard1990pareto} dataset. Figure~\ref{fig:18} displays the estimated predictive probability density function (PDF) of \( Y_f \).
-
-\begin{figure}[!ht]
-\centering
-\caption{Estimated Predictive PDF of \( Y_f \) (Poisson--Lognormal)}
-\label{fig:18}
-\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_Y_f.png}
-\end{figure}
-
-Then samples of \( S_f \) were simulated also in the same way as before. Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with three fitted distributions using moment matching. The Gamma distribution seems to provide the best fit. The fitted Gamma distribution has parameters \( \alpha = 15.6920 \) and \( \beta = 0.0005 \).
-
-\begin{figure}[!ht]
-\centering
-\caption{Histogram and Fitted Distributions for Predictive \( S_f \) (Poisson--Lognormal)}
-\label{fig:19}
-\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_S_f.png}
 \end{figure}
 
 
