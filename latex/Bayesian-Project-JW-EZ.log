@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  5 MAY 2025 12:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  5 MAY 2025 15:39
 entering extended mode
 **./Bayesian-Project-JW-EZ.tex
 (Bayesian-Project-JW-EZ.tex
@@ -809,94 +809,105 @@ Package pdftex.def Info: rytgaard1990/predictive_S_f.png  used on input line 57
 2.
 (pdftex.def)             Requested size: 241.84842pt x 107.58655pt.
  [8 <./rytgaard1990/predictive_Y_f.png> <./rytgaard1990/predictive_S_f.png>]
-Overfull \hbox (3.25822pt too wide) in paragraph at lines 652--652
+Overfull \hbox (3.25822pt too wide) in paragraph at lines 654--654
 []|\OT1/cmr/bx/n/8 Chain|  
  []
 
-<itamtplcost/trace_after_thinning_mu.png, id=293, 416.30531pt x 174.6525pt>
+[9]
+<itamtplcost/trace_after_thinning_mu.png, id=300, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_mu.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_mu.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_mu.png  used on input
- line 667.
+ line 669.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/trace_after_thinning_tau.png, id=294, 416.30531pt x 174.6525pt>
+<itamtplcost/trace_after_thinning_tau.png, id=301, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_tau.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_tau.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_tau.png  used on inpu
-t line 673.
+t line 675.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/trace_after_thinning_theta.png, id=295, 416.30531pt x 174.6525pt>
+<itamtplcost/trace_after_thinning_theta.png, id=302, 416.30531pt x 174.6525pt>
 File: itamtplcost/trace_after_thinning_theta.png Graphic file (type png)
 <use itamtplcost/trace_after_thinning_theta.png>
 Package pdftex.def Info: itamtplcost/trace_after_thinning_theta.png  used on in
-put line 681.
+put line 683.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-[9]
-<itamtplcost/density_mu.png, id=311, 416.30531pt x 174.6525pt>
+<itamtplcost/density_mu.png, id=310, 416.30531pt x 174.6525pt>
 File: itamtplcost/density_mu.png Graphic file (type png)
 <use itamtplcost/density_mu.png>
-Package pdftex.def Info: itamtplcost/density_mu.png  used on input line 716.
+Package pdftex.def Info: itamtplcost/density_mu.png  used on input line 718.
 (pdftex.def)             Requested size: 217.6621pt x 91.3155pt.
-<itamtplcost/density_tau.png, id=312, 416.30531pt x 176.15813pt>
+<itamtplcost/density_tau.png, id=311, 416.30531pt x 176.15813pt>
 File: itamtplcost/density_tau.png Graphic file (type png)
 <use itamtplcost/density_tau.png>
-Package pdftex.def Info: itamtplcost/density_tau.png  used on input line 722.
+Package pdftex.def Info: itamtplcost/density_tau.png  used on input line 724.
 (pdftex.def)             Requested size: 217.6621pt x 92.1027pt.
-<itamtplcost/density_theta.png, id=313, 416.30531pt x 180.675pt>
+<itamtplcost/density_theta.png, id=312, 416.30531pt x 180.675pt>
 File: itamtplcost/density_theta.png Graphic file (type png)
 <use itamtplcost/density_theta.png>
-Package pdftex.def Info: itamtplcost/density_theta.png  used on input line 730.
+Package pdftex.def Info: itamtplcost/density_theta.png  used on input line 732.
 
 (pdftex.def)             Requested size: 217.6621pt x 94.46431pt.
-<itamtplcost/density_E_y.png, id=314, 416.30531pt x 180.675pt>
+<itamtplcost/density_E_y.png, id=313, 416.30531pt x 180.675pt>
 File: itamtplcost/density_E_y.png Graphic file (type png)
 <use itamtplcost/density_E_y.png>
-Package pdftex.def Info: itamtplcost/density_E_y.png  used on input line 736.
+Package pdftex.def Info: itamtplcost/density_E_y.png  used on input line 738.
 (pdftex.def)             Requested size: 217.6621pt x 94.46431pt.
-<itamtplcost/empirical_vs_lognormal.png, id=317, 416.30531pt x 176.91093pt>
+<itamtplcost/empirical_vs_lognormal.png, id=316, 416.30531pt x 176.91093pt>
 File: itamtplcost/empirical_vs_lognormal.png Graphic file (type png)
 <use itamtplcost/empirical_vs_lognormal.png>
 Package pdftex.def Info: itamtplcost/empirical_vs_lognormal.png  used on input 
-line 748.
+line 750.
 (pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
-<itamtplcost/empirical_vs_poisson.png, id=318, 416.30531pt x 176.91093pt>
+<itamtplcost/empirical_vs_poisson.png, id=317, 416.30531pt x 176.91093pt>
 File: itamtplcost/empirical_vs_poisson.png Graphic file (type png)
 <use itamtplcost/empirical_vs_poisson.png>
 Package pdftex.def Info: itamtplcost/empirical_vs_poisson.png  used on input li
-ne 755.
+ne 757.
 (pdftex.def)             Requested size: 241.84842pt x 102.77577pt.
-<itamtplcost/predictive_Y_f.png, id=320, 416.30531pt x 185.19188pt>
-File: itamtplcost/predictive_Y_f.png Graphic file (type png)
-<use itamtplcost/predictive_Y_f.png>
-Package pdftex.def Info: itamtplcost/predictive_Y_f.png  used on input line 764
-.
-(pdftex.def)             Requested size: 241.84842pt x 107.58655pt.
  [10 <./itamtplcost/trace_after_thinning_mu.png> <./itamtplcost/trace_after_thi
 nning_tau.png> <./itamtplcost/trace_after_thinning_theta.png>]
-<itamtplcost/predictive_S_f.png, id=336, 416.30531pt x 174.6525pt>
-File: itamtplcost/predictive_S_f.png Graphic file (type png)
-<use itamtplcost/predictive_S_f.png>
-Package pdftex.def Info: itamtplcost/predictive_S_f.png  used on input line 773
+<itamtplcost/predictive_Y_f.png, id=333, 416.30531pt x 185.19188pt>
+File: itamtplcost/predictive_Y_f.png Graphic file (type png)
+<use itamtplcost/predictive_Y_f.png>
+Package pdftex.def Info: itamtplcost/predictive_Y_f.png  used on input line 766
 .
-(pdftex.def)             Requested size: 241.84842pt x 101.46375pt.
+(pdftex.def)             Requested size: 241.84842pt x 107.58655pt.
  [11 <./itamtplcost/density_mu.png> <./itamtplcost/density_tau.png> <./itamtplc
 ost/density_theta.png> <./itamtplcost/density_E_y.png> <./itamtplcost/empirical
 _vs_lognormal.png> <./itamtplcost/empirical_vs_poisson.png> <./itamtplcost/pred
-ictive_Y_f.png>] (Bayesian-Project-JW-EZ.bbl) [12 <./itamtplcost/predictive_S_f
-.png>]
+ictive_Y_f.png>]
+<itamtplcost/predictive_S_f.png, id=346, 416.30531pt x 174.6525pt>
+File: itamtplcost/predictive_S_f.png Graphic file (type png)
+<use itamtplcost/predictive_S_f.png>
+Package pdftex.def Info: itamtplcost/predictive_S_f.png  used on input line 775
+.
+(pdftex.def)             Requested size: 241.84842pt x 101.46375pt.
+
+Overfull \hbox (3.25822pt too wide) in paragraph at lines 795--795
+[]|\OT1/cmr/bx/n/8 Chain|  
+ []
+
+
+LaTeX Warning: Reference `fig:20' on page 12 undefined on input line 802.
+
+(Bayesian-Project-JW-EZ.bbl [12 <./itamtplcost/predictive_S_f.png>]) [13]
 (Bayesian-Project-JW-EZ.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `Bayesian-Project-JW-EZ.out' has not changed.
 
 (rerunfilecheck)             Checksum: D071AE79F0CBEC99F3354502FB724079;1899.
  ) 
 Here is how much of TeX's memory you used:
- 17048 strings out of 478869
- 312239 string characters out of 2860379
- 619431 words of memory out of 3000000
- 34606 multiletter control sequences out of 15000+600000
+ 17054 strings out of 478869
+ 312302 string characters out of 2860379
+ 618541 words of memory out of 3000000
+ 34609 multiletter control sequences out of 15000+600000
  417201 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,13n,81p,1118b,785s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,13n,81p,906b,869s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Program Files/MiKTeX/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<C:/Progra
 m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/typ
@@ -924,9 +935,9 @@ MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmtt8.pfb><C:/Program Files/MiKTeX/fonts/type1/public
 /amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/cm-sup
 er/sfrm1000.pfb>
-Output written on Bayesian-Project-JW-EZ.pdf (13 pages, 736388 bytes).
+Output written on Bayesian-Project-JW-EZ.pdf (14 pages, 740949 bytes).
 PDF statistics:
- 499 PDF objects out of 1000 (max. 8388607)
- 73 named destinations out of 1000 (max. 500000)
+ 506 PDF objects out of 1000 (max. 8388607)
+ 76 named destinations out of 1000 (max. 500000)
  264 words of extra memory for PDF output out of 10000 (max. 10000000)
 

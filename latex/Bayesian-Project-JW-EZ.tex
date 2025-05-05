@@ -630,13 +630,15 @@ Table~\ref{tab:8} presents a comparison of summary statistics between the \citet
 
 \subsection{Poisson--Pareto Model}
 
-Similarly to the previous case, Gibbs sampling was used to draw realizations from the posterior distributions of \(\alpha\), \(\beta\), and \(\theta\), with three Markov chains run in parallel and initial parameter values chosen to be well-dispersed. A burn-in of 5{,}000 iterations was initially applied, but the Gelman--Rubin diagnostic \citep{Gelman1992} suggested extending it to 10{,}000. Consequently, a burn-in of 10{,}000 was adopted, and autocorrelation plots were generated. High autocorrelations were observed, prompting the use of a thinning interval of 10. The chains were rerun with this thinning, and the trace plots, along with the updated autocorrelation plots, indicated good mixing and negligible autocorrelation across all lags.
+As previously, Gibbs sampling was employed to generate samples from the posterior distributions of \(\alpha\), \(\beta\), and \(\theta\), with three Markov chains run in parallel using well-dispersed initial parameter values. An initial burn-in~of~1{,}000 iterations was applied. However, the Gelman--Rubin diagnostic \citeyearpar{Gelman1992} indicated that a longer burn-in period was necessary. Accordingly, the burn-in was extended to 10{,}000 iterations. Autocorrelation plots revealed substan- tial autocorrelation in the samples, particularly for certain parameters, prompting the use of a thinning interval of 10. The chains were rerun with this setting, and the resulting trace and autocorrelation plots demonstrated good mixing and negligible autocorrelation across all lags.
 
-Despite this, all simulated values of \(\alpha\) were below 1, indicating that the mean of the Pareto distribution was infinite. This posed a risk of instability in the results and led to the conclusion that the Poisson--Pareto model was not suitable for the \texttt{itamtplcost} dataset. Consequently, alternative loss distributions were considered, including the Weibull and lognormal. Of these two, the lognormal distribution was preferred, as it provided a heavier tail for the predictive distribution of \( S_f \). Alternatives to the Poisson distribution were also explored, since the empirical mean and variance of \( N_t \) differed substantially---28.563 versus 90.529---violating the Poisson assumption of equality between mean and variance. This contrasts with the \citet{rytgaard1990pareto} dataset, where the mean and variance were more closely aligned (3.2 vs.\ 3.7). Both the Poisson and Negative Binomial distributions provided a good fit. Therefore, two models are reported below:\ the Poisson--Lognormal and the Negative Binomial--Lognormal.
+Despite this, all simulated values of \(\alpha\) were below 1, indicating that the mean of the Pareto distribution~was infinite. This posed a risk of instability in the results and led to the conclusion that the Poisson--Pareto model was not suitable for the \texttt{itamtplcost} dataset. Consequently, alternative loss distributions were considered,~including the Weibull and Lognormal. Of these, the Lognormal distribution was preferred, as it yields a heavier tail in~the predictive distribution of \( S_f \), which is more appropriate given the presence---albeit rare---of extremely large~ag- gregate claims.
+
+In addition, alternatives to the Poisson distribution for modeling claim counts were considered, as the~empirical mean and variance of \( N_t \)—28.563 and 90.529, respectively—differed substantially, indicating a likely~violation of the Poisson assumption of equality between mean and variance. This contrasts with the \citet{rytgaard1990pareto}~da- taset, where the sample mean and variance were more closely aligned (3.2 vs.\ 3.7). Both the Poisson and~Negative Binomial distributions provided a reasonable fit to the data. Accordingly, two models are reported below:\ the Poisson--Lognormal and the Negative Binomial--Lognormal.
 
 \subsection{Poisson--Lognormal Model}
 
-The lognormal distribution was parameterized in terms of \( \mu \) and \( \tau \), where \( \tau = 1 / \sigma^2 \). A vague normal prior was assigned to \( \mu \), and vague gamma priors were used for both \( \sigma \) and \( \theta \). As in previous models, three Markov chains were run in parallel with well-dispersed initial parameter values. For the third chain, initial values were~set~equal to the maximum likelihood estimates (see Table~\ref{tab:9}).
+The Lognormal distribution was parameterized in terms of \( \mu \) and \( \tau \), where \( \tau = 1 / \sigma^2 \). A vague Normal prior was assigned to \( \mu \), and vague gamma priors were used for both \( \sigma \) and \( \theta \). As in previous models, three Markov chains were run in parallel with well-dispersed initial parameter values. For the third chain, initial values were~set~equal to the maximum likelihood estimates (see Table~\ref{tab:9}).
 
 \begin{table}[!ht]
 \centering
@@ -705,7 +707,7 @@ Table~\ref{tab:11} reports posterior summary statistics based on 30{,}000 post-b
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The posterior for \( \mu \) appears approximately~normal, while the distributions of \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, though notably less so than in the \citet{rytgaard1990pareto} dataset.
+Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The posterior for \( \mu \) appears approximately~Normal, while the distributions of \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, though notably less so than in the \citet{rytgaard1990pareto} dataset.
 
 \begin{figure}[!ht]
     \centering
@@ -739,7 +741,7 @@ Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \),
     
 \end{figure}
 
-Figure~\ref{fig:16} compares the empirical cumulative distribution of observed claim amounts \( y_{i,t} \) with the cumulative distribution function (CDF) of a lognormal distribution parameterized by the posterior means of \( \mu \) and~\( \tau \). The Lognormal\((6.700,\,1.552)\) distribution closely matches the empirical data. Figure~\ref{fig:17} presents a~similar comparison for the claim frequency data \( n_t \), evaluated against the CDF of a Poisson distribution with mean equal to the posterior mean of \( \theta \). The Poisson\((28.628)\) distribution captures the overall trend of the empirical~distribution well, though there is room for improvement.
+Figure~\ref{fig:16} compares the empirical cumulative distribution of observed claim amounts \( y_{i,t} \) with the cumulative distribution function (CDF) of a Lognormal distribution parameterized by the posterior means of \( \mu \) and~\( \tau \). The Lognormal\((6.700,\,1.552)\) distribution closely matches the empirical data. Figure~\ref{fig:17} presents a~similar comparison for the claim frequency data \( n_t \), evaluated against the CDF of a Poisson distribution with mean equal to the posterior mean of \( \theta \). The Poisson\((28.628)\) distribution captures the overall trend of the empirical~distribution well, though there is room for improvement.
 
 \begin{figure}[!ht]
     \centering
@@ -775,7 +777,83 @@ Finally, Figure~\ref{fig:19} presents the histogram of simulated aggregate claim
 
 \subsection{Negative Binomial--Lognormal Model}
 
+As previously noted, upon examining the sample mean and variance of claim counts in the \texttt{itamtplcost} dataset, it became apparent that the Poisson assumption, which assumes equality between the mean and variance of~\( N_t \), was likely violated. As a result, an alternative distribution for modeling claim counts was explored. The~Negative Binomial distribution is commonly used when overdispersion is present in count data, meaning the variance~ex- ceeds the mean.
 
+The Negative Binomial distribution was parameterized in terms of \( r \) and \( p \), where \( r \) represents the number~of successes required before an experiment is stopped, and \( p \) is the probability of success in each trial. A vague~Beta prior was assigned to \( p \), as it must lie between 0 and 1, while a vague Gamma prior was used for \( r \), as \( r \) can~take any positive real value. Three Markov chains were run in parallel with varied initial parameter values, as~summa- rized in Table~\ref{tab:12}.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Initial Parameter Values}
+\label{tab:12}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{Chain}}
+*{4}{S[table-format=2.3]}
+}
+\hline
+\textbf{Chain} & \( \mu \) & \( \tau \) & \( p \) & \( r \) \\ \hline
+1 & 0.01 & 0.50 & 0.20 & 5.00 \\
+2 & 2.0 & 1.5 & 0.5 & 10.0 \\
+3 & 6.700 & 0.802 & 13.165 & 0.316 \\ \hline
+\end{tabular}
+\end{table}
+
+As previously, the burn-in period was initially set to 1,000 iterations, and the PSRF point estimates were~examined to determine if this duration was sufficient. The plots indicated that a burn-in of 20,000 iterations was necessary, so the chains were rerun with this setting. Autocorrelation values for lags 1 through 10 were computed, revealing significant autocorrelations, particularly for \( r \) and \( p \), with values reaching as high as 0.9. Consequently, a thinning interval of 10 was insufficient, and a thinning interval of 100 was applied. This adjustment effectively reduced autocorrelation, and the resulting trace plots (Figure~\ref{fig:20}) indicated good mixing and convergence.
+
+%\begin{figure}[!ht]
+%    \centering
+%    \caption{Trace Plots After Thinning}
+%    \label{fig:20}
+%    \begin{subfigure}{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_mu.png}
+%        \caption{\( \mu \)}
+%    \end{subfigure}
+%    \hfill
+%    \begin{subfigure}{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_tau.png}
+%        \caption{\( \tau \)}
+%    \end{subfigure}
+%
+%    \vspace{1em}
+%
+%    \begin{subfigure}{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_r.png}
+%        \caption{\( r \)}
+%    \end{subfigure}
+%    \hfill
+%    \begin{subfigure}{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{itamtplcost/trace_after_thinning_p.png}
+%        \caption{\( p \)}
+%    \end{subfigure}
+%\end{figure}
+
+Table~\ref{tab:13} shows posterior statistics based on 30,000 post-burn-in iterations. The estimates for \( \mu \) and \( \tau \)~match those obtained in the Poisson-Lognormal model, providing further confirmation of convergence for these parameters.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Posterior Statistics}
+\label{tab:13}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
+*{2}{S[table-format=4.3]}
+>{\raggedright\arraybackslash}p{\widthof{\textbf{95\% Bayesian Credible Interval}}}
+}
+\hline
+ & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
+\( \mu \) & 6.700 & 0.038 & (6.626, 6.774) \\
+\( \tau \) & 1.552 & 0.103 & (1.358, 1.759) \\
+\( r \) & 28.628 & 1.337 & (26.058, 31.313) \\
+\( p \) & 28.628 & 1.337 & (26.058, 31.313) \\
+\( E[Y] \) & 1124.280 & 48.873 & (1034.404, 1225.412) \\ \hline
+\end{tabular}
+\end{table}
 
 \printbibliography{references}
 \end{document}
