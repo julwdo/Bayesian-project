@@ -636,13 +636,13 @@ Despite this, all simulated values of \(\alpha\) were below 1, indicating that t
 
 \subsection{Poisson--Lognormal Model}
 
-The lognormal distribution was parametrized in terms of \(\mu\) and \(\tau\), where \(\tau = 1 / \sigma^2\). A vague normal prior~was assigned to \(\mu\), while vague gamma priors were used for \(\sigma\) and \(\theta\). Again, three Markov chains were run in parallel with well-dispersed initial values. For the third chain, the starting values were set to the maximum likelihood~es- timates (see Table~\ref{tab:9}).
+The lognormal distribution was parameterized in terms of \( \mu \) and \( \tau \), where \( \tau = 1 / \sigma^2 \). A vague normal prior was assigned to \( \mu \), and vague gamma priors were used for both \( \sigma \) and \( \theta \). As in previous models, three Markov chains were run in parallel with well-dispersed initial parameter values. For the third chain, initial values were~set~equal to the maximum likelihood estimates (see Table~\ref{tab:9}).
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}
-\caption{Initial Parameter Values (Poisson--Lognormal)}
+\caption{Initial Parameter Values}
 \label{tab:9}
 \begin{tabular}{
 >{\raggedright\arraybackslash}p{\widthof{Chain}}
@@ -656,11 +656,11 @@ The lognormal distribution was parametrized in terms of \(\mu\) and \(\tau\), wh
 \end{tabular}
 \end{table}
 
-A burn-in of 1{,}000 iterations was initially applied, but the Gelman--Rubin diagnostic indicated the need for a longer burn-in period. The diagnostic estimates stabilized around 1 after approximately 10{,}000 iterations, which was subsequently adopted as the burn-in. Moderate autocorrelations observed in the chains led to the use of a thinning interval of 10. The chains were rerun with this thinning, and the updated autocorrelation plots showed negligible autocorrelation across all lags. Trace plots for the three parameters are displayed in Figure~\ref{fig:13}, suggesting good mixing and convergence.
+An initial burn-in of 1{,}000 iterations was applied. However, the Gelman--Rubin diagnostic (\citeyear{Gelman1992}) suggested that this was insufficient, as convergence had not yet been achieved. The PSRF point estimates stabilized~around 1 only after approximately 10{,}000 iterations, which was then adopted as the revised burn-in. Moderate~autocor- relation was observed in the chains, prompting the use of a thinning interval of 10. The chains were rerun with this setting, and updated diagnostics showed negligible autocorrelation across all lags. Trace plots of the~param- eters, shown in Figure~\ref{fig:13}, support the conclusion of good mixing and convergence.
 
 \begin{figure}[!ht]
     \centering
-    \caption{Trace Plots After Thinning (Poisson--Lognormal)}
+    \caption{Trace Plots After Thinning}
     \label{fig:13}
     \begin{subfigure}{0.45\textwidth}
         \centering
@@ -683,13 +683,13 @@ A burn-in of 1{,}000 iterations was initially applied, but the Gelman--Rubin dia
     \end{subfigure}
 \end{figure}
 
-Table~\ref{tab:11} presents posterior summary statistics based on 30{,}000 post-burn-in samples. The posterior means closely align with the maximum likelihood estimates (MLE)\footnote{The MLE for \( \tau \) is 1.554.}, which is expected given the use of vague priors, as most of the inferential weight is derived from the data. The sample mean of \( Y \), 1{,}015.352, falls within the Bayesian credible interval for \( \mathbb{E}[Y] \). The posterior mean of \( \mathbb{E}[Y] \) is slightly higher than the sample mean, reflecting the influence of several exceptionally large observations (exceeding 3~billion euros). The 95\% Bayesian credible intervals are narrower than those for the \citet{rytgaard1990pareto} dataset, suggesting greater precision—likely due to the larger sample size.
+Table~\ref{tab:11} reports posterior summary statistics based on 30{,}000 post-burn-in samples. The posterior means~are closely aligned with the maximum likelihood estimates (MLE)\footnote{The MLE for \( \tau \) is 1.554.}, as expected under vague priors, since the inference is primarily driven by the data. The sample mean of \( Y \), equal to 1{,}015.352, lies within the Bayesian credible interval for \( \mathbb{E}[Y] \). The posterior mean of \( \mathbb{E}[Y] \) is slightly higher, reflecting the influence of several extremely~large claim amounts (exceeding 3~billion euros). Compared to the results from the \citet{rytgaard1990pareto} dataset, the 95\% credible intervals are narrower or of comparable width, indicating good estimation precision—likely due to the larger sample size.
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}
-\caption{Posterior Statistics (Poisson--Lognormal)}
+\caption{Posterior Statistics}
 \label{tab:11}
 \begin{tabular}{
 >{\raggedright\arraybackslash}p{\widthof{\( E[Y] \)}}
@@ -705,11 +705,11 @@ Table~\ref{tab:11} presents posterior summary statistics based on 30{,}000 post-
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:15} displays the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The distribution of \( \mu \) resembles a normal distribution, whereas the posterior distributions for \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, but the skewness is considerably less pronounced than in the \citet{rytgaard1990pareto} dataset.
+Figure~\ref{fig:15} shows the posterior density plots for \( \mu \), \( \tau \), and \( \theta \). The posterior for \( \mu \) appears approximately~normal, while the distributions of \( \tau \) and \( \theta \) resemble gamma distributions. The posterior for \( \mathbb{E}[Y] \) is right-skewed, though notably less so than in the \citet{rytgaard1990pareto} dataset.
 
 \begin{figure}[!ht]
     \centering
-    \caption{Posterior Densities (Poisson--Lognormal)}
+    \caption{Posterior Densities}
     \label{fig:15}
     \begin{minipage}{0.45\textwidth}
         \centering
@@ -739,21 +739,42 @@ Figure~\ref{fig:15} displays the posterior density plots for \( \mu \), \( \tau 
     
 \end{figure}
 
-Figure~\ref{fig:16} presents a comparison between the empirical cumulative data \( y_{i,t} \) and the cumulative distribution function (CDF) of a lognormal distribution with parameters \( \mu \) and \( \tau \) set to their posterior means. The Lognormal\((6.700,\,1.552)\) distribution provides a very close fit to the empirical data. Figure~\ref{fig:17} compares the empirical cumulative data \( n_{t} \) with the CDF of a Poisson distribution using the posterior mean of \( \theta \). The Poisson\((28.628)\) distribution offers a reasonable fit to the data, though there is room for improvement.
+Figure~\ref{fig:16} compares the empirical cumulative distribution of observed claim amounts \( y_{i,t} \) with the cumulative distribution function (CDF) of a lognormal distribution parameterized by the posterior means of \( \mu \) and~\( \tau \). The Lognormal\((6.700,\,1.552)\) distribution closely matches the empirical data. Figure~\ref{fig:17} presents a~similar comparison for the claim frequency data \( n_t \), evaluated against the CDF of a Poisson distribution with mean equal to the posterior mean of \( \theta \). The Poisson\((28.628)\) distribution captures the overall trend of the empirical~distribution well, though there is room for improvement.
 
 \begin{figure}[!ht]
     \centering
-    \caption{Empirical vs.\ Fitted Lognormal CDF (Poisson--Lognormal)}
+    \caption{Empirical vs.\ Fitted Lognormal CDF}
     \label{fig:16}
     \includegraphics[width=.5\textwidth]{itamtplcost/empirical_vs_lognormal.png}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
-    \caption{Empirical vs.\ Fitted Poisson CDF (Poisson--Lognormal)}
+    \caption{Empirical vs.\ Fitted Poisson CDF}
     \label{fig:17}
     \includegraphics[width=.5\textwidth]{itamtplcost/empirical_vs_poisson.png}
 \end{figure}
+
+Figure~\ref{fig:18} displays the estimated predictive probability density function (PDF) of a future individual claim amount \( Y_f \), derived via the inverse CDF method, as in the previous section. The resulting distribution is~marked- ly right-skewed, capturing the heavy-tailed nature of claim sizes. While extremely large values are possible,~they occur with very low probability.
+
+\begin{figure}[!ht]
+\centering
+\caption{Estimated Predictive PDF of \( Y_f \) }
+\label{fig:18}
+\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_Y_f.png}
+\end{figure}
+
+Finally, Figure~\ref{fig:19} presents the histogram of simulated aggregate claims \( S_f \), obtained using the same predictive simulation approach as in the previous section. Three theoretical distributions were fitted to the simulated values using moment matching. Among these, the Gamma distribution appears to provide the best fit, with~esti- mated parameters \( \alpha = 15.6920 \) and \( \beta = 0.0005 \).
+
+\begin{figure}[!ht]
+\centering
+\caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
+\label{fig:19}
+\includegraphics[width=0.5\textwidth]{itamtplcost/predictive_S_f.png}
+\end{figure}
+
+\subsection{Negative Binomial--Lognormal Model}
+
 
 
 \printbibliography{references}
