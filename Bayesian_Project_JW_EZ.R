@@ -361,6 +361,178 @@ max(rytgaard1990_input$y)-min(rytgaard1990_input$y)
 max(itamtplcost_input$y)-min(itamtplcost_input$y)
 
 # ===================================================
+# NEW DATA: POISSON-WEIBULL MODEL
+# ===================================================
+
+model_code_weib <- "
+model {
+  for(i in 1:N_y) {
+    y[i] ~ dweib(alpha, beta)
+  }
+  
+  for(i in 1:N_n) {
+    n[i] ~ dpois(theta)
+  }
+  
+  alpha ~ dgamma(1, 0.1)
+  beta ~ dgamma(1, 0.1)
+  theta ~ dgamma(1, 0.0001)
+}
+"
+
+# Initial values for three MCMC chains
+inits_list_weib <- list(
+  list(alpha = 1.6, beta = 1.5, theta = 0.1, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 123),
+  list(alpha = 2, beta = 2, theta = 10, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 456),
+  list(alpha = 1.595, beta = 1.133, theta = 28.563, .RNG.name = "base::Wichmann-Hill", .RNG.seed = 789)
+)
+
+# ---------------------------------------------------
+# RUN JAGS MODEL
+# ---------------------------------------------------
+set.seed(123)
+
+jags_model_weib <- jags.model(
+  textConnection(model_code_weib),
+  data = itamtplcost_input,
+  inits = inits_list_weib,
+  n.chains = 3,
+  n.adapt = 10000
+)
+
+samples_weib <- coda.samples(
+  jags_model_weib,
+  variable.names = c("alpha", "beta", "theta"),
+  n.iter = 300000,
+  thin = 10
+)
+
+summary(samples_weib)
+
+gelman.diag(samples_weib, autoburnin = FALSE)
+
+params <- c("alpha", "beta", "theta")
+for (param in params) {
+  gelman.plot(samples_weib[, param], xlab = "", ylab = "")
+}
+
+autocorr.plot(samples_weib[, "alpha"], ask=FALSE)
+autocorr.plot(samples_weib[, "beta"], ask=FALSE)
+autocorr.plot(samples_weib[, "theta"], ask=FALSE)
+
+autocorr.diag(samples_weib[, "alpha"], lags = 1:10)
+autocorr.diag(samples_weib[, "beta"], lags = 1:10)
+autocorr.diag(samples_weib[, "theta"], lags = 1:10)
+
+traceplot(samples_weib[, c("alpha", "beta", "theta")], main="", xlab="")
+
+plot(density(as.matrix(samples_weib[, "alpha"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_weib[, "beta"])), main="", xlab="", ylab="")
+plot(density(as.matrix(samples_weib[, "theta"])), main="", xlab="", ylab="")
+
+posterior_weib <- as.matrix(samples_weib)
+
+# ---------------------------------------------------
+# PREDICTIONS: Poisson-Weibull Distribution
+# ---------------------------------------------------
+
+# Simulation parameters
+n_sim <- 1000
+alpha_values_weib <- posterior_weib[, "alpha"]
+beta_values_weib <- posterior_weib[, "beta"]
+theta_values_weib <- posterior_weib[, "theta"]
+
+message("Starting Poisson simulation...")
+
+# Simulate Poisson samples
+uniform_poisson <- runif(n_sim)
+poisson_results <- numeric(n_sim)
+
+for (i in seq_along(uniform_poisson)) {
+  if (i %% 100 == 0) message("Simulating Poisson sample ", i, "/", n_sim)
+  
+  U <- uniform_poisson[i]
+  poisson_samples <- numeric(length(theta_values_weib))
+  
+  for (j in seq_along(theta_values_weib)) {
+    poisson_samples[j] <- pois(theta_values_weib[j], U)
+  }
+  
+  poisson_results[i] <- round(mean(poisson_samples))
+}
+
+message("Poisson simulation completed.")
+message("Starting aggregate claim simulation...")
+
+# Simulate aggregate claims
+aggregate_claims_weib <- numeric(length(poisson_results))
+
+for (i in seq_along(poisson_results)) {
+  if (i %% 100 == 0) message("Simulating aggregate claim ", i, "/", length(poisson_results))
+  
+  n <- poisson_results[i]
+  weib_samples <- numeric(n)
+  uniform_weib <- runif(n, min = 1e-10, max = 1 - 1e-10)  # avoid 0 and 1 exactly
+  
+  for (j in seq_along(uniform_weib)) {
+    U <- uniform_weib[j]
+    
+    weib_sample <- 1000*beta_values_weib * (-log(1 - U))^(1 / alpha_values_weib)
+    weib_samples[j] <- mean(weib_sample)
+  }
+  
+  aggregate_claims_weib[i] <- sum(weib_samples)
+}
+
+message("Aggregate simulation completed.")
+
+# Summary statistics
+median(aggregate_claims_weib)
+quantile(aggregate_claims_weib, probs = c(0.90, 0.95, 0.99))
+max(aggregate_claims_weib)
+
+# Sample statistics
+S_observed <- itamtplcost %>% group_by(year) %>% summarise(sum(claim_amount)) %>% pull('sum(claim_amount)')
+plot(S_observed)
+
+# ---------------------------------------------------
+# Fit & Plot Distributions to Aggregate Claims
+# ---------------------------------------------------
+
+# Estimate distribution parameters via moment matching
+mean_S <- mean(aggregate_claims_weib)
+var_S <- var(aggregate_claims_weib)
+
+gamma_shape <- mean_S^2 / var_S
+gamma_rate <- mean_S / var_S
+
+sigma2_ln <- log(1 + var_S / mean_S^2)
+mu_ln <- log(mean_S) - sigma2_ln / 2
+
+normal_mean <- mean_S
+normal_sd <- sqrt(var_S)
+
+# Define support for density plots
+x_vals <- seq(min(aggregate_claims_weib), max(aggregate_claims_weib), length.out = 1000)
+
+gamma_densities <- dgamma(x_vals, shape = gamma_shape, rate = gamma_rate)
+lognorm_densities <- dlnorm(x_vals, meanlog = mu_ln, sdlog = sqrt(sigma2_ln))
+normal_densities <- dnorm(x_vals, mean = normal_mean, sd = normal_sd)
+
+hist_density <- hist(aggregate_claims_weib, plot = FALSE, probability = TRUE)$density
+max_y <- max(gamma_densities, lognorm_densities, normal_densities, hist_density)
+
+# Plotting
+hist(aggregate_claims_weib, probability = TRUE, breaks = 100,
+     col = "gray90", border = "white", main = "",
+     xlab = "", ylab = "", ylim = c(0, max_y * 1.05))
+curve(dgamma(x, shape = gamma_shape, rate = gamma_rate), col = "blue", lwd = 2, add = TRUE)
+curve(dlnorm(x, meanlog = mu_ln, sdlog = sqrt(sigma2_ln)), col = "green", lwd = 2, add = TRUE)
+curve(dnorm(x, mean = normal_mean, sd = normal_sd), col = "red", lwd = 2, add = TRUE)
+legend("right", legend = c("Gamma", "Lognormal", "Normal"),
+       col = c("blue", "green", "red"), lwd = 2)
+
+# ===================================================
 # NEW DATA: POISSON-LOGNORMAL MODEL
 # ===================================================
 
@@ -409,6 +581,8 @@ inits_pois_lognorm <- list(
        .RNG.seed = 789)
 )
 
+hist(itamtplcost_input$y)
+
 # ---------------------------------------------------
 # RUN JAGS MODEL
 # ---------------------------------------------------
@@ -453,6 +627,8 @@ traceplot(samples_pois_lognorm[, params], main="", xlab="")
 # Posterior summary
 summary(samples_pois_lognorm)
 
+mean(rytgaard1990_input$y)
+
 # Density plots
 plot(density(as.matrix(samples_pois_lognorm[, "mu_pois_lognorm"])), main="", xlab="", ylab="")
 plot(density(as.matrix(samples_pois_lognorm[, "tau_pois_lognorm"])), main="", xlab="", ylab="")
@@ -480,6 +656,8 @@ plot(density(expected_y_pois_lognorm, na.rm=TRUE), main="", xlab="", ylab="")
 y_obs <- itamtplcost_input$y
 mu_pois_lognorm_post_mean <- mean(posterior_pois_lognorm[, "mu_pois_lognorm"])
 sigma_pois_lognorm_post_mean <- mean(1 / sqrt(posterior_pois_lognorm[, "tau_pois_lognorm"]))
+
+tau_pois_lognorm_post_mean <- mean(posterior_pois_lognorm[, "tau_pois_lognorm"])
 
 lognormal_cdf <- function(x, mu, sigma) {
   pnorm(log(x), mean = mu, sd = sigma)
@@ -709,8 +887,8 @@ jags_model_nb_lognorm <- jags.model(
 samples_nb_lognorm <- coda.samples(
   jags_model_nb_lognorm,
   variable.names = c("mu_lognorm", "tau_lognorm", "r_nb", "p_nb"),
-  n.iter = 3000000,
-  thin = 100
+  n.iter = 6000000,
+  thin = 200
 )
 
 # Diagnostics & summaries
