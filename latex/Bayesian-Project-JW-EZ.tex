@@ -598,9 +598,9 @@ Maximum & 116.396 \\
 
 \section{Implementation on Alternative Data}
 
-To assess the generalizability of the Bayesian approach proposed by \citet{dudley2006bayesian} for insurance claim modeling, the same methodology was applied to a different dataset. The \texttt{itamtplcost} dataset comprises 457 motor insurance claims exceeding 500{,}000 euros, recorded in Italy between 1997 and 2012 \citep{Dutang2020}.
+To assess the generalizability of the Bayesian approach proposed by \citet{dudley2006bayesian} for insurance claim modeling, the same methodology was applied to a different dataset. The \texttt{itamtplcost} dataset consists of 457 motor~insur- ance claims exceeding 500{,}000 euros, recorded in Italy between 1997 and 2012 \citep{Dutang2020}.
 
-Table~\ref{tab:8} presents a comparison of summary statistics between the \citet{rytgaard1990pareto} and \texttt{itamtplcost} datasets. Claims in the \texttt{itamtplcost} dataset are significantly larger, with a mean of 1.015~billion euros compared to 3.058~million euros in the \citet{rytgaard1990pareto} dataset. The variability is also greater, with a range of 6{,}637.34 versus 17.56. Regarding the number of claims per year, the \texttt{itamtplcost} dataset exhibits a minimum of 5 and a maximum of 40, while the \citet{rytgaard1990pareto} dataset ranges from 0 to 5. These differences highlight the greater complexity of the \texttt{itamtplcost} dataset, providing a valuable opportunity to assess whether the Poisson--Pareto model continues to yield meaningful posterior inference in a more realistic insurance context.
+Table~\ref{tab:8} compares summary statistics between the \citet{rytgaard1990pareto} and \texttt{itamtplcost} datasets. Claims in the \texttt{itamtplcost} dataset are substantially larger, with a mean of 1.015~billion euros compared to 3.058~million euros in the \citet{rytgaard1990pareto} dataset. The variability is also markedly higher, with a range of 6{,}637.34 versus 17.56. In terms of annual claim counts, the \texttt{itamtplcost} dataset spans from 5 to 40 claims per year, whereas the \citet{rytgaard1990pareto} dataset ranges from 0 to 5. These differences underscore the greater complexity of the \texttt{itamtplcost}~data- set, offering a meaningful test of whether the Poisson--Pareto model can still yield valid~posterior inference~in~a more realistic insurance context.
 
 \begin{table}[!ht]
 \centering
@@ -792,9 +792,9 @@ The Negative Binomial distribution was parameterized in terms of \( r \) and \( 
 *{4}{S[table-format=2.3]}
 }
 \hline
-\textbf{Chain} & \( \mu \) & \( \tau \) & \( p \) & \( r \) \\ \hline
-1 & 0.01 & 0.50 & 0.20 & 5.00 \\
-2 & 2.0 & 1.5 & 0.5 & 10.0 \\
+\textbf{Chain} & \( \mu \) & \( \tau \) & \( r \) & \( p \) \\ \hline
+1 & 0.01 & 0.50 & 5.00 & 0.20 \\
+2 & 2.0 & 1.5 & 10.0 & 0.5 \\
 3 & 6.700 & 0.802 & 13.165 & 0.316 \\ \hline
 \end{tabular}
 \end{table}
@@ -848,10 +848,10 @@ Table~\ref{tab:13} shows posterior statistics based on 30,000 post-burn-in itera
 \hline
  & \textbf{Mean} & \textbf{Standard Deviation} & \textbf{95\% Bayesian Credible Interval} \\ \hline
 \( \mu \) & 6.700 & 0.038 & (6.626, 6.774) \\
-\( \tau \) & 1.552 & 0.103 & (1.358, 1.759) \\
-\( r \) & 28.628 & 1.337 & (26.058, 31.313) \\
-\( p \) & 28.628 & 1.337 & (26.058, 31.313) \\
-\( E[Y] \) & 1124.280 & 48.873 & (1034.404, 1225.412) \\ \hline
+\( \tau \) & 1.551 & 0.103 & (1.355, 1.759) \\
+\( r \) & 11.229 & 6.619 & (3.69, 27.96) \\
+\( p \) & 0.267 & 0.0992 & (0.112, 0.497) \\
+\( E[Y] \) & 1124.596 & 49.01 & (1034.37, 1226.564) \\ \hline
 \end{tabular}
 \end{table}
 
