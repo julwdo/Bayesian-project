@@ -977,7 +977,7 @@ lines(x_vals, pnbinom(x_vals, r_post_mean, p_post_mean),
       col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
 
 legend("bottomright",
-       legend = c("Empirical CDF", sprintf("NegBinomial(%.3f, %.3f) CDF", r_post_mean, p_post_mean)),
+       legend = c("Empirical CDF", sprintf("NB(%.3f, %.3f) CDF", r_post_mean, p_post_mean)),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ---------------------------------------------------

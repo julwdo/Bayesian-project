@@ -755,7 +755,7 @@ Figure~\ref{fig:16} compares the empirical cumulative distribution of observed c
     \includegraphics[width=.75\textwidth]{itamtplcost/empirical_vs_poisson.png}
 \end{figure}
 
-Figure~\ref{fig:18} displays the estimated predictive probability density function (PDF) of a future individual claim amount \( Y_f \), derived via the inverse CDF method, as in the previous section. The resulting distribution is~marked- ly right-skewed, capturing the heavy-tailed nature of claim sizes. While extremely large values are possible,~they occur with very low probability.
+Figure~\ref{fig:18} displays the estimated predictive probability density function (PDF) of a future individual claim amount \( Y_f \), obtained using the inverse CDF method, similarly as in the previous section. The resulting~distribu- tion is markedly right-skewed, capturing the heavy-tailed nature of claim sizes. While extremely large values~are possible, they occur with very low probability.
 
 \begin{figure}[!ht]
 \centering
@@ -871,12 +871,69 @@ Table~\ref{tab:13} shows posterior summary statistics based on 30{,}000 post-bur
     
 \end{figure}
 
+Figure~\ref{fig:22} compares the empirical cumulative distribution function (ECDF) of the observed claim counts \( n_t \) with the CDF of a Negative Binomial distribution parameterized by the posterior means of \( r \) and \( p \). The fitted distribution closely follows the ECDF in the central region, although it converges more slowly toward 1.
+
 \begin{figure}[!ht]
     \centering
     \caption{Empirical vs.\ Fitted Negative Binomial CDF}
     \label{fig:22}
     \includegraphics[width=.75\textwidth]{itamtplcost_nb/empirical_vs_nb.png}
 \end{figure}
+
+Finally, Figure~\ref{fig:23} presents the histogram of simulated aggregate claims \( S_f \), with three distributions fitted~via moment matching. Once again, the Gamma distribution appears to provide the best approximation to the~dis- tribution of aggregate claims, with estimated parameters \( \alpha = 5.48143 \) and \( \beta = 0.00017 \).
+
+\begin{figure}[!ht]
+\centering
+\caption{Histogram and Fitted Distributions for Predictive \( S_f \)}
+\label{fig:23}
+\includegraphics[width=0.75\textwidth]{itamtplcost_nb/predictive_S_f.png}
+\end{figure}
+
+Table~\ref{tab:14} compares various percentiles of the simulated \( S_f \) values for the two models:\ Poisson--Lognormal and Negative Binomial--Lognormal. With maxima of 62{,}054.06 and 91{,}825.33, respectively, both models effectively capture the heavy tail of the predictive distribution of \( S_f \). However, the Negative Binomial--Lognormal model provides a slightly better fit in the tail, as indicated by its higher maximum. This difference is also evident~when comparing Figures~\ref{fig:19} and~\ref{fig:23}.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{Comparison of Percentiles of Simulated \( S_f \) Values for Two Models}
+\label{tab:14}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{99th Percentile}}
+S[table-format=5.2]
+S[table-format=5.2]
+}
+\hline
+\textbf{Percentile} & \textbf{Poisson--Lognormal} & \textbf{Negative Binomial--Lognormal} \\
+\hline
+Median & 31278.27 & 29538.01 \\ 
+90th Percentile & 42380.49 & 50239.35 \\
+95th Percentile & 46347.16 & 55750.20 \\
+99th Percentile & 52800.55 & 73525.82 \\
+Maximum & 62054.06 & 91825.33 \\
+\hline
+\end{tabular}
+\end{table}
+
+The improved tail behavior is due to the additional dispersion allowed by the Negative Binomial distribution in modeling claim counts, in contrast to the more restrictive Poisson distribution. Table~\ref{tab:15} presents a comparison of summary statistics for the simulated values of \( N_f \) under both models. Although the means of the simulated values are nearly identical, the~values for the Poisson distribution range from 13 to 47, while those for the~Nega- tive Binomial range from 4 to 76.
+
+\begin{table}[!ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{10pt}
+\caption{Comparison of Summary Statistics for Claim Count Models}
+\label{tab:15}
+\begin{tabular}{
+>{\raggedright\arraybackslash}p{\widthof{Negative Binomial}} 
+*{6}{S[table-format=2.2]}
+}
+\hline
+\textbf{Model} & \textbf{Min.} & \textbf{1st Qu.} & \textbf{Median} & \textbf{Mean} & \textbf{3rd Qu.} & \textbf{Max.} \\ 
+\hline
+Poisson & 13.00 & 25.00 & 28.00 & 28.56 & 32.00 & 47.00 \\
+Negative Binomial & 4.00 & 21.00 & 27.00 & 28.50 & 35.00 & 76.00 \\
+\hline
+\end{tabular}
+\end{table}
 
 
 \printbibliography{references}

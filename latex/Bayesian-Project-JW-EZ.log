@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  5 MAY 2025 23:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.28)  6 MAY 2025 12:18
 entering extended mode
 **./Bayesian-Project-JW-EZ.tex
 (Bayesian-Project-JW-EZ.tex
@@ -921,29 +921,37 @@ File: itamtplcost_nb/density_p.png Graphic file (type png)
 <use itamtplcost_nb/density_p.png>
 Package pdftex.def Info: itamtplcost_nb/density_p.png  used on input line 868.
 (pdftex.def)             Requested size: 217.6621pt x 96.0032pt.
-<itamtplcost_nb/empirical_vs_nb.png, id=359, 458.46281pt x 280.79906pt>
+[13 <./itamtplcost_nb/trace_after_thinning_mu.png> <./itamtplcost_nb/trace_afte
+r_thinning_tau.png> <./itamtplcost_nb/trace_after_thinning_r.png> <./itamtplcos
+t_nb/trace_after_thinning_p.png>]
+<itamtplcost_nb/empirical_vs_nb.png, id=372, 395.97937pt x 176.91093pt>
 File: itamtplcost_nb/empirical_vs_nb.png Graphic file (type png)
 <use itamtplcost_nb/empirical_vs_nb.png>
 Package pdftex.def Info: itamtplcost_nb/empirical_vs_nb.png  used on input line
- 878.
-(pdftex.def)             Requested size: 362.77263pt x 222.20158pt.
-(Bayesian-Project-JW-EZ.bbl [13 <./itamtplcost_nb/trace_after_thinning_mu.png> 
-<./itamtplcost_nb/trace_after_thinning_tau.png> <./itamtplcost_nb/trace_after_t
-hinning_r.png> <./itamtplcost_nb/trace_after_thinning_p.png>]) [14 <./itamtplco
-st_nb/density_r.png> <./itamtplcost_nb/density_p.png> <./itamtplcost_nb/empiric
-al_vs_nb.png>] (Bayesian-Project-JW-EZ.aux)
+ 880.
+(pdftex.def)             Requested size: 362.77263pt x 162.07706pt.
+<itamtplcost_nb/predictive_S_f.png, id=374, 395.97937pt x 174.6525pt>
+File: itamtplcost_nb/predictive_S_f.png Graphic file (type png)
+<use itamtplcost_nb/predictive_S_f.png>
+Package pdftex.def Info: itamtplcost_nb/predictive_S_f.png  used on input line 
+889.
+(pdftex.def)             Requested size: 362.77263pt x 160.008pt.
+ [14 <./itamtplcost_nb/density_r.png> <./itamtplcost_nb/density_p.png> <./itamt
+plcost_nb/empirical_vs_nb.png> <./itamtplcost_nb/predictive_S_f.png>] (Bayesian
+-Project-JW-EZ.bbl) [15]
+(Bayesian-Project-JW-EZ.aux)
 Package rerunfilecheck Info: File `Bayesian-Project-JW-EZ.out' has not changed.
 
 (rerunfilecheck)             Checksum: 27A0B9E19463D3FD5782AC51376ECE0D;1742.
  ) 
 Here is how much of TeX's memory you used:
- 17106 strings out of 478869
- 314235 string characters out of 2860379
- 618730 words of memory out of 3000000
- 34652 multiletter control sequences out of 15000+600000
+ 17119 strings out of 478869
+ 314548 string characters out of 2860379
+ 619010 words of memory out of 3000000
+ 34661 multiletter control sequences out of 15000+600000
  417201 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,14n,81p,906b,867s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,14n,81p,906b,785s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Program Files/MiKTeX/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<C:/Progra
 m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/typ
@@ -971,9 +979,9 @@ MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmtt8.pfb><C:/Program Files/MiKTeX/fonts/type1/public
 /amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/cm-sup
 er/sfrm1000.pfb>
-Output written on Bayesian-Project-JW-EZ.pdf (15 pages, 783089 bytes).
+Output written on Bayesian-Project-JW-EZ.pdf (16 pages, 792700 bytes).
 PDF statistics:
- 525 PDF objects out of 1000 (max. 8388607)
- 79 named destinations out of 1000 (max. 500000)
- 291 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 540 PDF objects out of 1000 (max. 8388607)
+ 83 named destinations out of 1000 (max. 500000)
+ 296 words of extra memory for PDF output out of 10000 (max. 10000000)
 
