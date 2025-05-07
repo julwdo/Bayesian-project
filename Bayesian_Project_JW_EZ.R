@@ -681,7 +681,7 @@ legend("bottomright",
        legend = c("Empirical CDF",
                   sprintf("Lognormal(%.3f, %.3f) CDF",
                           mu_pois_lognorm_post_mean,
-                          sigma_pois_lognorm_post_mean)),
+                          tau_pois_lognorm_post_mean)),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ---------------------------------------------------
@@ -968,16 +968,16 @@ plot(
   xlab = "",
   ylab = "",
   lwd = 2,
-  xlim = c(min(n), max(n) + 3)  # extend x-axis for visibility
+  xlim = c(min(n), max(n) + 40)  # extend x-axis for visibility
 )
 
 # Overlay theoretical Negative Binomial CDF
-x_vals <- min(n):(max(n) + 3)
+x_vals <- min(n):(max(n) + 40)
 lines(x_vals, pnbinom(x_vals, r_post_mean, p_post_mean),
       col = "red", lwd = 2, lty = 2, type = "s")  # 's' for step
 
 legend("bottomright",
-       legend = c("Empirical CDF", sprintf("NB(%.3f, %.3f) CDF", r_post_mean, p_post_mean)),
+       legend = c("Empirical CDF", sprintf("NegBinomial(%.3f, %.3f) CDF", r_post_mean, p_post_mean)),
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 
 # ---------------------------------------------------
@@ -1114,4 +1114,3 @@ legend("topright", legend = c("Gamma", "Lognormal", "Normal"),
 median(aggregate_claims_nb_lognorm)
 quantile(aggregate_claims_nb_lognorm, probs = c(0.90, 0.95, 0.99))
 max(aggregate_claims_nb_lognorm)
-

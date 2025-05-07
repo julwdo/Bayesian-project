@@ -262,7 +262,7 @@ In addition, density plots were generated for each of the parameters and for \( 
     
 \end{figure}
 
-The posterior means of \( \alpha \) and \( \beta \) were used as parameters of the Pareto distribution, and the corresponding cumulative distribution function (CDF) was plotted against the empirical cumulative data (\( y_{i,t} \)). Similarly, the posterior mean of \( \theta \) was used as the parameter of the Poisson distribution, and its CDF was plotted against the empirical cumulative data (\( n_t \)). The Pareto\((3.079,\,1.592)\) distribution provides a close fit to the empirical data. The Poisson\((3.396)\) distribution also fits the observed frequencies quite well (see Figures \ref{fig:2} and \ref{fig:3}).
+The posterior means of \( \alpha \) and \( \beta \) were used as parameters of the Pareto distribution, and the corresponding cumulative distribution function (CDF) was plotted against the empirical cumulative data (\( y_{i,t} \)). Similarly, the posterior mean of \( \theta \) was used as the parameter of the Poisson distribution, and its CDF was plotted against the empirical cumulative data (\( n_t \)). The Pareto\((3.076,\,1.591)\) distribution provides a close fit to the empirical data. The Poisson\((3.399)\) distribution also fits the observed frequencies quite well (see Figures \ref{fig:2} and \ref{fig:3}).
 
 \begin{figure}[!ht]
     \centering
@@ -364,7 +364,7 @@ Figure~\ref{fig:5} shows how the univariate PSRF point estimates evolve with inc
     \end{subfigure}
 \end{figure}
 
-In addition, autocorrelation\footnote{The autocorrelation function (ACF) shows the correlation between samples at different lags. High autocorrelation indicates strong dependence between draws, leading to slow mixing. Thinning reduces this dependence by keeping only every \( k \)th sample.} plots were generated for all three parameters (see Figure~\ref{fig:6}), and values at~lags 1 through 10 are reported in Table~\ref{tab:5}. Several high autocorrelations were observed, particularly for \( \beta \), which~motivated the use of a thinning interval of 10 iterations, as suggested by \citet{dudley2006bayesian}.
+In addition, autocorrelation\footnote{The autocorrelation function (ACF) shows the correlation between samples at different lags. High autocorrelation indicates strong dependence between draws, leading to slow mixing. Thinning reduces this dependence by keeping only every \( k \)-th sample.} plots were generated for all three parameters (see Figure~\ref{fig:6}), and values at~lags 1 through 10 are reported in Table~\ref{tab:5}. Several high autocorrelations were observed, particularly for \( \beta \), which~motivated the use of a thinning interval of 10 iterations, as suggested by \citet{dudley2006bayesian}.
 
 \begin{figure}[!ht]
     \centering
@@ -561,7 +561,7 @@ The draws of \( S_f \), representing a future observation of \( S_t \), were gen
 \item For each simulated value of \( N_f \), the corresponding number of \( Y_f \) values was drawn using the same procedure as in the predictive PDF estimation, and these values were then summed to generate a draw of \( S_f \).
 \end{enumerate}
 
-\noindent Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with three fitted distributions using moment matching. As observed by \citet{dudley2006bayesian}, the Gamma distribution provides the best fit. The fitted Gamma~dis- tribution has parameters \( \alpha = 1.726 \) and \( \beta = 0.202 \).
+\noindent Figure~\ref{fig:10} presents the histogram of the resulting \( S_f \) samples, along with three fitted distributions using moment matching. As observed by \citet{dudley2006bayesian}, the Gamma distribution provides the best fit. The fitted Gamma~dis- tribution has parameters \( \alpha = 1.807 \) and \( \beta = 0.213 \).
 
 \begin{figure}[!ht]
 \centering
@@ -570,7 +570,7 @@ The draws of \( S_f \), representing a future observation of \( S_t \), were gen
 \includegraphics[width=0.75\textwidth]{rytgaard1990/predictive_S_f.png}
 \end{figure}
 
-Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 116.396 reflects~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation ef- fectively captured the tail behavior of the predictive distribution of \( S \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
+Table~\ref{tab:7} reports various percentiles of the simulated \( S_f \) values. The maximum value of 101.109 reflects~a long tail, consistent with expectations for a heavy-tailed claim size distribution. This indicates that the~simulation ef- fectively captured the tail behavior of the predictive distribution of \( S_f \), which is important since most aggregate claims are moderate, but extreme values can occasionally occur.
 
 \begin{table}[!ht]
 \centering
@@ -585,11 +585,11 @@ S[table-format=3.3]
 \hline
 \textbf{Percentile} & \textbf{Value} \\ 
 \hline
-Median & 7.504 \\ 
-90th Percentile & 15.065 \\
-95th Percentile & 18.092 \\
-99th Percentile & 25.171 \\
-Maximum & 116.396 \\
+Median & 7.628 \\ 
+90th Percentile & 15.048 \\
+95th Percentile & 18.124 \\
+99th Percentile & 27.201 \\
+Maximum & 101.109 \\
 \hline
 \end{tabular}
 \end{table}
@@ -745,7 +745,7 @@ Figure~\ref{fig:16} compares the empirical cumulative distribution of observed c
     \centering
     \caption{Empirical vs.\ Fitted Lognormal CDF}
     \label{fig:16}
-    \includegraphics[width=.75\textwidth]{itamtplcost/empirical_vs_lognormal.png}
+    \includegraphics[width=.7\textwidth]{itamtplcost/empirical_vs_lognormal.png}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -935,6 +935,13 @@ Negative Binomial & 4.00 & 21.00 & 27.00 & 28.50 & 35.00 & 76.00 \\
 \end{tabular}
 \end{table}
 
+\section{Conclusions}
+
+This project successfully applied a Bayesian framework to model and predict aggregate motor insurance claims. The first stage involved replicating the work of \citet{dudley2006bayesian}, which employed a compound model where~claim frequency was modeled using the Poisson distribution and claim severity using the Pareto distribution. Vague~priors were chosen for all parameters to ensure that inference was mainly driven by the data. Markov Chain Monte Carlo sampling—specifically Gibbs sampling—was used to draw from the posterior distributions. Convergence was assessed using the Gelman--Rubin diagnostic \citeyearpar{Gelman1992}, and autocorrelation was addressed through thinning. Trace plots were visually inspected to confirm stability of the chains. Finally, predictions for future claim counts ($N_f$), individual claim amounts ($Y_f$), and aggregate claim amounts ($S_f$) were generated using the inverse CDF method. The results were consistent with those of \citet{dudley2006bayesian} and showed a good fit for the \citet{rytgaard1990pareto} dataset.
+
+Subsequently, the implementation was tested on an alternative dataset to evaluate the generalizability of the \citet{dudley2006bayesian} approach. The Poisson--Pareto model was found to be inadequate for the \texttt{itamtplcost}~dataset, as the sampled values of the $\alpha$ parameter implied an infinite mean for the Pareto distribution. Therefore, alternative loss distributions were explored, including the Weibull and Lognormal. Among these, the Lognormal distribution was preferred due to its heavier tail, which helps reduce the risk of underestimating extreme future losses. While the Poisson--Lognormal model already provided a reasonable fit for the \texttt{itamtplcost} data, further improvements were achieved by replacing the Poisson distribution with the Negative Binomial distribution for modeling claim counts. This adjustment allowed for greater dispersion in simulated claim counts—better reflecting the sample data—and resulted in an even longer-tailed predictive distribution for $S_f$. The best-fitting distribution for the simulated values of $S_f$ under the Negative Binomial--Lognormal model was $\mathrm{Gamma}(5.48143,\ 0.00017)$.
+
+Overall, the Bayesian compound modeling approach proved effective and scalable for insurance analytics.~Future work could extend the models by including policyholder-level covariates such as driver age, vehicle type,~or other relevant factors. Moreover, incorporating expert knowledge through more informative priors could further enhance model precision, robustness, and practical relevance in real-world risk assessment.
 
 \printbibliography{references}
 \end{document}
